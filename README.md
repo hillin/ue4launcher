@@ -18,7 +18,7 @@ You will need Visual Studio 2015 and .NET Framework 4.6.1 to build this project.
 Once you have this project built, place *ProjectLauncher.exe* at any place and depth under your UE4 project folder and run it with *-dev -edit* args (read the section below to learn more).
 
 ## Third-Party Libraries
-Extended WPF Toolkit is employed in this project. It will be restored through nuget automatically.
+**Extended WPF Toolkit** is employed in this project. It will be restored through nuget automatically.
 
 # Developer Mode and Edit Mode
 **ue4launcher** has 3 modes:
