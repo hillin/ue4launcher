@@ -1,0 +1,897 @@
+﻿<UserControl x:Class="ProjectLauncher.Launcher.ProfileEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ProjectLauncher"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:launcher="clr-namespace:ProjectLauncher.Launcher"
+             mc:Ignorable="d"
+             d:DesignHeight="1200" d:DesignWidth="400">
+    <UserControl.Resources>
+
+        <GridLength x:Key="CaptionWidth">120</GridLength>
+        <GridLength x:Key="ToggleWidth">24</GridLength>
+
+        <Style x:Key="SwitchToggle"
+               TargetType="CheckBox">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Grid.Column" Value="1" />
+        </Style>
+
+        <Style x:Key="Caption"
+               TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0,0,8,0" />
+        </Style>
+        <Style x:Key="Content"
+               TargetType="Control">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Grid.Column" Value="2" />
+            <Setter Property="MinWidth" Value="120" />
+        </Style>
+        <Style TargetType="Grid"
+               x:Key="RowGrid">
+            <Setter Property="Margin" Value="4" />
+        </Style>
+        <Style TargetType="GroupBox">
+            <Setter Property="Padding" Value="4,8" />
+        </Style>
+        <Style TargetType="Separator">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Height" Value="1" />
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <StackPanel>
+
+            <StackPanel
+                Visibility="{Binding DeveloperMode, Converter={local:BoolToVisibilityConverter TrueValue=Collapsed, FalseValue=Visible}}">
+                <GroupBox Header="Preferences">
+                    <StackPanel>
+                        <StackPanel.Resources>
+                            <Style TargetType="Grid">
+                                <Setter Property="Margin" Value="4" />
+                            </Style>
+                        </StackPanel.Resources>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="PreferencesNicknameCheck"
+                                      IsChecked="{Binding SpecifyNickname, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="Nickname"
+                                       Style="{StaticResource Caption}" />
+                            <xctk:WatermarkTextBox Style="{StaticResource Content}"
+                                                   Text="{Binding Nickname, Mode=TwoWay}"
+                                                   Watermark="Nickname"
+                                                   IsEnabled="{Binding IsChecked, ElementName=PreferencesNicknameCheck}" />
+                        </Grid>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <CheckBox x:Name="PreferencesResolutionCheck"
+                                      IsChecked="{Binding SpecifyResolution, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="Resolution"
+                                       Style="{StaticResource Caption}" />
+                            <StackPanel Orientation="Horizontal"
+                                        Grid.Column="2"
+                                        IsEnabled="{Binding IsChecked, ElementName=PreferencesResolutionCheck}">
+                                <xctk:IntegerUpDown Minimum="600"
+                                                    Maximum="4096"
+                                                    Value="{Binding ResolutionX, Mode=TwoWay}"
+                                                    Width="56" />
+                                <TextBlock Text="x"
+                                           VerticalAlignment="Center"
+                                           Margin="4,0" />
+                                <xctk:IntegerUpDown Minimum="600"
+                                                    Maximum="4096"
+                                                    Value="{Binding ResolutionY, Mode=TwoWay}"
+                                                    Width="56" />
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox IsChecked="{Binding VrMode, Mode=TwoWay}"
+                                      Grid.Column="2"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="VR"
+                                       Style="{StaticResource Caption}" />
+                        </Grid>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Grid.Column="2"
+                                      IsChecked="{Binding NoSound, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="Mute Sound"
+                                       Style="{StaticResource Caption}" />
+                        </Grid>
+
+                    </StackPanel>
+
+                </GroupBox>
+            </StackPanel>
+
+            <StackPanel Visibility="{Binding DeveloperMode, Converter={local:BoolToVisibilityConverter}}">
+                <GroupBox Header="Profile">
+                    <StackPanel>
+                        <StackPanel.Resources>
+                            <Style TargetType="Grid">
+                                <Setter Property="Margin" Value="4" />
+                            </Style>
+                        </StackPanel.Resources>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Name"
+                                       Style="{StaticResource Caption}" />
+
+                            <xctk:WatermarkTextBox Style="{StaticResource Content}"
+                                                   Text="{Binding ProfileName, Mode=TwoWay}"
+                                                   Watermark="Profile Name" />
+                        </Grid>
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Description"
+                                       Style="{StaticResource Caption}" />
+
+                            <xctk:WatermarkTextBox Style="{StaticResource Content}"
+                                                   Text="{Binding ProfileDescription, Mode=TwoWay}"
+                                                   Watermark="Description" />
+                        </Grid>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Store in"
+                                       Style="{StaticResource Caption}" />
+                            <ComboBox SelectedItem="{Binding ProfileStorage, Mode=TwoWay}"
+                                      Style="{StaticResource Content}">
+                                <ComboBox.Items>
+                                    <launcher:ProfileStorage>Public</launcher:ProfileStorage>
+                                    <launcher:ProfileStorage>Personal</launcher:ProfileStorage>
+                                </ComboBox.Items>
+                            </ComboBox>
+                        </Grid>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="Open">
+                    <StackPanel>
+                        <StackPanel.Resources>
+                            <Style TargetType="Grid">
+                                <Setter Property="Margin" Value="4" />
+                            </Style>
+                        </StackPanel.Resources>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Executable File"
+                                       Style="{StaticResource Caption}" />
+                            <ComboBox x:Name="ExecutableFileList"
+                                      SelectedItem="{Binding SelectedExecutableFile, Mode=TwoWay}"
+                                      Style="{StaticResource Content}"
+                                      ItemsSource="{Binding ExecutableFiles}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate DataType="local:ExecutableFileInfo">
+                                        <TextBlock Text="{Binding DisplayName}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </Grid>
+
+                        <Grid Style="{StaticResource RowGrid}"
+                              Visibility="{Binding ShowProjectSelector, Converter={local:BoolToVisibilityConverter}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Project"
+                                       Style="{StaticResource Caption}" />
+                            <ComboBox x:Name="ProjectList"
+                                      SelectedItem="{Binding SelectedProject, Mode=TwoWay}"
+                                      Style="{StaticResource Content}"
+                                      ItemsSource="{Binding Projects}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate DataType="local:ProjectInfo">
+                                        <TextBlock Text="{Binding Name}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </Grid>
+                        <Grid>
+                            <Separator />
+                        </Grid>
+                        <Grid Style="{StaticResource RowGrid}">
+                            <RadioButton x:Name="OpenLocalMapCheck"
+                                         IsChecked="{Binding UseLocalMap, Mode=TwoWay}"
+                                         Content="Open Local Map"
+                                         GroupName="UrlGroup_1" />
+                        </Grid>
+                        <StackPanel IsEnabled="{Binding IsChecked, ElementName=OpenLocalMapCheck}">
+
+                            <Grid Style="{StaticResource RowGrid}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                    <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <CheckBox x:Name="MapSwitch"
+                                          IsChecked="{Binding SpecifyMapName, Mode=TwoWay}"
+                                          Style="{StaticResource SwitchToggle}" />
+                                <TextBlock Text="Map"
+                                           Style="{StaticResource Caption}" />
+                                <ComboBox x:Name="MapList"
+                                          SelectedItem="{Binding SelectedMap, Mode=TwoWay}"
+                                          ItemsSource="{Binding Maps}"
+                                          IsEnabled="{Binding IsChecked, ElementName=MapSwitch}"
+                                          Style="{StaticResource Content}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate DataType="local:MapInfo">
+                                            <TextBlock Text="{Binding Name}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </Grid>
+                            <Grid Style="{StaticResource RowGrid}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                    <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <CheckBox x:Name="LaunchAsSwitch"
+                                          IsChecked="{Binding SpecifyLaunchMode, Mode=TwoWay}"
+                                          Style="{StaticResource SwitchToggle}" />
+                                <TextBlock Text="Launch as"
+                                           Style="{StaticResource Caption}" />
+                                <ComboBox x:Name="LaunchModeList"
+                                          SelectedItem="{Binding LaunchMode, Mode=TwoWay}"
+                                          IsEnabled="{Binding IsChecked, ElementName=LaunchAsSwitch}"
+                                          Style="{StaticResource Content}">
+                                    <ComboBox.Items>
+                                        <launcher:LaunchMode>Game</launcher:LaunchMode>
+                                        <launcher:LaunchMode>Server</launcher:LaunchMode>
+                                    </ComboBox.Items>
+                                </ComboBox>
+                            </Grid>
+                            <Grid Style="{StaticResource RowGrid}"
+                                  IsEnabled="{Binding IsLaunchingAsServer}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                    <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <CheckBox IsChecked="{Binding IsListenServer, Mode=TwoWay}"
+                                          Style="{StaticResource SwitchToggle}" />
+                                <TextBlock Text="Listen Server"
+                                           Style="{StaticResource Caption}" />
+                            </Grid>
+                        </StackPanel>
+                        <Grid Style="{StaticResource RowGrid}">
+                            <RadioButton x:Name="ConnectToRadio"
+                                         IsChecked="{Binding ConnectToServer, Mode=TwoWay}"
+                                         Content="Connect to"
+                                         GroupName="UrlGroup_2" />
+                        </Grid>
+                        <StackPanel IsEnabled="{Binding IsChecked, ElementName=ConnectToRadio}">
+                            <Grid Style="{StaticResource RowGrid}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                    <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="URL"
+                                           Style="{StaticResource Caption}" />
+                                <Border BorderThickness="1"
+                                        Grid.Column="2"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Left"
+                                        MinWidth="120"
+                                        Padding="1"
+                                        BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <StackPanel.Resources>
+                                            <Style TargetType="xctk:AutoSelectTextBox">
+                                                <Setter Property="TextAlignment" Value="Right" />
+                                                <Setter Property="Width" Value="25" />
+                                                <Setter Property="BorderThickness" Value="0" />
+                                                <Setter Property="Background" Value="Transparent" />
+                                                <Setter Property="AutoMoveFocus" Value="True" />
+                                                <Setter Property="MaxLength" Value="3" />
+                                                <Setter Property="AutoSelectBehavior" Value="OnFocus" />
+                                                <EventSetter Event="PreviewTextInput"
+                                                             Handler="IPSectionTextBox_PreviewTextInput" />
+                                            </Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="." />
+                                                <Setter Property="Margin" Value="1,0" />
+                                            </Style>
+                                        </StackPanel.Resources>
+                                        <xctk:AutoSelectTextBox Text="{Binding IPSection0, Mode=TwoWay}" />
+                                        <TextBlock>.</TextBlock>
+                                        <xctk:AutoSelectTextBox Text="{Binding IPSection1, Mode=TwoWay}" />
+                                        <TextBlock>.</TextBlock>
+                                        <xctk:AutoSelectTextBox Text="{Binding IPSection2, Mode=TwoWay}" />
+                                        <TextBlock>.</TextBlock>
+                                        <xctk:AutoSelectTextBox Text="{Binding IPSection3, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+
+                            <Grid Style="{StaticResource RowGrid}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                    <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <CheckBox x:Name="PortCheck"
+                                          IsChecked="{Binding SpecifyPort,Mode=TwoWay}"
+                                          Style="{StaticResource SwitchToggle}" />
+                                <TextBlock Text="Port"
+                                           Style="{StaticResource Caption}" />
+                                <xctk:IntegerUpDown Style="{StaticResource Content}"
+                                                    Value="{Binding Port, Mode=TwoWay}"
+                                                    Minimum="1"
+                                                    Maximum="65535"
+                                                    Increment="1"
+                                                    IsEnabled="{Binding IsChecked, ElementName=PortCheck}" />
+                            </Grid>
+                        </StackPanel>
+
+                        <Grid>
+                            <Separator />
+                        </Grid>
+                        <StackPanel IsEnabled="{Binding IsListenServerOrClient}">
+                            <Grid Style="{StaticResource RowGrid}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                    <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <CheckBox x:Name="LanCheck"
+                                          IsChecked="{Binding LanGame, Mode=TwoWay}"
+                                          IsThreeState="True"
+                                          Style="{StaticResource SwitchToggle}" />
+                                <TextBlock Text="LAN"
+                                           Style="{StaticResource Caption}" />
+                            </Grid>
+                            <Grid Style="{StaticResource RowGrid}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                    <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <CheckBox x:Name="DoubleNetUpdateCheck"
+                                          IsChecked="{Binding DoubleNetUpdate, Mode=TwoWay}"
+                                          Style="{StaticResource SwitchToggle}" />
+                                <TextBlock Text="Double Net Update"
+                                           Style="{StaticResource Caption}" />
+                            </Grid>
+                            <Grid Style="{StaticResource RowGrid}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                    <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <CheckBox x:Name="SpectatorCheck"
+                                          IsChecked="{Binding AsSpectator, Mode=TwoWay}"
+                                          IsThreeState="True"
+                                          Style="{StaticResource SwitchToggle}" />
+                                <TextBlock Text="as Spectator"
+                                           Style="{StaticResource Caption}" />
+                            </Grid>
+                            <Grid Style="{StaticResource RowGrid}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                    <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <CheckBox x:Name="PlayerNameCheck"
+                                          IsChecked="{Binding SpecifyNickname, Mode=TwoWay}"
+                                          Style="{StaticResource SwitchToggle}" />
+                                <TextBlock Text="Nickname"
+                                           Style="{StaticResource Caption}" />
+                                <xctk:WatermarkTextBox Style="{StaticResource Content}"
+                                                       Text="{Binding Nickname, Mode=TwoWay}"
+                                                       Watermark="Nickname"
+                                                       IsEnabled="{Binding IsChecked, ElementName=PlayerNameCheck}" />
+                            </Grid>
+                        </StackPanel>
+
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="Render">
+                    <StackPanel>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="VRCheck"
+                                      IsChecked="{Binding VrMode, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="VR"
+                                       Style="{StaticResource Caption}" />
+                        </Grid>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="WindowStateCheck"
+                                      IsChecked="{Binding SpecifyWindowState, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="Window State"
+                                       Style="{StaticResource Caption}" />
+                            <ComboBox x:Name="WindowStateList"
+                                      SelectedItem="{Binding WindowState, Mode=TwoWay}"
+                                      IsEnabled="{Binding IsChecked, ElementName=WindowStateCheck}"
+                                      Style="{StaticResource Content}">
+                                <ComboBox.Items>
+                                    <launcher:WindowState>FullScreen</launcher:WindowState>
+                                    <launcher:WindowState>Windowed</launcher:WindowState>
+                                </ComboBox.Items>
+                            </ComboBox>
+                        </Grid>
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="ResolutionCheck"
+                                      IsChecked="{Binding SpecifyResolution, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="Resolution"
+                                       Style="{StaticResource Caption}" />
+                            <StackPanel Orientation="Horizontal"
+                                        IsEnabled="{Binding IsChecked, ElementName=ResolutionCheck}"
+                                        Grid.Column="2">
+                                <xctk:IntegerUpDown Minimum="600"
+                                                    Maximum="4096"
+                                                    Value="{Binding ResolutionX, Mode=TwoWay}"
+                                                    Width="56" />
+                                <TextBlock Text="x"
+                                           VerticalAlignment="Center"
+                                           Margin="4,0" />
+                                <xctk:IntegerUpDown Minimum="600"
+                                                    Maximum="4096"
+                                                    Value="{Binding ResolutionY, Mode=TwoWay}"
+                                                    Width="56" />
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="WindowPositionCheck"
+                                      IsChecked="{Binding SpecifyWindowPosition, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="Window Position"
+                                       Style="{StaticResource Caption}" />
+                            <StackPanel Orientation="Horizontal"
+                                        IsEnabled="{Binding IsChecked, ElementName=WindowPositionCheck}"
+                                        Grid.Column="2">
+                                <xctk:IntegerUpDown Minimum="600"
+                                                    Maximum="4096"
+                                                    Value="{Binding WindowPositionX, Mode=TwoWay}"
+                                                    Width="56" />
+                                <TextBlock Text="x"
+                                           VerticalAlignment="Center"
+                                           Margin="4,0" />
+                                <xctk:IntegerUpDown Minimum="600"
+                                                    Maximum="4096"
+                                                    Value="{Binding WindowPositionY, Mode=TwoWay}"
+                                                    Width="56" />
+                            </StackPanel>
+                        </Grid>
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="VSyncCheck"
+                                      IsThreeState="True"
+                                      IsChecked="{Binding UseVSync, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="V-Sync"
+                                       Style="{StaticResource Caption}" />
+                        </Grid>
+
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="Logging">
+                    <StackPanel>
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="ShowLogConsoleCheck"
+                                      IsChecked="{Binding ShowLogConsole, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="Show Log Console"
+                                       Style="{StaticResource Caption}" />
+                        </Grid>
+
+                        <Grid Style="{StaticResource RowGrid}"
+                              IsEnabled="{Binding IsChecked, ElementName=ShowLogConsoleCheck}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="LogWindowPositionCheck"
+                                      IsChecked="{Binding SpecifyConsolePosition, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="Console Position"
+                                       Style="{StaticResource Caption}" />
+                            <StackPanel Orientation="Horizontal"
+                                        IsEnabled="{Binding IsChecked, ElementName=LogWindowPositionCheck}"
+                                        Grid.Column="2">
+                                <xctk:IntegerUpDown Minimum="600"
+                                                    Maximum="4096"
+                                                    Value="{Binding ConsolePositionX, Mode=TwoWay}"
+                                                    Width="56" />
+                                <TextBlock Text="x"
+                                           VerticalAlignment="Center"
+                                           Margin="4,0" />
+                                <xctk:IntegerUpDown Minimum="600"
+                                                    Maximum="4096"
+                                                    Value="{Binding ConsolePositionY, Mode=TwoWay}"
+                                                    Width="56" />
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="WriteLogFileCheck"
+                                      IsChecked="{Binding WriteToLogFile, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="Write Log to File"
+                                       Style="{StaticResource Caption}" />
+                        </Grid>
+
+                        <StackPanel IsEnabled="{Binding IsChecked, ElementName=WriteLogFileCheck}">
+                            <Grid Style="{StaticResource RowGrid}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                    <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <CheckBox x:Name="LogFileNameCheck"
+                                          IsChecked="{Binding SpecifyLogFilename, Mode=TwoWay}"
+                                          Style="{StaticResource SwitchToggle}" />
+                                <TextBlock Text="Log Filename"
+                                           Style="{StaticResource Caption}" />
+                                <xctk:WatermarkTextBox Style="{StaticResource Content}"
+                                                       Text="{Binding LogFilename, Mode=TwoWay}"
+                                                       Watermark="Log Filename"
+                                                       IsEnabled="{Binding IsChecked, ElementName=LogFileNameCheck}" />
+                            </Grid>
+                        </StackPanel>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="VerboseCheck"
+                                      IsChecked="{Binding VerboseLog, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="Verbose"
+                                       Style="{StaticResource Caption}" />
+                        </Grid>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="LogTimeCheck"
+                                      IsThreeState="True"
+                                      IsChecked="{Binding LogTime, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="Log Time"
+                                       Style="{StaticResource Caption}" />
+                        </Grid>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="SlientCheck"
+                                      IsChecked="{Binding SilentMode, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="Slient"
+                                       Style="{StaticResource Caption}" />
+                        </Grid>
+
+                    </StackPanel>
+                </GroupBox>
+
+
+                <GroupBox Header="Config File Overrides">
+                    <StackPanel>
+                        <StackPanel.Resources>
+                            <Style TargetType="ComboBox" BasedOn="{StaticResource Content}">
+                                <Setter Property="IsEditable" Value="True" />
+                            </Style>
+                        </StackPanel.Resources>
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition Width="24" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="OverrideDefaultEngineCheck"
+                                      IsChecked="{Binding OverrideDefaultEngine, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="DefaultEngine.ini"
+                                       Style="{StaticResource Caption}" />
+                            <ComboBox x:Name="DefaultEngineFileList"
+                                      Grid.Column="3"
+                                      Text="{Binding DefaultEngineFilename, Mode=TwoWay}"
+                                      ItemsSource="{Binding IniFiles}"
+                                      IsEnabled="{Binding IsChecked, ElementName=OverrideDefaultEngineCheck}" />
+
+                            <Button Grid.Column="2"
+                                    x:Name="NavigateDefaultEngineFileButton"
+                                    Click="NavigateDefaultEngineFileButton_Click">
+                                <Image Source="/Resources/Images/ic_launch_black_18dp.png" Stretch="None" />
+                            </Button>
+                        </Grid>
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition Width="24" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="OverrideDefaultGameCheck"
+                                      IsChecked="{Binding OverrideDefaultGame, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="DefaultGame.ini"
+                                       Style="{StaticResource Caption}" />
+                            <ComboBox x:Name="DefaultGameFileList"
+                                      Grid.Column="3"
+                                      Text="{Binding DefaultGameFilename, Mode=TwoWay}"
+                                      ItemsSource="{Binding IniFiles}"
+                                      IsEnabled="{Binding IsChecked, ElementName=OverrideDefaultGameCheck}" />
+
+                            <Button Grid.Column="2"
+                                    x:Name="NavigateDefaultGameFileButton"
+                                    Click="NavigateDefaultGameFileButton_Click">
+                                <Image Source="/Resources/Images/ic_launch_black_18dp.png" Stretch="None" />
+                            </Button>
+                        </Grid>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition Width="24" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="OverrideDefaultEditorCheck"
+                                      IsChecked="{Binding OverrideDefaultEditor, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="DefaultEditor.ini"
+                                       Style="{StaticResource Caption}" />
+                            <ComboBox x:Name="DefaultEditorFileList"
+                                      Grid.Column="3"
+                                      Text="{Binding DefaultEditorFilename, Mode=TwoWay}"
+                                      ItemsSource="{Binding IniFiles}"
+                                      IsEnabled="{Binding IsChecked, ElementName=OverrideDefaultEditorCheck}" />
+                            <Button Grid.Column="2"
+                                    x:Name="NavigateDefaultEditorFileButton"
+                                    Click="NavigateDefaultEditorFileButton_Click">
+                                <Image Source="/Resources/Images/ic_launch_black_18dp.png" Stretch="None" />
+                            </Button>
+                        </Grid>
+
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition Width="24" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="OverrideDefaultInputCheck"
+                                      IsChecked="{Binding OverrideDefaultInput, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="DefaultInput.ini"
+                                       Style="{StaticResource Caption}" />
+                            <ComboBox x:Name="DefaultInputFileList"
+                                      Grid.Column="3"
+                                      Text="{Binding DefaultInputFilename, Mode=TwoWay}"
+                                      ItemsSource="{Binding IniFiles}"
+                                      IsEnabled="{Binding IsChecked, ElementName=OverrideDefaultInputCheck}" />
+                            <Button Grid.Column="2"
+                                    x:Name="NavigateDefaultInputFileButton"
+                                    Click="NavigateDefaultInputFileButton_Click">
+                                <Image Source="/Resources/Images/ic_launch_black_18dp.png" Stretch="None" />
+                            </Button>
+                        </Grid>
+                    </StackPanel>
+
+                </GroupBox>
+
+                <GroupBox Header="Miscellaneous">
+                    <StackPanel>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="NoSoundCheck"
+                                      IsChecked="{Binding NoSound, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="Mute Sound"
+                                       Style="{StaticResource Caption}" />
+                        </Grid>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="NoSplashCheck"
+                                      IsChecked="{Binding NoSplash, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="No Splash"
+                                       Style="{StaticResource Caption}" />
+                        </Grid>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Additional Params."
+                                       Style="{StaticResource Caption}" />
+                            <xctk:WatermarkTextBox Style="{StaticResource Content}"
+                                                   Text="{Binding AdditionalParams, Mode=TwoWay}"
+                                                   Grid.Column="1"
+                                                   Grid.ColumnSpan="2"
+                                                   HorizontalAlignment="Stretch"
+                                                   Watermark="Parameters" />
+                        </Grid>
+                    </StackPanel>
+                </GroupBox>
+
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

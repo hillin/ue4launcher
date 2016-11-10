@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{501CCB64-65F5-4F83-9FC3-793D1F62FEFF}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ProjectLauncher</RootNamespace>
+    <AssemblyName>ProjectLauncher</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="Xceed.Wpf.Toolkit, Version=2.9.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.9\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Launcher\Arguments.cs" />
+    <Compile Include="Launcher\ArgumentType.cs" />
+    <Compile Include="BoolToVisibilityConverter.cs" />
+    <Compile Include="Launcher\ConfigFileArgumentInfo.cs" />
+    <Compile Include="Launcher\Constants.cs" />
+    <Compile Include="Debugging\DebuggerInfo.cs" />
+    <Compile Include="Debugging\DebuggerLauncher.cs" />
+    <Compile Include="Debugging\IOleMessageFilter.cs" />
+    <Compile Include="Debugging\MessageFilter.cs" />
+    <Compile Include="Debugging\VisualStudioVersions.cs" />
+    <Compile Include="ExecutableFileInfo.cs" />
+    <Compile Include="Launcher\ExecutableType.cs" />
+    <Compile Include="Launcher\MapInfo.cs" />
+    <Compile Include="Launcher\MappingArgumentInfo.cs" />
+    <Compile Include="Launcher\LaunchProfileViewModel.cs" />
+    <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="NotificationObject.cs" />
+    <Compile Include="Launcher\OpenMode.cs" />
+    <Compile Include="Preferences.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Preferences.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Processes\ProcessPage.xaml.cs">
+      <DependentUpon>ProcessPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Processes\ProcessPageViewModel.cs" />
+    <Compile Include="Launcher\ProfileEditor.xaml.cs">
+      <DependentUpon>ProfileEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Launcher\ProfileItem.cs" />
+    <Compile Include="Launcher\ProfileStorage.cs" />
+    <Compile Include="Processes\ProcessViewModel.cs" />
+    <Compile Include="ProjectInfo.cs" />
+    <Compile Include="Launcher\ProjectLauncherPage.xaml.cs">
+      <DependentUpon>ProjectLauncherPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Launcher\ProjectLauncherViewModel.cs" />
+    <Compile Include="Launcher\ProjectUtilities.cs" />
+    <Compile Include="Launcher\ServerType.cs" />
+    <Compile Include="Launcher\Argument.cs" />
+    <Compile Include="Launcher\ArgumentInfo.cs" />
+    <Compile Include="Launcher\WindowState.cs" />
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Launcher\LaunchMode.cs" />
+    <Compile Include="Launcher\LaunchProfile.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Processes\ProcessPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Launcher\ProfileEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Launcher\ProjectLauncherPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Preferences.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Preferences.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\ic_play_circle_outline_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\ic_launch_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\ic_save_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\ic_folder_open_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\ic_error_outline_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\ic_mode_edit_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\ic_content_copy_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\ic_add_circle_outline_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\ic_remove_circle_outline_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\ic_memory_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\ic_bug_report_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\ic_refresh_18pt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\ic_clear_black_18dp.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

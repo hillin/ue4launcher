@@ -1,0 +1,173 @@
+﻿<UserControl x:Class="ProjectLauncher.Processes.ProcessPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ProjectLauncher"
+             xmlns:debugging="clr-namespace:ProjectLauncher.Debugging"
+             xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=System"
+             xmlns:processes="clr-namespace:ProjectLauncher.Processes"
+             mc:Ignorable="d"
+             d:DesignHeight="474" d:DesignWidth="628">
+    <Border BorderThickness="1"
+            BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
+            Margin="8">
+        <DockPanel>
+            <Border DockPanel.Dock="Bottom"
+                    BorderThickness="0,1,0,0"
+                    BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+                <DockPanel Margin="4">
+                    <DockPanel.Resources>
+                        <Style TargetType="Button"
+                               BasedOn="{StaticResource {x:Type Button}}">
+                            <Setter Property="Margin" Value="4" />
+                            <Setter Property="Height" Value="32" />
+                            <Setter Property="MinWidth" Value="96" />
+                        </Style>
+                    </DockPanel.Resources>
+                    <StackPanel DockPanel.Dock="Left"
+                                Orientation="Horizontal">
+                        <Button x:Name="KillAllButton"
+                                IsEnabled="{Binding HasAnyProcess}"
+                                Click="KillAllButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Resources/Images/ic_clear_black_18dp.png"
+                                           Stretch="None"
+                                           Margin="0,0,4,0" />
+                                <TextBlock Text="Kill All" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="RefreshButton"
+                                Click="RefreshButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Resources/Images/ic_refresh_18pt.png"
+                                           Stretch="None"
+                                           Margin="0,0,4,0" />
+                                <TextBlock Text="Refresh"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Right"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Right">
+
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="8">
+                            <TextBlock Text="Debugger:"
+                                       VerticalAlignment="Center" />
+
+
+                            <ComboBox VerticalAlignment="Center"
+                                      Margin="8,0,0,0"
+                                      MinWidth="64"
+                                      IsEnabled="{Binding IsChecked, ElementName=AttachDebuggerCheck}"
+                                      ItemsSource="{Binding Debuggers}"
+                                      SelectedItem="{Binding SelectedDebugger, Mode=TwoWay}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate DataType="debugging:DebuggerInfo">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Viewbox Width="16" Height="16">
+                                                <Rectangle Width="16" Height="16">
+                                                    <Rectangle.Fill>
+                                                        <DrawingBrush>
+                                                            <DrawingBrush.Drawing>
+                                                                <DrawingGroup>
+                                                                    <DrawingGroup.Children>
+                                                                        <GeometryDrawing
+                                                                            Brush="#00FFFFFF"
+                                                                            Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                                                        <GeometryDrawing
+                                                                            Brush="#FFF6F6F6"
+                                                                            Geometry="F1M9.9775,8.4541L9.9775,7.7951 9.5395,8.1241z M6.5205,10.4381L4.5005,12.1201 1.9995,10.8711 1.9995,5.3781 4.5005,4.1271 6.5205,5.8111 10.6775,2.0001 13.9995,3.1081 13.9995,13.1411 10.6775,14.2491z" />
+                                                                        <GeometryDrawing
+                                                                            Brush="#FF414141"
+                                                                            Geometry="F1M8,8.1245L11,5.9485 11,10.3005z M4.374,9.5765L4.374,6.6735 5.824,8.1245z M10.9,3.0475L6.55,7.0365 4.374,5.2235 3,5.9485 3,10.3005 4.374,11.0255 6.55,9.2125 10.9,13.2015 13,12.4755 13,3.7725z" />
+                                                                    </DrawingGroup.Children>
+                                                                </DrawingGroup>
+                                                            </DrawingBrush.Drawing>
+                                                        </DrawingBrush>
+                                                    </Rectangle.Fill>
+                                                </Rectangle>
+                                            </Viewbox>
+
+                                            <TextBlock Text="{Binding Name}"
+                                                       Margin="4,0,0,0" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                                <ComboBox.ItemContainerStyle>
+                                    <Style TargetType="{x:Type ComboBoxItem}">
+                                        <Setter Property="IsEnabled"
+                                                Value="{Binding IsAvailable}" />
+                                    </Style>
+                                </ComboBox.ItemContainerStyle>
+                            </ComboBox>
+                        </StackPanel>
+                        <Button x:Name="AttachButton"
+                                IsEnabled="{Binding HasProcessSelected}"
+                                Click="AttachButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Resources/Images/ic_bug_report_black_18dp.png"
+                                           Stretch="None"
+                                           Margin="0,0,4,0" />
+                                <TextBlock Text="Attach" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="KillButton"
+                                IsEnabled="{Binding HasProcessSelected}"
+                                Click="KillButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Resources/Images/ic_clear_black_18dp.png"
+                                           Stretch="None"
+                                           Margin="0,0,4,0" />
+                                <TextBlock Text="Kill" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+            <ListBox ItemsSource="{Binding Processes}"
+                     SelectedItem="{Binding SelectedProcess, Mode=TwoWay}">
+                <ListBox.CommandBindings>
+                    <CommandBinding Command="Delete" Executed="ProcessList_DeleteCommand_Executed" />
+                </ListBox.CommandBindings>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <EventSetter Event="MouseDoubleClick" Handler="ProcessListItem_MouseDoubleClick" />
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="processes:ProcessViewModel">
+                        <Grid Height="48">
+                            <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Top"
+                                            Margin="5">
+                                
+                                <TextBlock Text="{Binding Title}"
+                                               FontSize="14"
+                                               FontWeight="Bold" />
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Bottom"
+                                        TextElement.Foreground="DarkGray"
+                                        Margin="5">
+                                <TextBlock>
+                                    <Run Text="{Binding Id, Mode=OneWay, StringFormat={}[{0}]}" />
+                                    <Run Text="{Binding Name, Mode=OneWay}" />
+                                    <Run>started at</Run>
+                                    <Run Text="{Binding StartTime, Mode=OneWay}" />
+                                </TextBlock>
+                            </StackPanel>
+                            
+
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+    </Border>
+</UserControl>

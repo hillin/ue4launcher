@@ -1,0 +1,278 @@
+﻿<UserControl x:Class="ProjectLauncher.Launcher.ProjectLauncherPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ProjectLauncher"
+             xmlns:debugging="clr-namespace:ProjectLauncher.Debugging"
+             xmlns:launcher="clr-namespace:ProjectLauncher.Launcher"
+             mc:Ignorable="d"
+             d:DesignHeight="715.333" d:DesignWidth="828">
+    <Border BorderThickness="1"
+            BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
+            Margin="8">
+        <DockPanel>
+            <Border Width="500"
+                    DockPanel.Dock="Right"
+                    BorderThickness="1,0,0,0"
+                    BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+                <DockPanel>
+
+
+                    <Grid DockPanel.Dock="Bottom" Margin="1,0,0,0">
+
+                        <Border BorderThickness="0,1,0,0"
+                                BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+                            <StackPanel>
+                                <Border Margin="8,12,8,0"
+                                        Visibility="{Binding DeveloperMode, Converter={local:BoolToVisibilityConverter}}">
+                                    <TextBox Text="{Binding SelectedProfile.ConsoleCommandLine, Mode=OneWay}"
+                                             Background="Black"
+                                             Foreground="LightGray"
+                                             Padding="4"
+                                             FontFamily="Consolas"
+                                             IsReadOnly="True"
+                                             TextWrapping="Wrap"
+                                             Height="72"
+                                             MaxHeight="72" />
+                                </Border>
+                                <Border Margin="8,8,8,0"
+                                        Padding="4"
+                                        BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+                                        BorderThickness="1">
+                                    <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal"
+                                                    VerticalAlignment="Center">
+                                            <TextBlock Text="Version: " />
+                                            <TextBlock Text="{Binding ReleaseVersion}"
+                                                       FontWeight="Bold" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal"
+                                                    VerticalAlignment="Center"
+                                                    Visibility="{Binding ShowServerPing, Converter={local:BoolToVisibilityConverter}}"
+                                                    Margin="16,0,0,0">
+                                            <TextBlock Text="{Binding ServerPingTitleText}" />
+                                            <TextBlock Text="{Binding ServerPing}"
+                                                       FontWeight="Bold"
+                                                       Foreground="{Binding ServerPingBrush}" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                                        
+                                        
+                                <Border Margin="8,8,8,0"
+                                        Padding="4"
+                                        Visibility="{Binding ShowProfileNotSavingTip, Converter={local:BoolToVisibilityConverter}}"
+                                        BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+                                        BorderThickness="1"
+                                        Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
+                                        MouseLeftButtonDown="ProfileNotSavedMessageBorder_MouseLeftButtonDown">
+                                    <DockPanel>
+                                        <Image Source="/Resources/Images/ic_error_outline_black_24dp.png"
+                                               Stretch="None" />
+                                        <TextBlock Margin="4,0,0,0"
+                                                   TextWrapping="Wrap"
+                                                   VerticalAlignment="Center">
+                                            <Run>Profile changes won't be saved. To edit profiles, start the launcher with the</Run>
+                                            <Run FontStyle="Italic">-edit</Run>
+                                            <Run>arg.</Run>
+                                        </TextBlock>
+                                    </DockPanel>
+                                </Border>
+
+                                <DockPanel Margin="8">
+                                    <DockPanel.Resources>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Padding" Value="8" />
+                                            <Setter Property="VerticalAlignment" Value="Center" />
+                                        </Style>
+
+
+                                    </DockPanel.Resources>
+                                    <StackPanel Orientation="Horizontal"
+                                                DockPanel.Dock="Right">
+
+                                        <Button x:Name="LaunchButton"
+                                                Click="LaunchButton_Click">
+                                            <StackPanel Orientation="Horizontal"
+                                                        VerticalAlignment="Center">
+                                                <Image
+                                                    Source="/Resources/Images/ic_play_circle_outline_black_18dp.png"
+                                                    Stretch="None"
+                                                    Margin="0,0,4,0" />
+                                                <TextBlock Text="Launch" />
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                    <Grid>
+                                        <StackPanel Orientation="Horizontal"
+                                                    Visibility="{Binding DeveloperMode, Converter={local:BoolToVisibilityConverter}}">
+
+                                            <CheckBox x:Name="AttachDebuggerCheck" VerticalAlignment="Center"
+                                                      IsChecked="{Binding AttachDebugger, Mode=TwoWay}">
+                                                Attach Debugger:
+                                            </CheckBox>
+
+                                            <ComboBox VerticalAlignment="Center"
+                                                      Margin="8,0,0,0"
+                                                      MinWidth="64"
+                                                      IsEnabled="{Binding IsChecked, ElementName=AttachDebuggerCheck}"
+                                                      ItemsSource="{Binding Debuggers}"
+                                                      SelectedItem="{Binding SelectedDebugger, Mode=TwoWay}">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate DataType="debugging:DebuggerInfo">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Viewbox Width="16" Height="16">
+                                                                <Rectangle Width="16" Height="16">
+                                                                    <Rectangle.Fill>
+                                                                        <DrawingBrush>
+                                                                            <DrawingBrush.Drawing>
+                                                                                <DrawingGroup>
+                                                                                    <DrawingGroup.Children>
+                                                                                        <GeometryDrawing
+                                                                                            Brush="#00FFFFFF"
+                                                                                            Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                                                                        <GeometryDrawing
+                                                                                            Brush="#FFF6F6F6"
+                                                                                            Geometry="F1M9.9775,8.4541L9.9775,7.7951 9.5395,8.1241z M6.5205,10.4381L4.5005,12.1201 1.9995,10.8711 1.9995,5.3781 4.5005,4.1271 6.5205,5.8111 10.6775,2.0001 13.9995,3.1081 13.9995,13.1411 10.6775,14.2491z" />
+                                                                                        <GeometryDrawing
+                                                                                            Brush="#FF414141"
+                                                                                            Geometry="F1M8,8.1245L11,5.9485 11,10.3005z M4.374,9.5765L4.374,6.6735 5.824,8.1245z M10.9,3.0475L6.55,7.0365 4.374,5.2235 3,5.9485 3,10.3005 4.374,11.0255 6.55,9.2125 10.9,13.2015 13,12.4755 13,3.7725z" />
+                                                                                    </DrawingGroup.Children>
+                                                                                </DrawingGroup>
+                                                                            </DrawingBrush.Drawing>
+                                                                        </DrawingBrush>
+                                                                    </Rectangle.Fill>
+                                                                </Rectangle>
+                                                            </Viewbox>
+
+                                                            <TextBlock Text="{Binding Name}"
+                                                                       Margin="4,0,0,0" />
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                                <ComboBox.ItemContainerStyle>
+                                                    <Style TargetType="{x:Type ComboBoxItem}">
+                                                        <Setter Property="IsEnabled"
+                                                                Value="{Binding IsAvailable}" />
+                                                    </Style>
+                                                </ComboBox.ItemContainerStyle>
+                                            </ComboBox>
+                                        </StackPanel>
+                                    </Grid>
+                                </DockPanel>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                    <ScrollViewer HorizontalScrollBarVisibility="Hidden"
+                                  VerticalScrollBarVisibility="Visible">
+                        <launcher:ProfileEditor Margin="8,4"
+                                             DataContext="{Binding SelectedProfile}" />
+                    </ScrollViewer>
+                </DockPanel>
+            </Border>
+            <DockPanel>
+                <Border DockPanel.Dock="Bottom"
+                        BorderThickness="0,1,0,0"
+                        BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+                        Visibility="{Binding EditMode, Converter={local:BoolToVisibilityConverter}}">
+                    <WrapPanel Margin="4" HorizontalAlignment="Center">
+                        <WrapPanel.Resources>
+                            <Style TargetType="Button"
+                                   BasedOn="{StaticResource {x:Type Button}}">
+                                
+                                <Setter Property="Margin" Value="4" />
+                                <Setter Property="Height" Value="32" />
+                                <Setter Property="MinWidth" Value="96" />
+                            </Style>
+
+                        </WrapPanel.Resources>
+
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="NewProfileButton"
+                                    Click="NewProfileButton_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Resources/Images/ic_add_circle_outline_black_18dp.png"
+                                           Stretch="None"
+                                           Margin="0,0,4,0" />
+                                    <TextBlock Text="New" />
+                                </StackPanel>
+                            </Button>
+
+                            <Button x:Name="RemoveProfileButton"
+                                    Click="RemoveProfileButton_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Resources/Images/ic_remove_circle_outline_black_18dp.png"
+                                           Stretch="None"
+                                           Margin="0,0,4,0" />
+                                    <TextBlock Text="Remove" />
+                                </StackPanel>
+                            </Button>
+
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="DuplicateProfileButton"
+                                    Click="DuplicateProfileButton_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Resources/Images/ic_content_copy_black_18dp.png"
+                                           Stretch="None"
+                                           Margin="0,0,4,0" />
+                                    <TextBlock Text="Duplicate" />
+                                </StackPanel>
+                            </Button>
+
+                            <Button x:Name="SaveButton"
+                                    Click="SaveButton_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Resources/Images/ic_save_black_18dp.png"
+                                           Stretch="None"
+                                           Margin="0,0,4,0" />
+                                    <TextBlock Text="Save" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </WrapPanel>
+                </Border>
+                <ListBox x:Name="ProfileList"
+                         BorderThickness="0"
+                         ItemsSource="{Binding Profiles}"
+                         SelectedItem="{Binding SelectedProfile, Mode=TwoWay}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="local:LaunchProfileViewModel">
+                            <Grid Height="48">
+                                <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Top"
+                                            Margin="5">
+
+                                    <Image Source="/Resources/Images/ic_mode_edit_black_18dp.png"
+                                           Stretch="None"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,4,0"
+                                           Visibility="{Binding IsModified, Converter={local:BoolToVisibilityConverter}}" />
+                                    <TextBlock Text="{Binding ProfileName}"
+                                               FontSize="14"
+                                               FontWeight="Bold" />
+                                </StackPanel>
+                                <TextBlock Text="{Binding ProfileDescription}"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Bottom"
+                                           Foreground="DarkGray"
+                                           Margin="5" />
+
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <EventSetter Event="MouseDoubleClick" Handler="ProfileListItem_MouseDoubleClick" />
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </DockPanel>
+
+
+        </DockPanel>
+    </Border>
+</UserControl>
