@@ -269,8 +269,10 @@
                                           IsEnabled="{Binding IsChecked, ElementName=MapSwitch}"
                                           Style="{StaticResource Content}">
                                     <ComboBox.ItemTemplate>
-                                        <DataTemplate DataType="local:MapInfo">
-                                            <TextBlock Text="{Binding Name}" />
+                                        <DataTemplate DataType="launcher:MapInfo">
+                                            <TextBlock Text="{Binding Name}" 
+                                                       Margin="{Binding Margin}"
+                                                       FontWeight="{Binding FontWeight}"/>
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>

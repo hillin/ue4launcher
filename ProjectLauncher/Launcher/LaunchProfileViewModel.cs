@@ -60,7 +60,7 @@ namespace ProjectLauncher.Launcher
         public bool IsListenServerOrClient
             =>
             this.Profile.OpenMode == OpenMode.Connect || (this.LaunchMode == LaunchMode.Server && this.IsListenServer);
-        
+
         public bool IsListenServer
         {
             get { return this.Profile.GetHasArgument(Arguments.ListenServer); }
@@ -900,7 +900,31 @@ namespace ProjectLauncher.Launcher
                 }
             }
 
-            this.Maps = maps.ToArray();
+            this.Maps = maps.OrderBy(m => m.Path).ToArray();
+
+            MapInfo rootMap = null;
+            foreach (var map in this.Maps)
+            {
+                if (rootMap == null)
+                {
+                    map.IsSublevel = false;
+                    rootMap = map;
+                }
+                else
+                {
+                    if (map.Path.Substring(0, map.Path.Length - ".umap".Length)
+                           .StartsWith(rootMap.Path.Substring(0, rootMap.Path.Length - ".umap".Length)))
+                    {
+                        map.IsSublevel = true;
+                    }
+                    else
+                    {
+                        map.IsSublevel = false;
+                        rootMap = map;
+                    }
+                }
+            }
+
             if (this.Profile.Map != null)
             {
                 _specifyMapName = true;
