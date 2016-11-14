@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Windows;
-using ProjectLauncher.Launcher;
+using UE4Launcher.Launcher;
 
-namespace ProjectLauncher
+namespace UE4Launcher
 {
     class ProjectInfo
     {

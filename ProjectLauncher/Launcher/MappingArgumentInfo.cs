@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ProjectLauncher.Launcher
+namespace UE4Launcher.Launcher
 {
     class MappingArgumentInfo<T> : ArgumentInfo
     {

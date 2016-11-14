@@ -1,7 +1,6 @@
 ﻿using System.Windows;
-using System.Windows.Media;
 
-namespace ProjectLauncher.Launcher
+namespace UE4Launcher.Launcher
 {
     class MapInfo
     {

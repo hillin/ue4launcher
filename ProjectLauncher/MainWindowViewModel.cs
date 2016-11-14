@@ -1,21 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text;
-using System.Timers;
 using System.Windows;
-using System.Windows.Media;
-using System.Xml.Serialization;
-using ProjectLauncher.Debugging;
-using ProjectLauncher.Launcher;
-using ProjectLauncher.Processes;
+using UE4Launcher.Launcher;
+using UE4Launcher.Processes;
 
-namespace ProjectLauncher
+namespace UE4Launcher
 {
     class MainWindowViewModel : NotificationObject
     {

@@ -1,11 +1,10 @@
-﻿<UserControl x:Class="ProjectLauncher.Launcher.ProjectLauncherPage"
+﻿<UserControl x:Class="UE4Launcher.Launcher.ProjectLauncherPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:ProjectLauncher"
-             xmlns:debugging="clr-namespace:ProjectLauncher.Debugging"
-             xmlns:launcher="clr-namespace:ProjectLauncher.Launcher"
+             xmlns:ue4Launcher="clr-namespace:UE4Launcher"
+             xmlns:launcher="clr-namespace:UE4Launcher.Launcher"
              mc:Ignorable="d"
              d:DesignHeight="715.333" d:DesignWidth="828">
     <Border BorderThickness="1"
@@ -25,7 +24,7 @@
                                 BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
                             <StackPanel>
                                 <Border Margin="8,12,8,0"
-                                        Visibility="{Binding DeveloperMode, Converter={local:BoolToVisibilityConverter}}">
+                                        Visibility="{Binding DeveloperMode, Converter={ue4Launcher:BoolToVisibilityConverter}}">
                                     <TextBox Text="{Binding SelectedProfile.ConsoleCommandLine, Mode=OneWay}"
                                              Background="Black"
                                              Foreground="LightGray"
@@ -49,7 +48,7 @@
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal"
                                                     VerticalAlignment="Center"
-                                                    Visibility="{Binding ShowServerPing, Converter={local:BoolToVisibilityConverter}}"
+                                                    Visibility="{Binding ShowServerPing, Converter={ue4Launcher:BoolToVisibilityConverter}}"
                                                     Margin="16,0,0,0">
                                             <TextBlock Text="{Binding ServerPingTitleText}" />
                                             <TextBlock Text="{Binding ServerPing}"
@@ -62,7 +61,7 @@
                                         
                                 <Border Margin="8,8,8,0"
                                         Padding="4"
-                                        Visibility="{Binding ShowProfileNotSavingTip, Converter={local:BoolToVisibilityConverter}}"
+                                        Visibility="{Binding ShowProfileNotSavingTip, Converter={ue4Launcher:BoolToVisibilityConverter}}"
                                         BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
                                         BorderThickness="1"
                                         Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
@@ -106,7 +105,7 @@
                                     </StackPanel>
                                     <Grid>
                                         <StackPanel Orientation="Horizontal"
-                                                    Visibility="{Binding DeveloperMode, Converter={local:BoolToVisibilityConverter}}">
+                                                    Visibility="{Binding DeveloperMode, Converter={ue4Launcher:BoolToVisibilityConverter}}">
 
                                             <CheckBox x:Name="AttachDebuggerCheck" VerticalAlignment="Center"
                                                       IsChecked="{Binding AttachDebugger, Mode=TwoWay}">
@@ -175,7 +174,7 @@
                 <Border DockPanel.Dock="Bottom"
                         BorderThickness="0,1,0,0"
                         BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
-                        Visibility="{Binding EditMode, Converter={local:BoolToVisibilityConverter}}">
+                        Visibility="{Binding EditMode, Converter={ue4Launcher:BoolToVisibilityConverter}}">
                     <WrapPanel Margin="4" HorizontalAlignment="Center">
                         <WrapPanel.Resources>
                             <Style TargetType="Button"
@@ -249,7 +248,7 @@
                                            Stretch="None"
                                            VerticalAlignment="Center"
                                            Margin="0,0,4,0"
-                                           Visibility="{Binding IsModified, Converter={local:BoolToVisibilityConverter}}" />
+                                           Visibility="{Binding IsModified, Converter={ue4Launcher:BoolToVisibilityConverter}}" />
                                     <TextBlock Text="{Binding ProfileName}"
                                                FontSize="14"
                                                FontWeight="Bold" />

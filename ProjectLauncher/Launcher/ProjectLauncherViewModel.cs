@@ -8,9 +8,9 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Media;
 using System.Xml.Serialization;
-using ProjectLauncher.Debugging;
+using UE4Launcher.Debugging;
 
-namespace ProjectLauncher.Launcher
+namespace UE4Launcher.Launcher
 {
     class ProjectLauncherViewModel : NotificationObject
     {

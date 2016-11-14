@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using LaunchModeEnum = ProjectLauncher.Launcher.LaunchMode;
-using WindowStateEnum = ProjectLauncher.Launcher.WindowState;
+using LaunchModeEnum = UE4Launcher.Launcher.LaunchMode;
+using WindowStateEnum = UE4Launcher.Launcher.WindowState;
 
-namespace ProjectLauncher.Launcher
+namespace UE4Launcher.Launcher
 {
     static class Arguments
     {

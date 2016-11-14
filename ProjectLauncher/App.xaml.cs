@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
-using ProjectLauncher.Launcher;
+using UE4Launcher.Launcher;
 
-namespace ProjectLauncher
+namespace UE4Launcher
 {
     public partial class App : Application
     {

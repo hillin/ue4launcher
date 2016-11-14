@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace ProjectLauncher
+namespace UE4Launcher
 {
     class BoolToVisibilityConverter : MarkupExtension, IValueConverter
     {

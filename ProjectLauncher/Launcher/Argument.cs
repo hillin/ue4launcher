@@ -2,7 +2,7 @@
 using System.Text;
 using System.Xml.Serialization;
 
-namespace ProjectLauncher.Launcher
+namespace UE4Launcher.Launcher
 {
     [Serializable]
     public class Argument : NotificationObject

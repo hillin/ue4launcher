@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace ProjectLauncher.Debugging
+﻿namespace UE4Launcher.Debugging
 {
     public enum VisualStudioVersions
     {

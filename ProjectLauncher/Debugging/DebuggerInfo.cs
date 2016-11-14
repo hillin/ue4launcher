@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+﻿using System.Diagnostics;
 
-namespace ProjectLauncher.Debugging
+namespace UE4Launcher.Debugging
 {
     class DebuggerInfo
     {
@@ -14,7 +10,7 @@ namespace ProjectLauncher.Debugging
         {
             Debuggers = new[]
             {
-                new DebuggerInfo(VisualStudioVersions.Automatic, "Automaticlly Choose Version", true),
+                new DebuggerInfo(VisualStudioVersions.Automatic, "Automatically Detect", true),
                 new DebuggerInfo(VisualStudioVersions.VS2015, "Visual Studio 2015"),
                 new DebuggerInfo(VisualStudioVersions.VS2013, "Visual Studio 2013"),
                 new DebuggerInfo(VisualStudioVersions.VS2012, "Visual Studio 2012"),

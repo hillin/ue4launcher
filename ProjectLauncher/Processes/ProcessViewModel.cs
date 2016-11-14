@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using ProjectLauncher.Debugging;
+﻿using System.Diagnostics;
+using UE4Launcher.Debugging;
 
-namespace ProjectLauncher.Processes
+namespace UE4Launcher.Processes
 {
     class ProcessViewModel
     {

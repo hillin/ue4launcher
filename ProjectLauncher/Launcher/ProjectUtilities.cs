@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 
-namespace ProjectLauncher.Launcher
+namespace UE4Launcher.Launcher
 {
     static class ProjectUtilities
     {

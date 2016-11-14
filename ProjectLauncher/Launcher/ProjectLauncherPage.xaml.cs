@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace ProjectLauncher.Launcher
+namespace UE4Launcher.Launcher
 {
     /// <summary>
     /// Interaction logic for ProjectLauncher.xaml

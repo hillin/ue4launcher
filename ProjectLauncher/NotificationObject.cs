@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 
-namespace ProjectLauncher
+namespace UE4Launcher
 {
     /// <summary>
     /// Base class for items that support property notification.

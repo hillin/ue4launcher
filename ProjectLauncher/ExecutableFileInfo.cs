@@ -2,10 +2,10 @@
 using System.IO;
 using System.Linq;
 using System.Windows;
-using ProjectLauncher.Launcher;
+using UE4Launcher.Launcher;
 using IOPath = System.IO.Path;
 
-namespace ProjectLauncher
+namespace UE4Launcher
 {
     class ExecutableFileInfo
     {

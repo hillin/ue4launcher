@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ProjectLauncher.Launcher
+namespace UE4Launcher.Launcher
 {
     [Serializable]
     class ProfileItem<T>

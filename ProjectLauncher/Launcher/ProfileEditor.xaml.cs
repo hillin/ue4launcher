@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -6,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Path = System.IO.Path;
 
-namespace ProjectLauncher.Launcher
+namespace UE4Launcher.Launcher
 {
 
     public partial class ProfileEditor : UserControl
@@ -45,10 +46,17 @@ namespace ProjectLauncher.Launcher
                                                      file));
             }
 
-            if (!File.Exists(file))
-                return;
+            if (Directory.Exists(file))
+                Process.Start(file);
+            else if (File.Exists(file))
+                Process.Start("explorer.exe", $"/select, \"{file}\"");
+            else
+            {
+                var directory = Directory.GetParent(file);
+                if (directory != null)
+                    Process.Start(directory.FullName);
+            }
 
-            Process.Start("explorer.exe", $"/select, \"{file}\"");
         }
 
         private void NavigateDefaultGameFileButton_Click(object sender, RoutedEventArgs e)
@@ -64,6 +72,36 @@ namespace ProjectLauncher.Launcher
         private void NavigateDefaultInputFileButton_Click(object sender, RoutedEventArgs e)
         {
             this.NavigateFile(this.ViewModel.DefaultInputFilename);
+        }
+
+        private void NavigateLogFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigateFile(Path.Combine(this.ViewModel.SelectedProject.Path, "Saved", "Logs", this.ViewModel.LogFilename));
+        }
+
+        private void NavigateExecutableFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigateFile(this.ViewModel.SelectedExecutableFile.Path);
+        }
+
+        private void NavigateProfileFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            switch ((ProfileStorage)this.ProfileStorageList.SelectedItem)
+            {
+                case ProfileStorage.Public:
+                    this.NavigateFile(Path.Combine(((App)Application.Current).RootPath, Constants.PublicProfileFilename));
+                    break;
+                case ProfileStorage.Personal:
+                    this.NavigateFile(Path.Combine(((App)Application.Current).RootPath, Constants.PersonalProfileFilename));
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void NavigateProjectFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigateFile(this.ViewModel.SelectedProject.Path);
         }
     }
 }

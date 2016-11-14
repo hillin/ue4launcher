@@ -6,7 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 
-namespace ProjectLauncher.Debugging
+namespace UE4Launcher.Debugging
 {
     static class DebuggerLauncher
     {

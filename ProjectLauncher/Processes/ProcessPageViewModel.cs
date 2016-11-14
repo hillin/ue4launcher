@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Timers;
 using System.Windows.Threading;
-using ProjectLauncher.Debugging;
+using UE4Launcher.Debugging;
 
-namespace ProjectLauncher.Processes
+namespace UE4Launcher.Processes
 {
     class ProcessPageViewModel : NotificationObject
     {

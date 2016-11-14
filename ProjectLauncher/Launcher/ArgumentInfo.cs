@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace ProjectLauncher.Launcher
+namespace UE4Launcher.Launcher
 {
     public class ArgumentInfo
     {

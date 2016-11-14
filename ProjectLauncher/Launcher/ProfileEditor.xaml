@@ -1,12 +1,12 @@
-﻿<UserControl x:Class="ProjectLauncher.Launcher.ProfileEditor"
+﻿<UserControl x:Class="UE4Launcher.Launcher.ProfileEditor"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:ProjectLauncher"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-             xmlns:launcher="clr-namespace:ProjectLauncher.Launcher"
+             xmlns:ue4Launcher="clr-namespace:UE4Launcher"
+             xmlns:launcher="clr-namespace:UE4Launcher.Launcher"
              mc:Ignorable="d"
              d:DesignHeight="1200" d:DesignWidth="400">
     <UserControl.Resources>
@@ -52,7 +52,7 @@
         <StackPanel>
 
             <StackPanel
-                Visibility="{Binding DeveloperMode, Converter={local:BoolToVisibilityConverter TrueValue=Collapsed, FalseValue=Visible}}">
+                Visibility="{Binding DeveloperMode, Converter={ue4Launcher:BoolToVisibilityConverter TrueValue=Collapsed, FalseValue=Visible}}">
                 <GroupBox Header="Preferences">
                     <StackPanel>
                         <StackPanel.Resources>
@@ -138,7 +138,7 @@
                 </GroupBox>
             </StackPanel>
 
-            <StackPanel Visibility="{Binding DeveloperMode, Converter={local:BoolToVisibilityConverter}}">
+            <StackPanel Visibility="{Binding DeveloperMode, Converter={ue4Launcher:BoolToVisibilityConverter}}">
                 <GroupBox Header="Profile">
                     <StackPanel>
                         <StackPanel.Resources>
@@ -178,17 +178,27 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="{StaticResource CaptionWidth}" />
                                 <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition Width="24" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Store in"
                                        Style="{StaticResource Caption}" />
-                            <ComboBox SelectedItem="{Binding ProfileStorage, Mode=TwoWay}"
+                            <ComboBox x:Name="ProfileStorageList"
+                                      Grid.Column="3"
+                                      SelectedItem="{Binding ProfileStorage, Mode=TwoWay}"
                                       Style="{StaticResource Content}">
                                 <ComboBox.Items>
                                     <launcher:ProfileStorage>Public</launcher:ProfileStorage>
                                     <launcher:ProfileStorage>Personal</launcher:ProfileStorage>
                                 </ComboBox.Items>
                             </ComboBox>
+
+
+                            <Button Grid.Column="2"
+                                    x:Name="NavigateProfileFileButton"
+                                    Click="NavigateProfileFileButton_Click">
+                                <Image Source="/Resources/Images/ic_launch_black_18dp.png" Stretch="None" />
+                            </Button>
                         </Grid>
                     </StackPanel>
                 </GroupBox>
@@ -205,41 +215,58 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="{StaticResource CaptionWidth}" />
                                 <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition Width="24" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Executable File"
                                        Style="{StaticResource Caption}" />
                             <ComboBox x:Name="ExecutableFileList"
+                                      Grid.Column="3"
                                       SelectedItem="{Binding SelectedExecutableFile, Mode=TwoWay}"
                                       Style="{StaticResource Content}"
                                       ItemsSource="{Binding ExecutableFiles}">
                                 <ComboBox.ItemTemplate>
-                                    <DataTemplate DataType="local:ExecutableFileInfo">
+                                    <DataTemplate DataType="ue4Launcher:ExecutableFileInfo">
                                         <TextBlock Text="{Binding DisplayName}" />
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
+
+
+                            <Button Grid.Column="2"
+                                    x:Name="NavigateExecutableFileButton"
+                                    Click="NavigateExecutableFileButton_Click">
+                                <Image Source="/Resources/Images/ic_launch_black_18dp.png" Stretch="None" />
+                            </Button>
                         </Grid>
 
                         <Grid Style="{StaticResource RowGrid}"
-                              Visibility="{Binding ShowProjectSelector, Converter={local:BoolToVisibilityConverter}}">
+                              Visibility="{Binding ShowProjectSelector, Converter={ue4Launcher:BoolToVisibilityConverter}}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="{StaticResource CaptionWidth}" />
                                 <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition Width="24" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Project"
                                        Style="{StaticResource Caption}" />
-                            <ComboBox x:Name="ProjectList"
+                            <ComboBox Grid.Column="3"
+                                      x:Name="ProjectList"
                                       SelectedItem="{Binding SelectedProject, Mode=TwoWay}"
                                       Style="{StaticResource Content}"
                                       ItemsSource="{Binding Projects}">
                                 <ComboBox.ItemTemplate>
-                                    <DataTemplate DataType="local:ProjectInfo">
+                                    <DataTemplate DataType="ue4Launcher:ProjectInfo">
                                         <TextBlock Text="{Binding Name}" />
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
+
+                            <Button Grid.Column="2"
+                                    x:Name="NavigateProjectFileButton"
+                                    Click="NavigateProjectFileButton_Click">
+                                <Image Source="/Resources/Images/ic_launch_black_18dp.png" Stretch="None" />
+                            </Button>
                         </Grid>
                         <Grid>
                             <Separator />
@@ -270,9 +297,9 @@
                                           Style="{StaticResource Content}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate DataType="launcher:MapInfo">
-                                            <TextBlock Text="{Binding Name}" 
+                                            <TextBlock Text="{Binding Name}"
                                                        Margin="{Binding Margin}"
-                                                       FontWeight="{Binding FontWeight}"/>
+                                                       FontWeight="{Binding FontWeight}" />
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
@@ -617,6 +644,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="{StaticResource CaptionWidth}" />
                                     <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                    <ColumnDefinition Width="24" />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <CheckBox x:Name="LogFileNameCheck"
@@ -624,10 +652,18 @@
                                           Style="{StaticResource SwitchToggle}" />
                                 <TextBlock Text="Log Filename"
                                            Style="{StaticResource Caption}" />
-                                <xctk:WatermarkTextBox Style="{StaticResource Content}"
+                                <xctk:WatermarkTextBox Grid.Column="3"
+                                                       Style="{StaticResource Content}"
                                                        Text="{Binding LogFilename, Mode=TwoWay}"
                                                        Watermark="Log Filename"
                                                        IsEnabled="{Binding IsChecked, ElementName=LogFileNameCheck}" />
+
+                                <Button Grid.Column="2"
+                                        x:Name="NavigateLogFileButton"
+                                        Click="NavigateLogFileButton_Click"
+                                        IsEnabled="{Binding IsChecked, ElementName=LogFileNameCheck}">
+                                    <Image Source="/Resources/Images/ic_launch_black_18dp.png" Stretch="None" />
+                                </Button>
                             </Grid>
                         </StackPanel>
 
@@ -702,7 +738,8 @@
 
                             <Button Grid.Column="2"
                                     x:Name="NavigateDefaultEngineFileButton"
-                                    Click="NavigateDefaultEngineFileButton_Click">
+                                    Click="NavigateDefaultEngineFileButton_Click"
+                                    IsEnabled="{Binding IsChecked, ElementName=OverrideDefaultEngineCheck}">
                                 <Image Source="/Resources/Images/ic_launch_black_18dp.png" Stretch="None" />
                             </Button>
                         </Grid>
@@ -726,7 +763,8 @@
 
                             <Button Grid.Column="2"
                                     x:Name="NavigateDefaultGameFileButton"
-                                    Click="NavigateDefaultGameFileButton_Click">
+                                    Click="NavigateDefaultGameFileButton_Click"
+                                    IsEnabled="{Binding IsChecked, ElementName=OverrideDefaultGameCheck}">
                                 <Image Source="/Resources/Images/ic_launch_black_18dp.png" Stretch="None" />
                             </Button>
                         </Grid>
@@ -750,7 +788,8 @@
                                       IsEnabled="{Binding IsChecked, ElementName=OverrideDefaultEditorCheck}" />
                             <Button Grid.Column="2"
                                     x:Name="NavigateDefaultEditorFileButton"
-                                    Click="NavigateDefaultEditorFileButton_Click">
+                                    Click="NavigateDefaultEditorFileButton_Click"
+                                    IsEnabled="{Binding IsChecked, ElementName=OverrideDefaultEditorCheck}">
                                 <Image Source="/Resources/Images/ic_launch_black_18dp.png" Stretch="None" />
                             </Button>
                         </Grid>
@@ -775,7 +814,8 @@
                                       IsEnabled="{Binding IsChecked, ElementName=OverrideDefaultInputCheck}" />
                             <Button Grid.Column="2"
                                     x:Name="NavigateDefaultInputFileButton"
-                                    Click="NavigateDefaultInputFileButton_Click">
+                                    Click="NavigateDefaultInputFileButton_Click"
+                                    IsEnabled="{Binding IsChecked, ElementName=OverrideDefaultInputCheck}">
                                 <Image Source="/Resources/Images/ic_launch_black_18dp.png" Stretch="None" />
                             </Button>
                         </Grid>
@@ -834,66 +874,4 @@
         </StackPanel>
     </Grid>
 </UserControl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

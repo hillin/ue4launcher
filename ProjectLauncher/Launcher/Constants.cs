@@ -1,4 +1,4 @@
-﻿namespace ProjectLauncher.Launcher
+﻿namespace UE4Launcher.Launcher
 {
     static class Constants
     {

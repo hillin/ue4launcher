@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace ProjectLauncher.Processes
+namespace UE4Launcher.Processes
 {
     /// <summary>
     /// Interaction logic for ProcessPage.xaml

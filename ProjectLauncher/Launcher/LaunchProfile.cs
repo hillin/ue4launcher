@@ -6,7 +6,7 @@ using System.Text;
 using System.Windows;
 using System.Xml.Serialization;
 
-namespace ProjectLauncher.Launcher
+namespace UE4Launcher.Launcher
 {
     [Serializable]
     public class LaunchProfile

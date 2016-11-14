@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows;
-using ProjectLauncher.Debugging;
+using UE4Launcher.Debugging;
 using Process = System.Diagnostics.Process;
 
-namespace ProjectLauncher.Launcher
+namespace UE4Launcher.Launcher
 {
     internal class LaunchProfileViewModel : NotificationObject
     {

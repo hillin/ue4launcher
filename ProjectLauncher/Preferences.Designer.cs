@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ProjectLauncher {
+namespace UE4Launcher {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

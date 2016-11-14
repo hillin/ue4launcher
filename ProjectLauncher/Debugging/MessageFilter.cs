@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 
-namespace ProjectLauncher.Debugging
+namespace UE4Launcher.Debugging
 {
 
     public class MessageFilter : IOleMessageFilter
@@ -57,14 +54,14 @@ namespace ProjectLauncher.Debugging
         {
             IOleMessageFilter newFilter = new MessageFilter();
             IOleMessageFilter oldFilter = null;
-            CoRegisterMessageFilter(newFilter, out oldFilter);
+            MessageFilter.CoRegisterMessageFilter(newFilter, out oldFilter);
         }
 
         // Done with the filter, close it.
         public static void Revoke()
         {
             IOleMessageFilter oldFilter = null;
-            CoRegisterMessageFilter(null, out oldFilter);
+            MessageFilter.CoRegisterMessageFilter(null, out oldFilter);
         }
 
         // Implement the IOleMessageFilter interface.

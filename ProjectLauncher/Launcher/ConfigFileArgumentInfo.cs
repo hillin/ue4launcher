@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Windows;
 
-namespace ProjectLauncher.Launcher
+namespace UE4Launcher.Launcher
 {
     class ConfigFileArgumentInfo : ArgumentInfo
     {
