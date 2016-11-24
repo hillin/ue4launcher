@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=System"
+             xmlns:processes="clr-namespace:UE4Launcher.Processes"
              mc:Ignorable="d"
              d:DesignHeight="474" d:DesignWidth="628">
     <Border BorderThickness="1"
@@ -132,6 +133,7 @@
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <EventSetter Event="MouseDoubleClick" Handler="ProcessListItem_MouseDoubleClick" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                     </Style>
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>

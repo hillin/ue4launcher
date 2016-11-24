@@ -15,7 +15,7 @@ namespace UE4Launcher
         {
 
             var executables = new List<ExecutableFileInfo>();
-            var rootPath = ((App)Application.Current).RootPath;
+            var rootPath = App.CurrentRootPath;
             var binariesFolder = IOPath.Combine(rootPath, "Engine", "Binaries");
 
             executables.AddRange(

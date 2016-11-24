@@ -36,7 +36,7 @@ namespace UE4Launcher.Launcher
 
         public string GetExecutableFile()
         {
-            return Path.Combine(((App)Application.Current).RootPath, this.ExecutableFile);
+            return Path.Combine(App.CurrentRootPath, this.ExecutableFile);
         }
 
 

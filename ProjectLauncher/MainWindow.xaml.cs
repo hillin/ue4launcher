@@ -12,6 +12,8 @@ namespace UE4Launcher
 
         public MainWindow()
         {
+            App.CurrentMainWindow = this;
+
             this.InitializeComponent();
             this.DataContext = _viewModel = new MainWindowViewModel();
 
@@ -40,6 +42,9 @@ namespace UE4Launcher
 
         public void ReportStatus(string status, double? timeout)
         {
+            if (_viewModel == null)
+                return;
+
             _viewModel.StatusText = status;
             _statusTimeoutTimer.Stop();
             if (timeout != null)

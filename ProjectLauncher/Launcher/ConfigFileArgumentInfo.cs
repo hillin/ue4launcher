@@ -20,7 +20,7 @@ namespace UE4Launcher.Launcher
                 return this.HandleQuoteParamter(parameter);
 
             return this.HandleQuoteParamter(
-                Path.GetFullPath(Path.Combine(((App)Application.Current).RootPath,
+                Path.GetFullPath(Path.Combine(App.CurrentRootPath,
                                               launchProfile.ProjectName,
                                               "Config",
                                               parameter)));

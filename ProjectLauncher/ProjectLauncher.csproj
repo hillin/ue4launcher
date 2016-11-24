@@ -62,7 +62,7 @@
     <Compile Include="Launcher\ArgumentType.cs" />
     <Compile Include="BoolToVisibilityConverter.cs" />
     <Compile Include="Launcher\ConfigFileArgumentInfo.cs" />
-    <Compile Include="Launcher\Constants.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Debugging\DebuggerInfo.cs" />
     <Compile Include="Debugging\DebuggerLauncher.cs" />
     <Compile Include="Debugging\IOleMessageFilter.cs" />
@@ -76,6 +76,17 @@
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="NotificationObject.cs" />
     <Compile Include="Launcher\OpenMode.cs" />
+    <Compile Include="PageViewModelBase.cs" />
+    <Compile Include="Places\FavoriteLocationViewModel.cs" />
+    <Compile Include="Places\FileSearchResultViewModel.cs" />
+    <Compile Include="Places\Location.cs" />
+    <Compile Include="Places\LocationViewModelBase.cs" />
+    <Compile Include="Places\PlacesPage.xaml.cs">
+      <DependentUpon>PlacesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Places\PlacesViewModel.cs" />
+    <Compile Include="Places\PlacesViewModel.Search.cs" />
+    <Compile Include="Places\SearchResultViewModelBase.cs" />
     <Compile Include="Preferences.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -101,6 +112,7 @@
     <Compile Include="Launcher\Argument.cs" />
     <Compile Include="Launcher\ArgumentInfo.cs" />
     <Compile Include="Launcher\WindowState.cs" />
+    <Compile Include="Utilities.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -115,6 +127,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Places\PlacesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Processes\ProcessPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -197,6 +213,7 @@
   <ItemGroup>
     <Resource Include="Resources\Images\ic_clear_black_18dp.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -40,23 +40,13 @@ namespace UE4Launcher.Launcher
         {
             if (!Path.IsPathRooted(file))
             {
-                file = Path.GetFullPath(Path.Combine(((App)Application.Current).RootPath,
+                file = Path.GetFullPath(Path.Combine(App.CurrentRootPath,
                                                      this.ViewModel.Profile.ProjectName,
                                                      "Config",
                                                      file));
             }
 
-            if (Directory.Exists(file))
-                Process.Start(file);
-            else if (File.Exists(file))
-                Process.Start("explorer.exe", $"/select, \"{file}\"");
-            else
-            {
-                var directory = Directory.GetParent(file);
-                if (directory != null)
-                    Process.Start(directory.FullName);
-            }
-
+            Utilities.NavigateFile(file);
         }
 
         private void NavigateDefaultGameFileButton_Click(object sender, RoutedEventArgs e)
@@ -89,10 +79,10 @@ namespace UE4Launcher.Launcher
             switch ((ProfileStorage)this.ProfileStorageList.SelectedItem)
             {
                 case ProfileStorage.Public:
-                    this.NavigateFile(Path.Combine(((App)Application.Current).RootPath, Constants.PublicProfileFilename));
+                    this.NavigateFile(Path.Combine(App.CurrentRootPath, Constants.PublicProfileFilename));
                     break;
                 case ProfileStorage.Personal:
-                    this.NavigateFile(Path.Combine(((App)Application.Current).RootPath, Constants.PersonalProfileFilename));
+                    this.NavigateFile(Path.Combine(App.CurrentRootPath, Constants.PersonalProfileFilename));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

@@ -7,6 +7,7 @@
         xmlns:launcher="clr-namespace:UE4Launcher.Launcher"
         xmlns:ue4Launcher="clr-namespace:UE4Launcher"
         xmlns:processes="clr-namespace:UE4Launcher.Processes"
+        xmlns:places="clr-namespace:UE4Launcher.Places"
         mc:Ignorable="d"
         Title="{Binding Title}" Height="600" Width="800"
         MinWidth="800"
@@ -38,18 +39,7 @@
                 </TabItem.Header>
                 <launcher:ProjectLauncherPage DataContext="{Binding ProjectLauncher}" />
             </TabItem>
-            <TabItem IsEnabled="{Binding ExpertMode}"
-                     Visibility="Collapsed">
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal"
-                                Margin="4">
-                        <Image Source="/Resources/Images/ic_folder_open_black_18dp.png" 
-                                                                   Stretch="None"
-                                                                   Margin="0,0,4,0"/>
-                        <TextBlock Text="Places" />
-                    </StackPanel>
-                </TabItem.Header>
-            </TabItem>
+            
             <TabItem Visibility="{Binding DeveloperMode, Converter={ue4Launcher:BoolToVisibilityConverter}}">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal"
@@ -61,6 +51,19 @@
                     </StackPanel>
                 </TabItem.Header>
                 <processes:ProcessPage DataContext="{Binding Processes}" />
+            </TabItem>
+
+            <TabItem IsEnabled="{Binding DeveloperMode}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal"
+                                Margin="4">
+                        <Image Source="/Resources/Images/ic_folder_open_black_18dp.png" 
+                                                                   Stretch="None"
+                                                                   Margin="0,0,4,0"/>
+                        <TextBlock Text="Places" />
+                    </StackPanel>
+                </TabItem.Header>
+                <places:PlacesPage DataContext="{Binding Places}" />
             </TabItem>
         </TabControl>
     </DockPanel>

@@ -12,12 +12,8 @@ using UE4Launcher.Debugging;
 
 namespace UE4Launcher.Launcher
 {
-    class ProjectLauncherViewModel : NotificationObject
+    class ProjectLauncherViewModel : PageViewModelBase
     {
-        public bool DeveloperMode => _owner.DeveloperMode;
-        public bool EditMode => _owner.EditMode;
-
-        private readonly MainWindowViewModel _owner;
         private string _publicProfileStorage;
         private string _personalProfileStorage;
 
@@ -73,8 +69,8 @@ namespace UE4Launcher.Launcher
         }
 
         public ProjectLauncherViewModel(MainWindowViewModel owner)
+            : base(owner)
         {
-            _owner = owner;
             _ping = this.InitializePing(out _pingTimer);
             this.Profiles = new ObservableCollection<LaunchProfileViewModel>();
             this.LoadProfiles();
@@ -245,23 +241,8 @@ namespace UE4Launcher.Launcher
 
         public void SaveProfiles()
         {
-            using (var file = File.Create(_publicProfileStorage))
-            {
-                new XmlSerializer(typeof(LaunchProfile[]))
-                    .Serialize(file,
-                               this.Profiles.Where(p => p.ProfileStorage == ProfileStorage.Public)
-                                   .Select(p => p.Profile)
-                                   .ToArray());
-            }
-
-            using (var file = File.Create(_personalProfileStorage))
-            {
-                new XmlSerializer(typeof(LaunchProfile[]))
-                    .Serialize(file,
-                               this.Profiles.Where(p => p.ProfileStorage == ProfileStorage.Personal)
-                                   .Select(p => p.Profile)
-                                   .ToArray());
-            }
+            this.SaveProfiles(ProfileStorage.Personal, _personalProfileStorage);
+            this.SaveProfiles(ProfileStorage.Public, _publicProfileStorage);
 
             foreach (var profile in this.Profiles)
                 profile.IsModified = false;
@@ -269,10 +250,29 @@ namespace UE4Launcher.Launcher
             App.ReportStatus("All profiles saved.");
         }
 
+        private void SaveProfiles(ProfileStorage storage, string filename)
+        {
+            var profiles = this.Profiles.Where(p => p.ProfileStorage == storage)
+                               .Select(p => p.Profile)
+                               .ToArray();
+            if (profiles.Length > 0)
+            {
+                using (var file = File.Create(filename))
+                {
+                    new XmlSerializer(typeof(LaunchProfile[]))
+                        .Serialize(file, profiles);
+                }
+            }
+            else if (File.Exists(filename))
+            {
+                File.Delete(filename);
+            }
+        }
+
         private void LoadProfiles()
         {
-            _publicProfileStorage = Path.Combine(((App)Application.Current).RootPath, Constants.PublicProfileFilename);
-            _personalProfileStorage = Path.Combine(((App)Application.Current).RootPath, Constants.PersonalProfileFilename);
+            _publicProfileStorage = Path.Combine(App.CurrentRootPath, Constants.PublicProfileFilename);
+            _personalProfileStorage = Path.Combine(App.CurrentRootPath, Constants.PersonalProfileFilename);
             if (File.Exists(_publicProfileStorage))
                 this.LoadProfile(_publicProfileStorage);
 
@@ -300,7 +300,8 @@ namespace UE4Launcher.Launcher
         {
             this.Profiles.Remove(_selectedProfile);
             this.SelectedProfile = this.Profiles.FirstOrDefault();
-            App.ReportStatus("Profile removed.");
+            this.SaveProfiles();
+            App.ReportStatus("Profile removed, profiles saved.");
         }
 
         public void AddNewProfile()

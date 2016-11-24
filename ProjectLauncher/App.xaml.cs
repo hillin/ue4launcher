@@ -3,15 +3,22 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Navigation;
+using System.Windows.Threading;
 using UE4Launcher.Launcher;
 
 namespace UE4Launcher
 {
     public partial class App : Application
     {
+        public static string CurrentRootPath => ((App)Application.Current).RootPath;
+        public static MainWindow CurrentMainWindow { get; set; }
+
         public string RootPath { get; set; }
         public bool DeveloperMode { get; set; }
         public bool EditMode { get; set; }
+
+
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -51,9 +58,12 @@ namespace UE4Launcher
             this.RootPath = location;
         }
 
+
         public static void ReportStatus(string status, double? timeOut = 10000)
         {
-            ((MainWindow)((App)Application.Current).MainWindow).ReportStatus(status, timeOut);
+            App.CurrentMainWindow.Dispatcher.BeginInvoke(
+                   new Action(() => CurrentMainWindow.ReportStatus(status, timeOut)),
+                   DispatcherPriority.Background);
         }
     }
 }

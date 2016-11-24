@@ -237,7 +237,7 @@
                          ItemsSource="{Binding Profiles}"
                          SelectedItem="{Binding SelectedProfile, Mode=TwoWay}">
                     <ListBox.ItemTemplate>
-                        <DataTemplate DataType="local:LaunchProfileViewModel">
+                        <DataTemplate DataType="launcher:LaunchProfileViewModel">
                             <Grid Height="48">
                                 <StackPanel Orientation="Horizontal"
                                             HorizontalAlignment="Left"

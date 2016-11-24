@@ -8,9 +8,8 @@ using UE4Launcher.Debugging;
 
 namespace UE4Launcher.Processes
 {
-    class ProcessPageViewModel : NotificationObject
+    class ProcessPageViewModel : PageViewModelBase
     {
-        private readonly MainWindowViewModel _owner;
 
         private readonly Dictionary<int, ProcessViewModel> _processIdToViewModelMap;
 
@@ -53,8 +52,8 @@ namespace UE4Launcher.Processes
         }
 
         public ProcessPageViewModel(MainWindowViewModel owner)
+            : base(owner)
         {
-            _owner = owner;
             _processIdToViewModelMap = new Dictionary<int, ProcessViewModel>();
             this.Processes = new ObservableCollection<ProcessViewModel>();
 

@@ -2,6 +2,7 @@
 using System.Text;
 using System.Windows;
 using UE4Launcher.Launcher;
+using UE4Launcher.Places;
 using UE4Launcher.Processes;
 
 namespace UE4Launcher
@@ -44,11 +45,13 @@ namespace UE4Launcher
 
         public ProjectLauncherViewModel ProjectLauncher { get; }
         public ProcessPageViewModel Processes { get; }
+        public PlacesViewModel Places { get; }
 
         public MainWindowViewModel()
         {
             this.ProjectLauncher = new ProjectLauncherViewModel(this);
             this.Processes = new ProcessPageViewModel(this);
+            this.Places = new PlacesViewModel(this);
         }
 
         public bool ConfirmSaveBeforeExit()

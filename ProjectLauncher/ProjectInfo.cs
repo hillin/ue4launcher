@@ -12,7 +12,7 @@ namespace UE4Launcher
         static ProjectInfo()
         {
             Projects =
-               Directory.GetDirectories(((App)Application.Current).RootPath)
+               Directory.GetDirectories(App.CurrentRootPath)
                         .Where(ProjectUtilities.IsValidProjectPath)
                         .Select(folder => new ProjectInfo(folder))
                         .ToArray();
