@@ -42,7 +42,7 @@ namespace UE4Launcher.Places
         {
             this.Location = location;
             this.IsPublic = isPublic;
-            this.Path = IOPath.Combine(rootPath, location.RelativePath);
+            this.Path = IOPath.Combine(rootPath, location.RelativePath).Replace(IOPath.AltDirectorySeparatorChar, IOPath.DirectorySeparatorChar);
         }
 
         public void TogglePublicity()

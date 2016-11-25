@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows;
 using System.Windows.Threading;
 using System.Xml.Serialization;
 using Timer = System.Timers.Timer;
@@ -15,6 +16,7 @@ namespace UE4Launcher.Places
     partial class PlacesViewModel
     {
         private string _searchText;
+
         public string SearchText
         {
             get { return _searchText; }
@@ -34,11 +36,11 @@ namespace UE4Launcher.Places
 
                 this.RaisePropertyChanged(nameof(this.SearchText));
                 this.RaisePropertyChanged(nameof(this.IsSearching));
-                this.RaisePropertyChanged(nameof(this.IsSearchResultPartiallyShown));   
+                this.RaisePropertyChanged(nameof(this.IsSearchResultPartiallyShown));
             }
         }
 
-        
+
         public bool IsSearching => !string.IsNullOrWhiteSpace(this.SearchText);
 
         private readonly Timer _searchInitiationDelayTimer;
@@ -49,6 +51,7 @@ namespace UE4Launcher.Places
 
         private List<string> _fileIndices;
         private bool _isFileIndicesReady;
+        private bool _searchResultInvalidated;
 
         public bool IsFileIndicesReady
         {
@@ -61,7 +64,8 @@ namespace UE4Launcher.Places
         }
 
 
-        public bool IsSearchResultPartiallyShown => this.IsSearching && !this.IsAllSearchResultShown && this.SearchResultCount > 20;
+        public bool IsSearchResultPartiallyShown
+            => this.IsSearching && !this.IsAllSearchResultShown && this.SearchResultCount > 20;
 
         private int _searchResultCount;
 
@@ -76,7 +80,24 @@ namespace UE4Launcher.Places
             }
         }
 
+
+        private double _searchProgress;
+
+        public double SearchProgress
+        {
+            get { return _searchProgress; }
+            private set
+            {
+                _searchProgress = value;
+                this.RaisePropertyChanged(nameof(this.SearchProgress));
+                this.RaisePropertyChanged(nameof(this.ShouldShowSearchProgress));
+            }
+        }
+
+        public bool ShouldShowSearchProgress => this.IsSearching && this.SearchProgress < 1;
+
         private bool _isAllSearchResultShown;
+
         public bool IsAllSearchResultShown
         {
             get { return _isAllSearchResultShown; }
@@ -152,14 +173,42 @@ namespace UE4Launcher.Places
             if (!this.IsSearching)
                 return;
 
-            this.Locations.Clear();
+            if (!_searchResultInvalidated)
+                return;
+
             _searchResultLock.EnterReadLock();
 
-            foreach (var element in this.IsAllSearchResultShown ? _searchResults : _searchResults.Take(20))
-                this.Locations.Add(element);
+            this.UpdateSearchResultDisplay(this.IsAllSearchResultShown
+                                               ? _searchResults
+                                               : _searchResults.Take(20));
+
 
             this.SearchResultCount = _searchResults.Count;
             _searchResultLock.ExitReadLock();
+
+            _searchResultInvalidated = false;
+        }
+
+        private void UpdateSearchResultDisplay(IEnumerable<SearchResultViewModelBase> items)
+        {
+            var itemsArray = items.ToArray();
+
+            this.Locations.Clear();
+            for (var i = 0; i < itemsArray.Length; ++i)
+            {
+                var item = itemsArray[i];
+                var currentIndex = this.Locations.IndexOf(item);
+
+                if (currentIndex < 0)
+                    this.Locations.Insert(i, item);
+                else if (currentIndex >= 0 && currentIndex != i)
+                    this.Locations.Move(currentIndex, i);
+            }
+
+            for (var i = this.Locations.Count - 1; i >= itemsArray.Length; --i)
+                this.Locations.RemoveAt(i);
+
+            this.SelectedLocation = this.Locations.FirstOrDefault();
         }
 
         private void SearchInitiationDelayTimerElapsed(object sender, ElapsedEventArgs e)
@@ -187,31 +236,92 @@ namespace UE4Launcher.Places
             _searchResults.Clear();
             _searchResultLock.ExitWriteLock();
 
+
             var fileCount = 0;
             var keyword = this.SearchText.Trim();
-            foreach (var file in _fileIndices)
-            {
-                if (cancellation.IsCancellationRequested)
-                    return;
+            this.SearchProgress = 0;
+            Parallel.ForEach(_fileIndices, (file, loop) =>
+                             {
+                                 if (cancellation.IsCancellationRequested)
+                                 {
+                                     loop.Break();
+                                     return;
+                                 }
 
-                ++fileCount;
+                                 Interlocked.Increment(ref fileCount);
 
-                if (fileCount % 100 == 0)
-                    App.ReportStatus($"{fileCount} files and folders searched ({(double)fileCount / _fileIndices.Count:P})", 100);
+                                 if (fileCount % 1000 == 0)
+                                 {
+                                     this.SearchProgress = (double)fileCount / _fileIndices.Count;
+                                     App.ReportStatus($"Searching ({this.SearchProgress:P0})", 100);
+                                 }
 
-                var relevancy = FileSearchResultViewModel.CalculateRelevancyRating(file, keyword);
-                if (relevancy > 0)
-                {
-                    _searchResultLock.EnterWriteLock();
-                    _searchResults.Add(new FileSearchResultViewModel(file, relevancy));
-                    _searchResultLock.ExitWriteLock();
-                }
-            }
+                                 var relevancy = FileSearchResultViewModel.CalculateRelevancyRating(file, keyword);
+                                 if (relevancy > 0)
+                                 {
+                                     _searchResultLock.EnterWriteLock();
+                                     _searchResults.Add(new FileSearchResultViewModel(file, relevancy));
+                                     _searchResultLock.ExitWriteLock();
+                                     _searchResultInvalidated = true;
+                                 }
+                             });
+
+            this.SearchResultCount = _searchResults.Count;
+            this.SearchProgress = 1;
+            App.ReportStatus($"Search complete, {this.SearchResultCount} result(s) found");
         }
 
         public void ShowAllSearchResult()
         {
+            if (this.SearchResultCount > 10000)
+            {
+                if (
+                    MessageBox.Show(
+                        $"You are about to show {this.SearchResultCount} search results, which will be very slow. Would you like to continue?",
+                        "Show All", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                    return;
+            }
             this.IsAllSearchResultShown = true;
+        }
+
+        public void SelectPreviousLocation()
+        {
+            this.MoveSelectedLocation(-1);
+        }
+
+        private void MoveSelectedLocation(int i)
+        {
+            if (this.SelectedLocation == null)
+            {
+                this.SelectedLocation = i > 0 ? this.Locations.FirstOrDefault() : this.Locations.LastOrDefault();
+                return;
+            }
+            var index = this.Locations.IndexOf(this.SelectedLocation) + i;
+            index = (index + this.Locations.Count) % this.Locations.Count;
+            this.SelectedLocation = this.Locations[index];
+        }
+
+        public void SelectNextLocation()
+        {
+            this.MoveSelectedLocation(1);
+        }
+
+        public void NavigateToSelectedLocation(bool openDirectly)
+        {
+            this.SelectedLocation?.Navigate(openDirectly);
+        }
+
+        public void AddToFavorite(FileSearchResultViewModel searchResult)
+        {
+            var location = new Location
+            {
+                DisplayName = searchResult.DisplayName,
+                RelativePath = searchResult.Path.Substring(App.CurrentRootPath.Length + 1)
+            };
+
+            _favorites.Add(new FavoriteLocationViewModel(location, App.CurrentRootPath, false));
+
+            this.SaveFavorites();
         }
     }
 }

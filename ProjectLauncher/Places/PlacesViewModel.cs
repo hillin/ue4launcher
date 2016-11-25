@@ -30,7 +30,17 @@ namespace UE4Launcher.Places
             get { return _selectedLocation; }
             set
             {
+                if (_selectedLocation == value)
+                    return;
+
+                if (_selectedLocation != null)
+                    _selectedLocation.IsSelected = false;
+
                 _selectedLocation = value;
+
+                if (_selectedLocation != null)
+                    _selectedLocation.IsSelected = true;
+
                 this.RaisePropertyChanged(nameof(this.SelectedLocation));
             }
         }
@@ -88,6 +98,7 @@ namespace UE4Launcher.Places
             var favorite = this.SelectedLocation as FavoriteLocationViewModel;
             if (favorite != null)
             {
+                _favorites.Remove(favorite);
                 this.Locations.Remove(favorite);
                 this.SaveFavorites();
             }

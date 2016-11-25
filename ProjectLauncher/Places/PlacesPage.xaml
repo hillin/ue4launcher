@@ -19,7 +19,17 @@
                                            IsEnabled="{Binding IsFileIndicesReady}"
                                            Watermark="Search..."
                                            Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                           PreviewKeyDown="SearchTextBox_PreviewKeyDown"
                                            KeyUp="SearchTextBox_KeyUp"/>
+
+                    <TextBlock HorizontalAlignment="Right"
+                               Foreground="DarkGray"
+                               VerticalAlignment="Center"
+                               Visibility="{Binding IsSearching, Converter={ue4Launcher:BoolToVisibilityConverter}}"
+                               Margin="4,2"
+                               FontStyle="Italic">
+                        Enter to reveal in Explorer, Ctrl-Enter to open directly
+                    </TextBlock>
                 </Grid>
             </Border>
 
@@ -79,58 +89,104 @@
                 </StackPanel>
             </Grid>
 
-            <ListBox ItemsSource="{Binding Locations}"
-                     SelectedItem="{Binding SelectedLocation, Mode=TwoWay}">
-                <ListBox.Resources>
-                    <DataTemplate DataType="{x:Type local:FavoriteLocationViewModel}">
-                        <Grid Height="48">
-                            <TextBlock HorizontalAlignment="Left"
-                                       VerticalAlignment="Top"
-                                       Margin="5"
-                                       Text="{Binding DisplayName}"
-                                       FontSize="14"
-                                       FontWeight="Bold" />
-
-                            <TextBlock HorizontalAlignment="Left"
-                                       VerticalAlignment="Bottom"
-                                       Text="{Binding Path}"
-                                       Foreground="DarkGray"
+            <Grid>
+                
+                <ListBox x:Name="LocationList"
+                         ItemsSource="{Binding Locations}"
+                         SelectedItem="{Binding SelectedLocation, Mode=TwoWay}"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         KeyUp="LocationList_KeyUp">
+                    <ListBox.Resources>
+                        <DataTemplate DataType="{x:Type local:FavoriteLocationViewModel}">
+                            <Grid Height="48">
+                                <Image Source="{Binding Icon}" 
+                                       Width="32"
+                                       Height="32"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
                                        Margin="5" />
+                                <TextBlock HorizontalAlignment="Left"
+                                           VerticalAlignment="Top"
+                                           Margin="42,5,5,5"
+                                           Text="{Binding DisplayName}"
+                                           FontSize="14"
+                                           FontWeight="Bold" />
 
-                            <TextBlock Text="PUBLIC"
-                                       HorizontalAlignment="Right"
-                                       VerticalAlignment="Top"
-                                       Foreground="DarkGray"
-                                       FontSize="8"
-                                       Margin="5"
-                                       Visibility="{Binding IsPublic, Converter={ue4Launcher:BoolToVisibilityConverter}}" />
-                        </Grid>
-                    </DataTemplate>
-                    <DataTemplate DataType="{x:Type local:FileSearchResultViewModel}">
-                        <Grid Height="48">
-                            <TextBlock HorizontalAlignment="Left"
-                                       VerticalAlignment="Top"
-                                       Margin="5"
-                                       Text="{Binding DisplayName}"
-                                       FontSize="14"
-                                       FontWeight="Bold" />
+                                <TextBlock HorizontalAlignment="Left"
+                                           VerticalAlignment="Bottom"
+                                           TextWrapping="NoWrap"
+                                           Text="{Binding Path}"
+                                           Foreground="DarkGray"
+                                           Margin="42,5,5,5" />
 
-                            <TextBlock HorizontalAlignment="Left"
-                                       VerticalAlignment="Bottom"
-                                       Text="{Binding Path}"
-                                       Foreground="DarkGray"
-                                       Margin="5" />
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.Resources>
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <EventSetter Event="MouseDoubleClick" Handler="LocationListItem_MouseDoubleClick" />
-                        <EventSetter Event="MouseLeftButtonUp" Handler="LocationListItem_MouseLeftButtonUp" />
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    </Style>
-                </ListBox.ItemContainerStyle>
-            </ListBox>
+                                <TextBlock Text="PUBLIC"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Top"
+                                           Foreground="DarkGray"
+                                           FontSize="8"
+                                           Margin="5"
+                                           Visibility="{Binding IsPublic, Converter={ue4Launcher:BoolToVisibilityConverter}}" />
+                            </Grid>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type local:FileSearchResultViewModel}">
+                            <DockPanel Height="48">
+
+                                <Button x:Name="AddToFavoriteButton"
+                                        Click="AddToFavoriteButton_Click"
+                                        DataContext="{Binding}"
+                                        DockPanel.Dock="Right"
+                                        VerticalAlignment="Center"
+                                        Visibility="{Binding IsSelected, Converter={ue4Launcher:BoolToVisibilityConverter}}"
+                                        ToolTip="Add to favorite"
+                                        Margin="5">
+                                    <Image Source="/Resources/Images/ic_star_border_black_18dp.png"
+                                           Stretch="None" />
+                                </Button>
+
+                                <Grid>
+                                    <Image Source="{Binding Icon}" 
+                                           Width="32"
+                                           Height="32"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Margin="5" />
+                                
+                                    <TextBlock HorizontalAlignment="Left"
+                                               VerticalAlignment="Top"
+                                               TextWrapping="WrapWithOverflow"
+                                               Margin="42,5,5,5"
+                                               Text="{Binding DisplayName}"
+                                               FontSize="14"
+                                               FontWeight="Bold" />
+
+                                    <TextBlock HorizontalAlignment="Stretch"
+                                               VerticalAlignment="Bottom"
+                                               TextWrapping="NoWrap"
+                                               Text="{Binding Path}"
+                                               Foreground="DarkGray"
+                                               Margin="42,5,5,5" />
+                                </Grid>
+
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListBox.Resources>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <EventSetter Event="MouseDoubleClick" Handler="LocationListItem_MouseDoubleClick" />
+                            <EventSetter Event="MouseLeftButtonUp" Handler="LocationListItem_MouseLeftButtonUp" />
+                            <EventSetter Event="KeyUp" Handler="LocationListItem_KeyUp" />
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            <Setter Property="ToolTip" Value="Double click to reveal in Explorer; Ctrl-double click to open directly" />
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+
+                <ProgressBar Height="4" 
+                             VerticalAlignment="Top"
+                             Value="{Binding SearchProgress, Mode=OneWay}"
+                             Visibility="{Binding ShouldShowSearchProgress, Converter={ue4Launcher:BoolToVisibilityConverter}}"
+                             Maximum="1" />
+            </Grid>
         </DockPanel>
     </Grid>
 </UserControl>

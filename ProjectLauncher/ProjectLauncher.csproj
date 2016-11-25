@@ -79,6 +79,7 @@
     <Compile Include="PageViewModelBase.cs" />
     <Compile Include="Places\FavoriteLocationViewModel.cs" />
     <Compile Include="Places\FileSearchResultViewModel.cs" />
+    <Compile Include="Places\Interop.cs" />
     <Compile Include="Places\Location.cs" />
     <Compile Include="Places\LocationViewModelBase.cs" />
     <Compile Include="Places\PlacesPage.xaml.cs">
@@ -213,7 +214,9 @@
   <ItemGroup>
     <Resource Include="Resources\Images\ic_clear_black_18dp.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Images\ic_star_border_black_18dp.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
