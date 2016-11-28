@@ -119,7 +119,7 @@
                 <processes:ProcessPage DataContext="{Binding Processes}" />
             </TabItem>
 
-            <TabItem IsEnabled="{Binding DeveloperMode}">
+            <TabItem Visibility="{Binding DeveloperMode, Converter={ue4Launcher:BoolToVisibilityConverter}}">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal"
                                 Margin="4">
