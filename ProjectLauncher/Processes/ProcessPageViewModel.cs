@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Threading;
 using UE4Launcher.Debugging;
+using UE4Launcher.Root;
 
 namespace UE4Launcher.Processes
 {

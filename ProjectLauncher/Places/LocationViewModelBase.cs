@@ -6,13 +6,15 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using UE4Launcher.Root;
 
 namespace UE4Launcher.Places
 {
-    abstract class LocationViewModelBase : NotificationObject
+    abstract class LocationViewModelBase : NotificationObject, ITrayContextMenuItem
     {
 
         private static ImageSource GetIcon(string path, bool bSmall)
@@ -45,7 +47,6 @@ namespace UE4Launcher.Places
         }
 
         private string _displayName;
-        private bool _isSelected;
 
         public virtual string DisplayName
         {
@@ -59,6 +60,8 @@ namespace UE4Launcher.Places
 
         public string Path { get; protected set; }
 
+
+        private bool _isSelected;
         public bool IsSelected
         {
             get { return _isSelected; }
@@ -69,7 +72,29 @@ namespace UE4Launcher.Places
             }
         }
 
+        string ITrayContextMenuItem.Name => this.DisplayName;
+
         public ImageSource Icon => LocationViewModelBase.GetIcon(this.Path, false);
+
+        bool ITrayContextMenuItem.IsEnabled => true;
+
+        ImageSource ITrayContextMenuItem.Icon => LocationViewModelBase.GetIcon(this.Path, true);
+
+        private readonly ICommand _trayContextMenuCommand;
+        ICommand ITrayContextMenuItem.Command => _trayContextMenuCommand;
+
+        string ITrayContextMenuItem.Description
+            => $"{this.Path}\nClick to reveal in Explorer, Ctrl-click to open directly";
+
+        protected LocationViewModelBase()
+        {
+            _trayContextMenuCommand = new SimpleCommand(this.ExecuteTrayContextMenuCommand);
+        }
+
+        private void ExecuteTrayContextMenuCommand(object obj)
+        {
+            this.Navigate(Utilities.IsCtrlDown);
+        }
 
         public void Navigate(bool openDirectly)
         {

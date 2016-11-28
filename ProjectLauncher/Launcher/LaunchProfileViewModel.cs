@@ -2,13 +2,20 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using UE4Launcher.Debugging;
+using UE4Launcher.Root;
 using Process = System.Diagnostics.Process;
 
 namespace UE4Launcher.Launcher
 {
-    internal class LaunchProfileViewModel : NotificationObject
+    internal class LaunchProfileViewModel : NotificationObject, ITrayContextMenuItem
     {
+        private static readonly ImageSource SharedIcon =
+            BitmapFrame.Create(new Uri("pack://application:,,,/Resources/Images/ic_play_circle_outline_black_18dp.png"));
+
         public LaunchProfile Profile { get; }
         public bool DeveloperMode { get; }
         public bool EditMode { get; }
@@ -792,6 +799,7 @@ namespace UE4Launcher.Launcher
 
 
         private string[] _iniFiles;
+
         public string[] IniFiles
         {
             get { return _iniFiles; }
@@ -806,6 +814,20 @@ namespace UE4Launcher.Launcher
 
         public string ConsoleCommandLine => $"{this.Profile.GetExecutableFile()}{this.Profile.GetCommandLineArguments()}";
 
+        
+
+        string ITrayContextMenuItem.Name => this.ProfileName;
+
+        ImageSource ITrayContextMenuItem.Icon => SharedIcon;
+
+        bool ITrayContextMenuItem.IsEnabled => true;
+
+
+        private readonly ICommand _trayContextMenuCommand;
+        ICommand ITrayContextMenuItem.Command => _trayContextMenuCommand;
+
+        string ITrayContextMenuItem.Description
+            => $"{this.ProfileDescription}\nClick to launch this profile, Ctrl-click to launch with debugger attached";
 
         public LaunchProfileViewModel(LaunchProfile profile, bool developerMode, bool writeMode)
         {
@@ -817,6 +839,12 @@ namespace UE4Launcher.Launcher
             this.OnSelectedProjectChanged();
             this.IsModified = false;
 
+            _trayContextMenuCommand = new SimpleCommand(this.ExecuteTrayContextMenuCommand);
+        }
+
+        private void ExecuteTrayContextMenuCommand(object obj)
+        {
+            this.Launch(Utilities.IsCtrlDown ? DebuggerInfo.Automatic : null);
         }
 
         private void LoadExectuableFiles()
@@ -980,9 +1008,6 @@ namespace UE4Launcher.Launcher
                 App.ReportStatus("Profile launched successfully.");
 
         }
-
-
-
 
     }
 }

@@ -126,18 +126,24 @@ namespace UE4Launcher.Places
             var cacheFilePath = Path.Combine(App.CurrentRootPath, Constants.FileIndicesFile);
             if (File.Exists(cacheFilePath))
             {
-                using (var indexFile = File.OpenRead(cacheFilePath))
-                    _fileIndices = (List<string>)new XmlSerializer(typeof(List<string>)).Deserialize(indexFile);
+                try
+                {
+                    using (var indexFile = File.OpenRead(cacheFilePath))
+                        _fileIndices = (List<string>) new XmlSerializer(typeof(List<string>)).Deserialize(indexFile);
 
-                this.IsFileIndicesReady = true;
+                    this.IsFileIndicesReady = true;
+                }
+                catch
+                {
+                    this.IsFileIndicesReady = false;
+                }
             }
-            else
-            {
+            
+            if(!this.IsFileIndicesReady)
+            { 
                 _fileIndices = new List<string>();
-                this.IsFileIndicesReady = false;
+                Task.Factory.StartNew(this.BuildFileIndices);
             }
-
-            Task.Factory.StartNew(this.BuildFileIndices);
         }
 
         private void BuildFileIndices()
@@ -319,7 +325,7 @@ namespace UE4Launcher.Places
                 RelativePath = searchResult.Path.Substring(App.CurrentRootPath.Length + 1)
             };
 
-            _favorites.Add(new FavoriteLocationViewModel(location, App.CurrentRootPath, false));
+            this.Favorites.Add(new FavoriteLocationViewModel(location, App.CurrentRootPath, false));
 
             this.SaveFavorites();
         }

@@ -1,11 +1,12 @@
 ﻿using System.Reflection;
 using System.Text;
 using System.Windows;
+using Microsoft.Win32;
 using UE4Launcher.Launcher;
 using UE4Launcher.Places;
 using UE4Launcher.Processes;
 
-namespace UE4Launcher
+namespace UE4Launcher.Root
 {
     class MainWindowViewModel : NotificationObject
     {
@@ -40,6 +41,20 @@ namespace UE4Launcher
             {
                 _statusText = value;
                 this.RaisePropertyChanged(nameof(this.StatusText));
+            }
+        }
+
+        public bool StartWithWindows
+        {
+            get { return Preferences.Default.StartWithWindows; }
+            set
+            {
+                Preferences.Default.StartWithWindows = value;
+                Preferences.Default.Save();
+
+                ((App) Application.Current).SetStartupWithWindows(value);
+
+                this.RaisePropertyChanged(nameof(this.StartWithWindows));
             }
         }
 

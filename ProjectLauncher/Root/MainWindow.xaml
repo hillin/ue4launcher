@@ -1,0 +1,136 @@
+﻿<Window x:Class="UE4Launcher.Root.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:launcher="clr-namespace:UE4Launcher.Launcher"
+        xmlns:ue4Launcher="clr-namespace:UE4Launcher"
+        xmlns:processes="clr-namespace:UE4Launcher.Processes"
+        xmlns:places="clr-namespace:UE4Launcher.Places"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:root="clr-namespace:UE4Launcher.Root"
+        mc:Ignorable="d"
+        Title="{Binding Title}" Height="600" Width="800"
+        MinWidth="800"
+        MinHeight="320"
+        Closing="Window_Closing"
+        Icon="/Resources/Icons/app.ico">
+
+    <Window.Resources>
+        <root:BindingProxy x:Key="TrayIconBindingProxy" Data="{Binding}" />
+
+        <Image x:Shared="false"
+               x:Key="MenuItemIcon"
+               Source="{Binding Path=(root:ITrayContextMenuItem.Icon)}" />
+        
+        <!-- ReSharper disable once Xaml.RedundantResource -->
+        <ContextMenu x:Key="TrayNotifierContextMenu">
+            <ContextMenu.ItemsSource>
+                <CompositeCollection>
+                    <system:String>Profiles</system:String>
+                    <!-- ReSharper disable Xaml.BindingWithContextNotResolved -->
+                    <CollectionContainer Collection="{Binding Data.ProjectLauncher.Profiles, Source={StaticResource TrayIconBindingProxy}}" />
+                    <Separator />
+                    <system:String>Places</system:String>
+                    <CollectionContainer Collection="{Binding Data.Places.Favorites, Source={StaticResource TrayIconBindingProxy}}" />
+                    <Separator />
+                    <MenuItem Header="Kill All Processes" Click="KillAllProcessesMenuItem_Click" />
+                    <Separator />
+                    <MenuItem Header="Start with Windows" IsCheckable="True" IsChecked="{Binding Data.StartWithWindows, Mode=TwoWay, Source={StaticResource TrayIconBindingProxy}}" />
+                    <MenuItem Header="Exit" Click="ExitMenuItem_Click" />
+                    <!-- ReSharper restore Xaml.BindingWithContextNotResolved -->
+                </CompositeCollection>
+            </ContextMenu.ItemsSource>
+            <ContextMenu.ItemTemplateSelector>
+                <root:TrayContextMenuItemTemplateSelector>
+                    <root:TrayContextMenuItemTemplateSelector.TitleTemplate>
+                        <DataTemplate DataType="{x:Type system:String}">
+                            <TextBlock Text="{Binding}"
+                                       FontSize="10"
+                                       FontWeight="Bold"
+                                       Typography.Capitals="Titling"
+                                       IsEnabled="False" />
+                        </DataTemplate>
+                    </root:TrayContextMenuItemTemplateSelector.TitleTemplate>
+                    <root:TrayContextMenuItemTemplateSelector.DynamicItemTemplate>
+                        <DataTemplate DataType="{x:Type root:ITrayContextMenuItem}">
+                            <TextBlock Text="{Binding Path=(root:ITrayContextMenuItem.Name)}" />
+                        </DataTemplate>
+                    </root:TrayContextMenuItemTemplateSelector.DynamicItemTemplate>
+                </root:TrayContextMenuItemTemplateSelector>
+            </ContextMenu.ItemTemplateSelector>
+            <ContextMenu.ItemContainerStyleSelector>
+                <root:TrayContextMenuItemContainerStyleSelector>
+                    <root:TrayContextMenuItemContainerStyleSelector.TitleStyle>
+                        <Style TargetType="{x:Type MenuItem}">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </Style>
+                    </root:TrayContextMenuItemContainerStyleSelector.TitleStyle>
+                    <root:TrayContextMenuItemContainerStyleSelector.DynamicItemStyle>
+                        <Style TargetType="{x:Type MenuItem}">
+                            <Setter Property="Icon" Value="{StaticResource MenuItemIcon}" />
+                            <Setter Property="Command" Value="{Binding Path=(root:ITrayContextMenuItem.Command)}" />
+                            <Setter Property="ToolTip" Value="{Binding Path=(root:ITrayContextMenuItem.Description)}" />
+                        </Style>
+                    </root:TrayContextMenuItemContainerStyleSelector.DynamicItemStyle>
+                </root:TrayContextMenuItemContainerStyleSelector>
+            </ContextMenu.ItemContainerStyleSelector>
+        </ContextMenu>
+    </Window.Resources>
+    
+    
+    <DockPanel>
+
+        <Grid DockPanel.Dock="Bottom"
+              Height="32"
+              Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+            <DockPanel VerticalAlignment="Center"
+                       Margin="4">
+                
+
+                <TextBlock Text="{Binding StatusText}" HorizontalAlignment="Stretch" />
+            </DockPanel>
+        </Grid>
+
+        <TabControl Margin="8">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal"
+                                Margin="4">
+                        <Image Source="/Resources/Images/ic_play_circle_outline_black_18dp.png" 
+                                                                   Stretch="None"
+                                                                   Margin="0,0,4,0"/>
+                        <TextBlock Text="Launch" />
+                    </StackPanel>
+                </TabItem.Header>
+                <launcher:ProjectLauncherPage DataContext="{Binding ProjectLauncher}" />
+            </TabItem>
+            
+            <TabItem Visibility="{Binding DeveloperMode, Converter={ue4Launcher:BoolToVisibilityConverter}}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal"
+                                Margin="4">
+                        <Image Source="/Resources/Images/ic_memory_black_18dp.png"
+                               Stretch="None"
+                               Margin="0,0,4,0" />
+                        <TextBlock Text="Processes" />
+                    </StackPanel>
+                </TabItem.Header>
+                <processes:ProcessPage DataContext="{Binding Processes}" />
+            </TabItem>
+
+            <TabItem IsEnabled="{Binding DeveloperMode}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal"
+                                Margin="4">
+                        <Image Source="/Resources/Images/ic_folder_open_black_18dp.png" 
+                                                                   Stretch="None"
+                                                                   Margin="0,0,4,0"/>
+                        <TextBlock Text="Places" />
+                    </StackPanel>
+                </TabItem.Header>
+                <places:PlacesPage DataContext="{Binding Places}" />
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

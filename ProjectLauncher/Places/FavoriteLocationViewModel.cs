@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UE4Launcher.Root;
 using IOPath = System.IO.Path;
 
 namespace UE4Launcher.Places
 {
-    class FavoriteLocationViewModel : LocationViewModelBase
+    class FavoriteLocationViewModel : LocationViewModelBase, ITrayContextMenuItem
     {
         private bool _isPublic;
 

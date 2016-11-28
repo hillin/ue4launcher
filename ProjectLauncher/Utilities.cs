@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace UE4Launcher
 {
@@ -23,5 +25,8 @@ namespace UE4Launcher
                     Process.Start(directory.FullName);
             }
         }
+
+
+        public static bool IsCtrlDown => Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
     }
 }

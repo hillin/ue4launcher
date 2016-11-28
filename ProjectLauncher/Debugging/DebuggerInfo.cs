@@ -5,12 +5,13 @@ namespace UE4Launcher.Debugging
     class DebuggerInfo
     {
         public static readonly DebuggerInfo[] Debuggers;
+        public static readonly DebuggerInfo Automatic;
 
         static DebuggerInfo()
         {
             Debuggers = new[]
             {
-                new DebuggerInfo(VisualStudioVersions.Automatic, "Automatically Detect", true),
+                DebuggerInfo.Automatic = new DebuggerInfo(VisualStudioVersions.Automatic, "Automatically Detect", true),
                 new DebuggerInfo(VisualStudioVersions.VS2015, "Visual Studio 2015"),
                 new DebuggerInfo(VisualStudioVersions.VS2013, "Visual Studio 2013"),
                 new DebuggerInfo(VisualStudioVersions.VS2012, "Visual Studio 2012"),

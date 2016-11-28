@@ -39,7 +39,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -76,7 +78,8 @@
     <Compile Include="Launcher\MapInfo.cs" />
     <Compile Include="Launcher\MappingArgumentInfo.cs" />
     <Compile Include="Launcher\LaunchProfileViewModel.cs" />
-    <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="Root\ITrayContextMenuItem.cs" />
+    <Compile Include="Root\MainWindowViewModel.cs" />
     <Compile Include="NotificationObject.cs" />
     <Compile Include="Launcher\OpenMode.cs" />
     <Compile Include="PageViewModelBase.cs" />
@@ -116,8 +119,13 @@
     <Compile Include="Launcher\Argument.cs" />
     <Compile Include="Launcher\ArgumentInfo.cs" />
     <Compile Include="Launcher\WindowState.cs" />
+    <Compile Include="Root\BindingProxy.cs" />
+    <Compile Include="Root\MouseHook.cs" />
+    <Compile Include="Root\TrayContextMenuItemContainerStyleSelector.cs" />
+    <Compile Include="Root\TrayContextMenuItemTemplateSelector.cs" />
+    <Compile Include="SimpleCommand.cs" />
     <Compile Include="Utilities.cs" />
-    <Page Include="MainWindow.xaml">
+    <Page Include="Root\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -127,7 +135,7 @@
     </Compile>
     <Compile Include="Launcher\LaunchMode.cs" />
     <Compile Include="Launcher\LaunchProfile.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Root\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>

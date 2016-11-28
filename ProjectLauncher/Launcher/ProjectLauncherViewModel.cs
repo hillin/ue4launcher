@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Xml.Serialization;
 using UE4Launcher.Debugging;
+using UE4Launcher.Root;
 
 namespace UE4Launcher.Launcher
 {

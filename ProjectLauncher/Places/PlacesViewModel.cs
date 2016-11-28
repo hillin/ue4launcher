@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Xml.Serialization;
 using UE4Launcher.Launcher;
+using UE4Launcher.Root;
 using Timer = System.Timers.Timer;
 
 namespace UE4Launcher.Places
@@ -17,7 +18,7 @@ namespace UE4Launcher.Places
     partial class PlacesViewModel : PageViewModelBase
     {
         public ObservableCollection<LocationViewModelBase> Locations { get; }
-        private readonly List<FavoriteLocationViewModel> _favorites;
+        public ObservableCollection<FavoriteLocationViewModel> Favorites { get; }
 
         private LocationViewModelBase _selectedLocation;
 
@@ -50,7 +51,7 @@ namespace UE4Launcher.Places
             : base(owner)
         {
             this.Locations = new ObservableCollection<LocationViewModelBase>();
-            _favorites = new List<FavoriteLocationViewModel>();
+            this.Favorites = new ObservableCollection<FavoriteLocationViewModel>();
             this.LoadFavorites();
             this.ShowFavorites();
 
@@ -66,7 +67,8 @@ namespace UE4Launcher.Places
         private void ShowFavorites()
         {
             this.Locations.Clear();
-            _favorites.ForEach(this.Locations.Add);
+            foreach (var favorite in this.Favorites)
+                this.Locations.Add(favorite);
         }
 
         private void LoadFavorites()
@@ -88,7 +90,7 @@ namespace UE4Launcher.Places
             {
                 foreach (var location in (Location[])new XmlSerializer(typeof(Location[])).Deserialize(file))
                 {
-                    _favorites.Add(new FavoriteLocationViewModel(location, rootPath, isPublic));
+                    this.Favorites.Add(new FavoriteLocationViewModel(location, rootPath, isPublic));
                 }
             }
         }
@@ -98,7 +100,7 @@ namespace UE4Launcher.Places
             var favorite = this.SelectedLocation as FavoriteLocationViewModel;
             if (favorite != null)
             {
-                _favorites.Remove(favorite);
+                this.Favorites.Remove(favorite);
                 this.Locations.Remove(favorite);
                 this.SaveFavorites();
             }
@@ -114,7 +116,7 @@ namespace UE4Launcher.Places
 
         private void SaveFavorites(string filename, bool isPublic)
         {
-            var profiles = _favorites.Where(p => p.IsPublic == isPublic)
+            var profiles = this.Favorites.Where(p => p.IsPublic == isPublic)
                                .Select(p => p.Location)
                                .ToArray();
             if (profiles.Length > 0)

@@ -27,12 +27,7 @@ namespace UE4Launcher.Places
         private void LocationListItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var location = (sender as ListBoxItem)?.DataContext as LocationViewModelBase;
-            location?.Navigate(PlacesPage.IsCtrlDown());
-        }
-
-        private static bool IsCtrlDown()
-        {
-            return Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+            location?.Navigate(Utilities.IsCtrlDown);
         }
 
         private void RemoveFavoriteButton_Click(object sender, RoutedEventArgs e)
@@ -84,7 +79,7 @@ namespace UE4Launcher.Places
                     this.LocationList.ScrollIntoView(this.ViewModel.SelectedLocation);
                     break;
                 case Key.Enter:
-                    this.ViewModel.NavigateToSelectedLocation(PlacesPage.IsCtrlDown());
+                    this.ViewModel.NavigateToSelectedLocation(Utilities.IsCtrlDown);
                     break;
             }
         }
@@ -94,7 +89,7 @@ namespace UE4Launcher.Places
             if (e.Key == Key.Enter)
             {
                 var location = (sender as ListBoxItem)?.DataContext as LocationViewModelBase;
-                location?.Navigate(PlacesPage.IsCtrlDown());
+                location?.Navigate(Utilities.IsCtrlDown);
             }
         }
 
