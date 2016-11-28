@@ -75,6 +75,23 @@ namespace UE4Launcher
             return false;
         }
 
+        private string FindProjectRoot(string location, HashSet<string> searchedLocations)
+        {
+            var projectFound = false;
+            while (!string.IsNullOrEmpty(location) && Directory.Exists(location))
+            {
+                searchedLocations.Add(location);
+                if (ProjectUtilities.IsValidRootPath(location))
+                {
+                    projectFound = true;
+                    break;
+                }
+                location = Directory.GetParent(location)?.FullName;
+            }
+
+            return projectFound ? location : null;
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -88,21 +105,12 @@ namespace UE4Launcher
             if (e.Args.Contains("-minimized"))
                 this.StartMinimized = true;
 
-            var location = Environment.CurrentDirectory;
-            var searchedLocation = new List<string>();
-            var projectFound = false;
-            while (!string.IsNullOrEmpty(location) && Directory.Exists(location))
-            {
-                searchedLocation.Add(location);
-                if (ProjectUtilities.IsValidRootPath(location))
-                {
-                    projectFound = true;
-                    break;
-                }
-                location = Directory.GetParent(location)?.FullName;
-            }
+            var searchedLocation = new HashSet<string>();
+            var projectRoot = this.FindProjectRoot(Environment.CurrentDirectory, searchedLocation);
+            if (string.IsNullOrEmpty(projectRoot))
+                projectRoot = this.FindProjectRoot(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), searchedLocation);
 
-            if (!projectFound)
+            if (string.IsNullOrEmpty(projectRoot))
             {
                 MessageBox.Show(
                     $"No valid project found under these folders:\n\n{string.Join("\n", searchedLocation)}\n\nMake sure this launcher is placed under (any level of) your unreal project folder",
@@ -113,7 +121,7 @@ namespace UE4Launcher
                 Environment.Exit(-1);
             }
 
-            this.RootPath = location;
+            this.RootPath = projectRoot;
 
             this.SetStartupWithWindows(Preferences.Default.StartWithWindows);
         }
