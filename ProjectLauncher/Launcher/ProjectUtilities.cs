@@ -8,12 +8,26 @@ namespace UE4Launcher.Launcher
 
         public static bool IsValidRootPath(string location)
         {
-            return Directory.GetDirectories(location).Any(ProjectUtilities.IsValidProjectPath);
+            try
+            {
+                return Directory.GetDirectories(location).Any(ProjectUtilities.IsValidProjectPath);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public static bool IsValidProjectPath(string folder)
         {
-            return Directory.GetFiles(folder, "*.uproject", SearchOption.TopDirectoryOnly).Any();
+            try
+            {
+                return Directory.GetFiles(folder, "*.uproject", SearchOption.TopDirectoryOnly).Any();
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
