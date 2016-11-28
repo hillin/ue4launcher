@@ -52,8 +52,11 @@ namespace UE4Launcher.Root
             if (((App)Application.Current).StartMinimized)
             {
                 this.WindowState = System.Windows.WindowState.Minimized;
+                this.Hide();
             }
         }
+
+        
 
         private void MouseHook_MouseAction(object sender, EventArgs e)
         {
@@ -81,6 +84,11 @@ namespace UE4Launcher.Root
         }
 
         private void TrayNotifier_DoubleClick(object sender, EventArgs e)
+        {
+            this.ToggleMainWindow();
+        }
+
+        private void ToggleMainWindow()
         {
             if (this.WindowState == System.Windows.WindowState.Minimized)
             {
@@ -167,6 +175,11 @@ namespace UE4Launcher.Root
         private void KillAllProcessesMenuItem_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             _viewModel.Processes.KillAllProcesses();
+        }
+
+        private void ToggleMainWindowMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            this.ToggleMainWindow();
         }
     }
 }

@@ -37,6 +37,7 @@
                     <MenuItem Header="Kill All Processes" Click="KillAllProcessesMenuItem_Click" />
                     <Separator />
                     <MenuItem Header="Start with Windows" IsCheckable="True" IsChecked="{Binding Data.StartWithWindows, Mode=TwoWay, Source={StaticResource TrayIconBindingProxy}}" />
+                    <MenuItem Header="Toggle Main Window" Click="ToggleMainWindowMenuItem_Click" />
                     <MenuItem Header="Exit" Click="ExitMenuItem_Click" />
                     <!-- ReSharper restore Xaml.BindingWithContextNotResolved -->
                 </CompositeCollection>
