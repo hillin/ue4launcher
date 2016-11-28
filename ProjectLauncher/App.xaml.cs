@@ -7,21 +7,43 @@ using System.Text;
 using System.Windows;
 using System.Windows.Navigation;
 using System.Windows.Threading;
+using Microsoft.Shell;
 using Microsoft.Win32;
 using UE4Launcher.Launcher;
 using UE4Launcher.Root;
 
 namespace UE4Launcher
 {
-    public partial class App : Application
+    public partial class App : Application, ISingleInstanceApp
     {
         public static string CurrentRootPath => ((App)Application.Current).RootPath;
         public static MainWindow CurrentMainWindow { get; set; }
+
+        private const string FallbackSingleInstanceIdentifier = "ue4launcher";
+
+        [STAThread]
+        public static void Main()
+        {
+            var identifier = Assembly.GetEntryAssembly().Location?.Replace('\\', '_') ?? FallbackSingleInstanceIdentifier;
+
+            if (SingleInstance<App>.InitializeAsFirstInstance(identifier))
+            {
+                var application = new App();
+
+                application.InitializeComponent();
+                application.Run();
+
+                // Allow single instance code to perform cleanup operations
+                SingleInstance<App>.Cleanup();
+            }
+        }
+
 
         public string RootPath { get; set; }
         public bool DeveloperMode { get; set; }
         public bool EditMode { get; set; }
         public bool StartMinimized { get; private set; }
+
 
         private string GetRestoredStartArgs()
         {
@@ -101,6 +123,13 @@ namespace UE4Launcher
             App.CurrentMainWindow.Dispatcher.BeginInvoke(
                    new Action(() => CurrentMainWindow.ReportStatus(status, timeOut)),
                    DispatcherPriority.Background);
+        }
+
+        public bool SignalExternalCommandLineArgs(IList<string> args)
+        {
+            App.CurrentMainWindow.Show();
+            App.CurrentMainWindow.Activate();
+            return true;
         }
     }
 }

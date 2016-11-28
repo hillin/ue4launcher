@@ -160,6 +160,7 @@ namespace UE4Launcher.Root
             if (!_viewModel.ConfirmSaveBeforeExit())
                 return;
 
+            _trayNotifier.Visible = false;
             Environment.Exit(0);
         }
 

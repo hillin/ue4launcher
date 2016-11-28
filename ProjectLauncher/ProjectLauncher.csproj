@@ -36,10 +36,14 @@
   <PropertyGroup>
     <ApplicationIcon>Resources\Icons\app.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>UE4Launcher.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -59,10 +63,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </ApplicationDefinition>
+    </Page>
     <Compile Include="Launcher\Arguments.cs" />
     <Compile Include="Launcher\ArgumentType.cs" />
     <Compile Include="BoolToVisibilityConverter.cs" />
@@ -121,6 +125,7 @@
     <Compile Include="Launcher\WindowState.cs" />
     <Compile Include="Root\BindingProxy.cs" />
     <Compile Include="Root\MouseHook.cs" />
+    <Compile Include="Root\SingleInstance.cs" />
     <Compile Include="Root\TrayContextMenuItemContainerStyleSelector.cs" />
     <Compile Include="Root\TrayContextMenuItemTemplateSelector.cs" />
     <Compile Include="SimpleCommand.cs" />
