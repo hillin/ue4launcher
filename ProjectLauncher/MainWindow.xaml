@@ -12,7 +12,8 @@
         Title="{Binding Title}" Height="600" Width="800"
         MinWidth="800"
         MinHeight="320"
-        Closing="Window_Closing">
+        Closing="Window_Closing"
+        Icon="/Resources/Icons/app.ico">
     <DockPanel>
 
         <Grid DockPanel.Dock="Bottom"
