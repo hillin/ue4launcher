@@ -138,35 +138,75 @@
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="processes:ProcessViewModel">
-                        <Grid Height="48">
-                            <StackPanel Orientation="Horizontal"
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Top"
-                                            Margin="5">
-                                
-                                <TextBlock Text="{Binding Title}"
-                                               FontSize="14"
-                                               FontWeight="Bold" />
-                            </StackPanel>
+                        <DockPanel Height="48">
 
-                            <StackPanel Orientation="Horizontal"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Bottom"
-                                        TextElement.Foreground="DarkGray"
-                                        Margin="5">
-                                <TextBlock>
-                                    <Run Text="{Binding Id, Mode=OneWay, StringFormat={}[{0}]}" />
-                                    <Run Text="{Binding Name, Mode=OneWay}" />
-                                    <Run>started at</Run>
-                                    <Run Text="{Binding StartTime, Mode=OneWay}" />
-                                </TextBlock>
+                            <StackPanel DockPanel.Dock="Right" 
+                                        Orientation="Horizontal"
+                                        Margin="0,4">
+                                <StackPanel.Resources>
+                                    <Style x:Key="ProfilingTitle"
+                                           TargetType="TextBlock">
+                                        <Setter Property="FontSize" Value="10" />
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                        <Setter Property="Foreground" Value="DarkGray" />
+                                        <Setter Property="VerticalAlignment" Value="Top" />
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                        <Setter Property="Typography.Capitals" Value="Titling" />
+                                    </Style>
+                                    <Style x:Key="ProfilingValue"
+                                           TargetType="TextBlock">
+                                        <Setter Property="FontSize" Value="22" />
+                                        <Setter Property="VerticalAlignment" Value="Bottom" />
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                        <Setter Property="FontStretch" Value="Condensed" />
+                                    </Style>
+                                </StackPanel.Resources>
+                                <Grid Margin="4,0">
+                                    <TextBlock Text="CPU"
+                                               Style="{StaticResource ProfilingTitle}" />
+                                    <TextBlock Text="{Binding CPUUsageDisplay}"
+                                               Style="{StaticResource ProfilingValue}" />
+                                </Grid>
+
+                                <Grid Margin="4,0">
+                                    <TextBlock Text="Memory"
+                                               Style="{StaticResource ProfilingTitle}" />
+                                    <TextBlock Text="{Binding MemoryDisplay}"
+                                               Style="{StaticResource ProfilingValue}" />
+                                </Grid>
                             </StackPanel>
                             
+                            <Grid>
+                                <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Top"
+                                                Margin="5">
+                                
+                                    <TextBlock Text="{Binding Title}"
+                                                   FontSize="14"
+                                                   FontWeight="Bold" />
+                                </StackPanel>
 
-                        </Grid>
+                                <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Bottom"
+                                            TextElement.Foreground="DarkGray"
+                                            Margin="5">
+                                    <TextBlock>
+                                        <Run Text="{Binding Id, Mode=OneWay, StringFormat={}[{0}]}" />
+                                        <Run Text="{Binding Name, Mode=OneWay}" />
+                                        <Run>started at</Run>
+                                        <Run Text="{Binding StartTime, Mode=OneWay}" />
+                                    </TextBlock>
+                                </StackPanel>
+                            </Grid>
+
+                        </DockPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+
+            
         </DockPanel>
     </Border>
 </UserControl>
