@@ -10,8 +10,8 @@
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:root="clr-namespace:UE4Launcher.Root"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="600" Width="800"
-        MinWidth="800"
+        Title="{Binding Title}" Height="600" Width="880"
+        MinWidth="880"
         MinHeight="320"
         Closing="Window_Closing"
         Icon="/Resources/Icons/app.ico">

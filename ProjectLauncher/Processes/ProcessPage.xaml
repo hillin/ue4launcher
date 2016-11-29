@@ -6,7 +6,7 @@
              xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=System"
              xmlns:processes="clr-namespace:UE4Launcher.Processes"
              mc:Ignorable="d"
-             d:DesignHeight="474" d:DesignWidth="628">
+             d:DesignHeight="474" d:DesignWidth="800">
     <Border BorderThickness="1"
             BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
             Margin="8">
