@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows;
-using System.Windows.Navigation;
 using System.Windows.Threading;
 using Microsoft.Shell;
 using Microsoft.Win32;

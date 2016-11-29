@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Windows;
 
 namespace UE4Launcher.Launcher
 {

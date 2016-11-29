@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Linq;
-using System.Windows;
 using UE4Launcher.Launcher;
 
 namespace UE4Launcher

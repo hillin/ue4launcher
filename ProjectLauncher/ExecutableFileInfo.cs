@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using UE4Launcher.Launcher;
 using IOPath = System.IO.Path;
 

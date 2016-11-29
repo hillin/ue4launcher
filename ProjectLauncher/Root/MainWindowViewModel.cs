@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using System.Text;
 using System.Windows;
-using Microsoft.Win32;
 using UE4Launcher.Launcher;
 using UE4Launcher.Places;
 using UE4Launcher.Processes;
