@@ -86,6 +86,7 @@ namespace UE4Launcher.Processes
                 {
                     removedProcesses.Add(pair.Key);
                     this.Processes.Remove(pair.Value);
+                    pair.Value.Dispose();
                 }
             }
 

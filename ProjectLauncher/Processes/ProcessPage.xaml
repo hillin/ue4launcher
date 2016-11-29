@@ -142,7 +142,7 @@
 
                             <StackPanel DockPanel.Dock="Right" 
                                         Orientation="Horizontal"
-                                        Margin="0,4">
+                                        Margin="4">
                                 <StackPanel.Resources>
                                     <Style x:Key="ProfilingTitle"
                                            TargetType="TextBlock">
@@ -161,14 +161,14 @@
                                         <Setter Property="FontStretch" Value="Condensed" />
                                     </Style>
                                 </StackPanel.Resources>
-                                <Grid Margin="4,0">
+                                <Grid>
                                     <TextBlock Text="CPU"
                                                Style="{StaticResource ProfilingTitle}" />
                                     <TextBlock Text="{Binding CPUUsageDisplay}"
                                                Style="{StaticResource ProfilingValue}" />
                                 </Grid>
 
-                                <Grid Margin="4,0">
+                                <Grid Margin="8,0,0,0">
                                     <TextBlock Text="Memory"
                                                Style="{StaticResource ProfilingTitle}" />
                                     <TextBlock Text="{Binding MemoryDisplay}"

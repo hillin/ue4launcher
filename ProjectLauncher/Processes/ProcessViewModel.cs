@@ -8,7 +8,7 @@ using UE4Launcher.Root;
 
 namespace UE4Launcher.Processes
 {
-    class ProcessViewModel : NotificationObject, ITrayContextMenuItem
+    class ProcessViewModel : NotificationObject, ITrayContextMenuItem, IDisposable
     {
 
         private readonly Process _process;
@@ -53,6 +53,7 @@ namespace UE4Launcher.Processes
         ImageSource ITrayContextMenuItem.Icon => Utilities.GetFileSystemIcon(_process.MainModule.FileName, true);
 
         private readonly ICommand _trayContextMenuCommand;
+        private readonly DispatcherTimer _updateTimer;
         ICommand ITrayContextMenuItem.Command => _trayContextMenuCommand;
 
         string ITrayContextMenuItem.Description
@@ -61,13 +62,13 @@ namespace UE4Launcher.Processes
         public ProcessViewModel(Process process)
         {
             _process = process;
-            var timer = new DispatcherTimer(DispatcherPriority.DataBind)
+            _updateTimer = new DispatcherTimer(DispatcherPriority.DataBind)
             {
                 Interval = TimeSpan.FromSeconds(1)
             };
 
-            timer.Tick += this.UpdateTimer_Tick;
-            timer.Start();
+            _updateTimer.Tick += this.UpdateTimer_Tick;
+            _updateTimer.Start();
             this.UpdateProfiling();
 
             _trayContextMenuCommand = new SimpleCommand(this.ExecuteTrayContextMenuCommand);
@@ -94,6 +95,11 @@ namespace UE4Launcher.Processes
 
         private void UpdateProfiling()
         {
+            if (_process.HasExited)
+                return;
+
+            _process.Refresh();
+
             var now = DateTime.UtcNow;
             var totalProcessorTime = _process.TotalProcessorTime;
             var cpuUsage = (totalProcessorTime.TotalMilliseconds - _lastTotalProcessorTime.TotalMilliseconds)
@@ -111,17 +117,32 @@ namespace UE4Launcher.Processes
 
         public void Kill()
         {
+            if (_process.HasExited)
+                return;
+
             _process.Kill();
+            this.Dispose();
         }
 
         public void AttachDebugger(DebuggerInfo debugger)
         {
+            if (_process.HasExited)
+                return;
+
             debugger.AttachProcess(_process);
         }
 
         public void BringToFront()
         {
+            if (_process.HasExited)
+                return;
+
             Utilities.BringProcessToFront(_process);
+        }
+
+        public void Dispose()
+        {
+            _updateTimer.Stop();
         }
     }
 }
