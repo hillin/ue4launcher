@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
-using System.Text;
-// ReSharper disable All
 
-namespace UE4Launcher.Places
-{
-    // code from http://stackoverflow.com/questions/1325625/how-do-i-display-a-windows-file-icon-in-wpf
+namespace UE4Launcher
+{ 
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     static class Interop
-    {/// <summary>Maximal Length of unmanaged Windows-Path-strings</summary>
-        private const int MAX_PATH = 260;
-        /// <summary>Maximal Length of unmanaged Typename</summary>
-        private const int MAX_TYPE = 80;
+    {
+        public const int SW_RESTORE = 9;
+
+        public const int MAX_PATH = 260;
+
+        public const int MAX_TYPE = 80;
 
         [Flags]
         public enum FileAttributes : int
@@ -93,5 +92,14 @@ namespace UE4Launcher.Places
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern bool DestroyIcon(IntPtr hIcon);
+
+        [DllImport("User32.dll")]
+        public static extern bool SetForegroundWindow(IntPtr handle);
+
+        [DllImport("User32.dll")]
+        public static extern bool ShowWindow(IntPtr handle, int nCmdShow);
+
+        [DllImport("User32.dll")]
+        public static extern bool IsIconic(IntPtr handle);
     }
 }

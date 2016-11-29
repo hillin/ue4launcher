@@ -130,5 +130,10 @@ namespace UE4Launcher.Processes
             }
             this.RefreshProcesses();
         }
+
+        public void BringSelectedProcessToFront()
+        {
+            this.SelectedProcess?.BringToFront();
+        }
     }
 }

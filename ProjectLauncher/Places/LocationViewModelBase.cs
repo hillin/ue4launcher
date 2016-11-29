@@ -17,35 +17,6 @@ namespace UE4Launcher.Places
     abstract class LocationViewModelBase : NotificationObject, ITrayContextMenuItem
     {
 
-        private static ImageSource GetIcon(string path, bool bSmall)
-        {
-            var info = new Interop.SHFILEINFO(true);
-            var cbFileInfo = Marshal.SizeOf(info);
-
-            var flags = Interop.SHGFI.Icon
-                        | Interop.SHGFI.UseFileAttributes
-                        | (bSmall ? Interop.SHGFI.SmallIcon : Interop.SHGFI.LargeIcon);
-
-            var attribute = Directory.Exists(path)
-                ? Interop.FileAttributes.Directory
-                : Interop.FileAttributes.File;
-            try
-            {
-                Interop.SHGetFileInfo(path, attribute, out info, (uint) cbFileInfo, flags);
-
-
-                var icon = Imaging.CreateBitmapSourceFromHIcon(info.hIcon,
-                                                               Int32Rect.Empty,
-                                                               BitmapSizeOptions.FromEmptyOptions());
-                Interop.DestroyIcon(info.hIcon);
-                return icon;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
         private string _displayName;
 
         public virtual string DisplayName
@@ -74,11 +45,11 @@ namespace UE4Launcher.Places
 
         string ITrayContextMenuItem.Name => this.DisplayName;
 
-        public ImageSource Icon => LocationViewModelBase.GetIcon(this.Path, false);
+        public ImageSource Icon => Utilities.GetFileSystemIcon(this.Path, false);
 
         bool ITrayContextMenuItem.IsEnabled => true;
 
-        ImageSource ITrayContextMenuItem.Icon => LocationViewModelBase.GetIcon(this.Path, true);
+        ImageSource ITrayContextMenuItem.Icon => Utilities.GetFileSystemIcon(this.Path, true);
 
         private readonly ICommand _trayContextMenuCommand;
         ICommand ITrayContextMenuItem.Command => _trayContextMenuCommand;

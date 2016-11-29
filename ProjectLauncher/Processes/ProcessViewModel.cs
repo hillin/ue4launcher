@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using UE4Launcher.Debugging;
+using UE4Launcher.Places;
+using UE4Launcher.Root;
 
 namespace UE4Launcher.Processes
 {
-    class ProcessViewModel : NotificationObject
+    class ProcessViewModel : NotificationObject, ITrayContextMenuItem
     {
+
         private readonly Process _process;
 
         public string Id => _process.Id.ToString();
@@ -42,6 +48,18 @@ namespace UE4Launcher.Processes
             }
         }
 
+        string ITrayContextMenuItem.Name => this.Title;
+
+        bool ITrayContextMenuItem.IsEnabled => true;
+
+        ImageSource ITrayContextMenuItem.Icon => Utilities.GetFileSystemIcon(_process.MainModule.FileName, true);
+
+        private readonly ICommand _trayContextMenuCommand;
+        ICommand ITrayContextMenuItem.Command => _trayContextMenuCommand;
+
+        string ITrayContextMenuItem.Description
+            => $"Start Time: {this.StartTime}\nCPU Usage: {this.CPUUsageDisplay}\nMemory Usage: {this.MemoryDisplay}\nClick to activate, Ctrl-click to attach debugger, Alt-click to terminate";
+
         public ProcessViewModel(Process process)
         {
             _process = process;
@@ -50,14 +68,30 @@ namespace UE4Launcher.Processes
                 Interval = TimeSpan.FromSeconds(1)
             };
 
-            timer.Tick += this.ProfilingUpdateTimer_Tick;
+            timer.Tick += this.UpdateTimer_Tick;
             timer.Start();
             this.UpdateProfiling();
+
+            _trayContextMenuCommand = new SimpleCommand(this.ExecuteTrayContextMenuCommand);
+
         }
 
-        private void ProfilingUpdateTimer_Tick(object sender, EventArgs e)
+        private void ExecuteTrayContextMenuCommand(object obj)
+        {
+            if (Utilities.IsCtrlDown)
+                this.AttachDebugger(DebuggerInfo.Automatic);
+            else if (Utilities.IsAltDown)
+                this.Kill();
+            else
+                this.BringToFront();
+        }
+
+        private void UpdateTimer_Tick(object sender, EventArgs e)
         {
             this.UpdateProfiling();
+
+            this.RaisePropertyChanged(nameof(this.Title));
+            this.RaisePropertyChanged(nameof(this.Name));
         }
 
         private void UpdateProfiling()
@@ -85,6 +119,11 @@ namespace UE4Launcher.Processes
         public void AttachDebugger(DebuggerInfo debugger)
         {
             debugger.AttachProcess(_process);
+        }
+
+        public void BringToFront()
+        {
+            Utilities.BringProcessToFront(_process);
         }
     }
 }

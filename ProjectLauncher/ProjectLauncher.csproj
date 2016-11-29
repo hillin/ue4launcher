@@ -89,7 +89,7 @@
     <Compile Include="PageViewModelBase.cs" />
     <Compile Include="Places\FavoriteLocationViewModel.cs" />
     <Compile Include="Places\FileSearchResultViewModel.cs" />
-    <Compile Include="Places\Interop.cs" />
+    <Compile Include="Interop.cs" />
     <Compile Include="Places\Location.cs" />
     <Compile Include="Places\LocationViewModelBase.cs" />
     <Compile Include="Places\PlacesPage.xaml.cs">

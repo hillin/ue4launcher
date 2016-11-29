@@ -34,6 +34,8 @@
                     <system:String>Places</system:String>
                     <CollectionContainer Collection="{Binding Data.Places.Favorites, Source={StaticResource TrayIconBindingProxy}}" />
                     <Separator />
+                    <system:String>Processes</system:String>
+                    <CollectionContainer Collection="{Binding Data.Processes.Processes, Source={StaticResource TrayIconBindingProxy}}" />
                     <MenuItem Header="Kill All Processes" Click="KillAllProcessesMenuItem_Click" />
                     <Separator />
                     <MenuItem Header="Start with Windows" IsCheckable="True" IsChecked="{Binding Data.StartWithWindows, Mode=TwoWay, Source={StaticResource TrayIconBindingProxy}}" />
