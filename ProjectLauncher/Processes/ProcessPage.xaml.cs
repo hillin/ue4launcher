@@ -47,5 +47,10 @@ namespace UE4Launcher.Processes
             else
                 this.ViewModel.BringSelectedProcessToFront();
         }
+
+        private void ActivateButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            this.ViewModel.BringSelectedProcessToFront();
+        }
     }
 }

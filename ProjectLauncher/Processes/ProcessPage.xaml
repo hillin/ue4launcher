@@ -112,6 +112,16 @@
                                 <TextBlock Text="Attach" />
                             </StackPanel>
                         </Button>
+                        <Button x:Name="ActivateButton"
+                                IsEnabled="{Binding HasProcessSelected}"
+                                Click="ActivateButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Resources/Images/ic_lightbulb_outline_black_18dp.png"
+                                           Stretch="None"
+                                           Margin="0,0,4,0" />
+                                <TextBlock Text="Activate" />
+                            </StackPanel>
+                        </Button>
                         <Button x:Name="KillButton"
                                 IsEnabled="{Binding HasProcessSelected}"
                                 Click="KillButton_Click">
