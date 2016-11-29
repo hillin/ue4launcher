@@ -101,6 +101,8 @@ namespace UE4Launcher.Debugging
                 throw new Exception("Process not found");
 
             dteProcess.Attach();
+
+            dte.MainWindow.Activate();
         }
     }
 }
