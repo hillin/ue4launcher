@@ -91,5 +91,10 @@ namespace UE4Launcher.Launcher
         {
             this.NavigateFile(this.ViewModel.SelectedProject.Path);
         }
+
+        private void NavigateMapButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigateFile(this.ViewModel.SelectedMap.Path);
+        }
     }
 }

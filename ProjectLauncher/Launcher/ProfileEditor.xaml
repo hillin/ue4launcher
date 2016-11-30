@@ -283,6 +283,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="{StaticResource CaptionWidth}" />
                                     <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                    <ColumnDefinition Width="24" />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <CheckBox x:Name="MapSwitch"
@@ -290,7 +291,13 @@
                                           Style="{StaticResource SwitchToggle}" />
                                 <TextBlock Text="Map"
                                            Style="{StaticResource Caption}" />
+                                <Button Grid.Column="2"
+                                        x:Name="NavigateMapButton"
+                                        Click="NavigateMapButton_Click">
+                                    <Image Source="/Resources/Images/ic_launch_black_18dp.png" Stretch="None" />
+                                </Button>
                                 <ComboBox x:Name="MapList"
+                                          Grid.Column="3"
                                           SelectedItem="{Binding SelectedMap, Mode=TwoWay}"
                                           ItemsSource="{Binding Maps}"
                                           IsEnabled="{Binding IsChecked, ElementName=MapSwitch}"
@@ -738,8 +745,7 @@
 
                             <Button Grid.Column="2"
                                     x:Name="NavigateDefaultEngineFileButton"
-                                    Click="NavigateDefaultEngineFileButton_Click"
-                                    IsEnabled="{Binding IsChecked, ElementName=OverrideDefaultEngineCheck}">
+                                    Click="NavigateDefaultEngineFileButton_Click">
                                 <Image Source="/Resources/Images/ic_launch_black_18dp.png" Stretch="None" />
                             </Button>
                         </Grid>
@@ -763,8 +769,7 @@
 
                             <Button Grid.Column="2"
                                     x:Name="NavigateDefaultGameFileButton"
-                                    Click="NavigateDefaultGameFileButton_Click"
-                                    IsEnabled="{Binding IsChecked, ElementName=OverrideDefaultGameCheck}">
+                                    Click="NavigateDefaultGameFileButton_Click">
                                 <Image Source="/Resources/Images/ic_launch_black_18dp.png" Stretch="None" />
                             </Button>
                         </Grid>
@@ -788,8 +793,7 @@
                                       IsEnabled="{Binding IsChecked, ElementName=OverrideDefaultEditorCheck}" />
                             <Button Grid.Column="2"
                                     x:Name="NavigateDefaultEditorFileButton"
-                                    Click="NavigateDefaultEditorFileButton_Click"
-                                    IsEnabled="{Binding IsChecked, ElementName=OverrideDefaultEditorCheck}">
+                                    Click="NavigateDefaultEditorFileButton_Click">
                                 <Image Source="/Resources/Images/ic_launch_black_18dp.png" Stretch="None" />
                             </Button>
                         </Grid>
@@ -814,8 +818,7 @@
                                       IsEnabled="{Binding IsChecked, ElementName=OverrideDefaultInputCheck}" />
                             <Button Grid.Column="2"
                                     x:Name="NavigateDefaultInputFileButton"
-                                    Click="NavigateDefaultInputFileButton_Click"
-                                    IsEnabled="{Binding IsChecked, ElementName=OverrideDefaultInputCheck}">
+                                    Click="NavigateDefaultInputFileButton_Click">
                                 <Image Source="/Resources/Images/ic_launch_black_18dp.png" Stretch="None" />
                             </Button>
                         </Grid>
