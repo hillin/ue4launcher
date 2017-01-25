@@ -122,7 +122,8 @@ namespace UE4Launcher
 
             this.RootPath = projectRoot;
 
-            this.SetStartupWithWindows(Preferences.Default.StartWithWindows);
+            // only start with windows if we are in developer mode
+            this.SetStartupWithWindows(this.DeveloperMode && Preferences.Default.StartWithWindows);
         }
 
         public static void ReportStatus(string status, double? timeOut = 10000)

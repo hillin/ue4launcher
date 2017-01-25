@@ -58,5 +58,17 @@ namespace UE4Launcher {
                 this["StartWithWindows"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CloseToSystemTray {
+            get {
+                return ((bool)(this["CloseToSystemTray"]));
+            }
+            set {
+                this["CloseToSystemTray"] = value;
+            }
+        }
     }
 }

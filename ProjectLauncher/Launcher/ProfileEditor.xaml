@@ -7,8 +7,9 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:ue4Launcher="clr-namespace:UE4Launcher"
              xmlns:launcher="clr-namespace:UE4Launcher.Launcher"
+             xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
              mc:Ignorable="d"
-             d:DesignHeight="1200" d:DesignWidth="400">
+             d:DesignHeight="1800" d:DesignWidth="400">
     <UserControl.Resources>
 
         <GridLength x:Key="CaptionWidth">120</GridLength>
@@ -46,6 +47,19 @@
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Height" Value="1" />
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+        </Style>
+        <Style x:Key="CultureList"
+               TargetType="ComboBox"
+               BasedOn="{StaticResource Content}">
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate DataType="launcher:CultureViewModel">
+                        <TextBlock Text="{Binding DisplayName}"
+                                   ToolTip="{Binding Name}"
+                                   FontWeight="{Binding FontWeight}" />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </UserControl.Resources>
     <Grid>
@@ -118,6 +132,26 @@
                                       Style="{StaticResource SwitchToggle}" />
                             <TextBlock Text="VR"
                                        Style="{StaticResource Caption}" />
+                        </Grid>
+
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="PreferencesCultureSwitch"
+                                      IsChecked="{Binding SpecifyCulture, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="Culture"
+                                       Style="{StaticResource Caption}" />
+                            <ComboBox x:Name="PreferencesCultureList"
+                                      ItemsSource="{Binding AvailableCultures}"
+                                      SelectedItem="{Binding Culture, Mode=TwoWay}"
+                                      IsEnabled="{Binding IsChecked, ElementName=PreferencesCultureSwitch}"
+                                      Style="{StaticResource CultureList}">
+                            </ComboBox>
                         </Grid>
 
                         <Grid Style="{StaticResource RowGrid}">
@@ -828,6 +862,25 @@
 
                 <GroupBox Header="Miscellaneous">
                     <StackPanel>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="CultureSwitch"
+                                      IsChecked="{Binding SpecifyCulture, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="Culture"
+                                       Style="{StaticResource Caption}" />
+                            <ComboBox x:Name="CultureList"
+                                      ItemsSource="{Binding AvailableCultures}"
+                                      SelectedItem="{Binding Culture, Mode=TwoWay}"
+                                      IsEnabled="{Binding IsChecked, ElementName=CultureSwitch}"
+                                      Style="{StaticResource CultureList}">
+                            </ComboBox>
+                        </Grid>
 
                         <Grid Style="{StaticResource RowGrid}">
                             <Grid.ColumnDefinitions>

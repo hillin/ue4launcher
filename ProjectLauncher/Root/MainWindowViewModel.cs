@@ -57,6 +57,18 @@ namespace UE4Launcher.Root
             }
         }
 
+        public bool CloseToSystemTray
+        {
+            get { return Preferences.Default.CloseToSystemTray; }
+            set
+            {
+                Preferences.Default.CloseToSystemTray = value;
+                Preferences.Default.Save();
+
+                this.RaisePropertyChanged(nameof(this.CloseToSystemTray));
+            }
+        }
+
         public ProjectLauncherViewModel ProjectLauncher { get; }
         public ProcessPageViewModel Processes { get; }
         public PlacesViewModel Places { get; }

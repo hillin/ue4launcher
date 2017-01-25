@@ -34,17 +34,20 @@ namespace UE4Launcher.Root
 
             this.ResetStatusText();
 
-            // tray notifier
-            _trayNotifierContextMenu = (ContextMenu)this.FindResource("TrayNotifierContextMenu");
+            if (_viewModel.DeveloperMode)
+            {
+                // tray notifier
+                _trayNotifierContextMenu = (ContextMenu)this.FindResource("TrayNotifierContextMenu");
 
-            _trayNotifier.MouseDown += this.TrayNotifier_MouseDown;
-            _trayNotifier.DoubleClick += this.TrayNotifier_DoubleClick;
-            var iconInfo = Application.GetResourceStream(new Uri("/Resources/Icons/app.ico", UriKind.Relative));
-            if (iconInfo != null)
-                using (var iconStream = iconInfo.Stream)
-                    this._trayNotifier.Icon = new System.Drawing.Icon(iconStream);
+                _trayNotifier.MouseDown += this.TrayNotifier_MouseDown;
+                _trayNotifier.DoubleClick += this.TrayNotifier_DoubleClick;
+                var iconInfo = Application.GetResourceStream(new Uri("/Resources/Icons/app.ico", UriKind.Relative));
+                if (iconInfo != null)
+                    using (var iconStream = iconInfo.Stream)
+                        this._trayNotifier.Icon = new System.Drawing.Icon(iconStream);
 
-            _trayNotifier.Visible = true;
+                _trayNotifier.Visible = true;
+            }
 
             MouseHook.MouseAction += this.MouseHook_MouseAction;
 
@@ -56,10 +59,13 @@ namespace UE4Launcher.Root
             }
         }
 
-        
+
 
         private void MouseHook_MouseAction(object sender, EventArgs e)
         {
+            if (!_viewModel.DeveloperMode)
+                return;
+
             if (!_trayNotifierContextMenu.IsOpen)
             {
                 MouseHook.Stop();
@@ -67,7 +73,7 @@ namespace UE4Launcher.Root
             }
 
             var mousePosition = Mouse.GetPosition(_trayNotifierContextMenu);
-            
+
             if (mousePosition.X <= 0
                 || mousePosition.Y <= 0
                 || mousePosition.X >= _trayNotifierContextMenu.RenderSize.Width
@@ -90,15 +96,15 @@ namespace UE4Launcher.Root
 
         private void ToggleMainWindow()
         {
-            if (this.WindowState == System.Windows.WindowState.Minimized)
+            if (this.WindowState == WindowState.Minimized)
             {
                 this.Show();
-                this.WindowState = System.Windows.WindowState.Normal;
+                this.WindowState = WindowState.Normal;
                 this.Focus();
             }
             else
             {
-                this.WindowState = System.Windows.WindowState.Minimized;
+                this.WindowState = WindowState.Minimized;
             }
         }
 
@@ -135,16 +141,22 @@ namespace UE4Launcher.Root
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            this.WindowState = System.Windows.WindowState.Minimized;
-            e.Cancel = true;
+            if (_viewModel.DeveloperMode && Preferences.Default.CloseToSystemTray)
+            {
+                this.WindowState = WindowState.Minimized;
+                e.Cancel = true;
+            }
         }
 
         protected override void OnStateChanged(EventArgs e)
         {
-            if (this.WindowState == System.Windows.WindowState.Minimized)
-                this.Hide();
-            else
-                this.Show();
+            if (_viewModel.DeveloperMode)
+            {
+                if (this.WindowState == WindowState.Minimized)
+                    this.Hide();
+                else
+                    this.Show();
+            }
 
             base.OnStateChanged(e);
         }

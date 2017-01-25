@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using UE4Launcher.Debugging;
 using UE4Launcher.Root;
 using Process = System.Diagnostics.Process;
+
 
 namespace UE4Launcher.Launcher
 {
@@ -105,8 +109,6 @@ namespace UE4Launcher.Launcher
                 this.RaiseProfilePropertyChanged(nameof(this.SpecifyMapName));
             }
         }
-
-
 
         public bool SpecifyLaunchMode
         {
@@ -686,6 +688,43 @@ namespace UE4Launcher.Launcher
             }
         }
 
+
+        public bool SpecifyCulture
+        {
+            get { return this.Profile.GetHasArgument(Arguments.Culture); }
+            set
+            {
+                if (this.Profile.SetEnableArgument(Arguments.Culture, value, this.Culture.Name))
+                {
+                    this.RaiseProfilePropertyChanged(nameof(this.SpecifyCulture));
+                }
+            }
+        }
+
+        private CultureViewModel _culture;
+        public CultureViewModel Culture
+        {
+            get { return _culture; }
+            set
+            {
+                _culture = value;
+                this.Profile.SetArgumentParameter(Arguments.Culture, _culture?.Name ?? Arguments.Culture.DefaultParameter);
+                this.RaiseProfilePropertyChanged(nameof(this.Culture));
+            }
+        }
+
+        private CultureViewModel[] _availableCultures;
+
+        public CultureViewModel[] AvailableCultures
+        {
+            get { return _availableCultures; }
+            set
+            {
+                _availableCultures = value;
+                this.RaiseProfilePropertyChanged(nameof(this.AvailableCultures));
+            }
+        }
+
         public bool NoSound
         {
             get { return this.Profile.GetHasArgument(Arguments.NoSound); }
@@ -814,7 +853,7 @@ namespace UE4Launcher.Launcher
 
         public string ConsoleCommandLine => $"{this.Profile.GetExecutableFile()}{this.Profile.GetCommandLineArguments()}";
 
-        
+
 
         string ITrayContextMenuItem.Name => this.ProfileName;
 
@@ -824,6 +863,7 @@ namespace UE4Launcher.Launcher
 
 
         private readonly ICommand _trayContextMenuCommand;
+
         ICommand ITrayContextMenuItem.Command => _trayContextMenuCommand;
 
         string ITrayContextMenuItem.Description
@@ -840,6 +880,55 @@ namespace UE4Launcher.Launcher
             this.IsModified = false;
 
             _trayContextMenuCommand = new SimpleCommand(this.ExecuteTrayContextMenuCommand);
+        }
+
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
+        private void LoadAvailableCultures()
+        {
+
+            var l10nConfigFilePath = Path.Combine(this.SelectedProject.Path, "Config/Localization/Game.ini");
+
+            var definedCultures = new HashSet<string>();
+            var nativeCulture = Arguments.Culture.DefaultParameter as string;
+
+            if (File.Exists(l10nConfigFilePath))
+            {
+                //kludge culture detection
+                var l10nConfig = File.ReadAllText(l10nConfigFilePath);
+                var matches = Regex.Matches(l10nConfig, @"^\s*CulturesToGenerate=([\w\-]+)\s*$", RegexOptions.Multiline);
+                foreach (var culture in matches.OfType<Match>().Select(m => m.Groups[1].Value))
+                    definedCultures.Add(culture.ToLowerInvariant());
+
+                var match = Regex.Match(l10nConfig, @"^\s*NativeCulture=([\w\-]+)\s*$", RegexOptions.Multiline);
+                if (match.Success)
+                {
+                    nativeCulture = match.Groups[1].Value;
+                    definedCultures.Add(nativeCulture);
+                }
+            }
+
+            var allCultures = CultureInfo.GetCultures(CultureTypes.InstalledWin32Cultures);
+
+            this.AvailableCultures =
+                allCultures.Union(allCultures.Select(c => c.Parent).Where(p => p != null).Distinct())
+                           .Where(c => !object.Equals(c, CultureInfo.InvariantCulture))
+                           .Where(c => this.DeveloperMode || definedCultures.Count == 0 || definedCultures.Contains(c.Name.ToLowerInvariant()))
+                           .Select(
+                               c =>
+                                   new CultureViewModel(c.Name, c.NativeName,
+                                                   definedCultures.Contains(c.Name.ToLowerInvariant())))
+                           .OrderByDescending(c => c.IsDefined).ThenBy(c => c.Name).ToArray();
+
+            var cultureName = nativeCulture;
+            string currentCultureName;
+            if (this.Profile.GetArgumentParameter(Arguments.Culture, out currentCultureName))
+                cultureName = currentCultureName;
+
+            if (!string.IsNullOrEmpty(cultureName))
+                this.Culture = this.AvailableCultures.FirstOrDefault(c => c.Name.Equals(cultureName, StringComparison.InvariantCultureIgnoreCase));
+
+            if (this.Culture == null)
+                this.Culture = this.AvailableCultures.FirstOrDefault();
         }
 
         private void ExecuteTrayContextMenuCommand(object obj)
@@ -876,6 +965,7 @@ namespace UE4Launcher.Launcher
         {
             this.LoadMaps();
             this.LoadIniFileList();
+            this.LoadAvailableCultures();
         }
 
         private void LoadIniFileList()

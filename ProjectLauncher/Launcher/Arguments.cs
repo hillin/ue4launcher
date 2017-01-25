@@ -139,5 +139,10 @@ namespace UE4Launcher.Launcher
 
         public static readonly ArgumentInfo NoSound = new ArgumentInfo("NoSound", "NOSOUND", "Disable any sound output from the engine");
         public static readonly ArgumentInfo NoSplash = new ArgumentInfo("NoSplash", "NOSPLASH", "Disable use of splash image when loading game");
+
+        public static readonly ArgumentInfo Culture = new ArgumentInfo("Culture", "CULTURE",
+                                                                       "Override culture",
+                                                                       ArgumentType.Switch, true,
+                                                                       "en", true);
     }
 }

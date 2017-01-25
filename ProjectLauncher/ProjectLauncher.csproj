@@ -67,6 +67,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="IniFile.cs" />
     <Compile Include="Launcher\Arguments.cs" />
     <Compile Include="Launcher\ArgumentType.cs" />
     <Compile Include="BoolToVisibilityConverter.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Debugging\MessageFilter.cs" />
     <Compile Include="Debugging\VisualStudioVersions.cs" />
     <Compile Include="ExecutableFileInfo.cs" />
+    <Compile Include="Launcher\CultureViewModel.cs" />
     <Compile Include="Launcher\ExecutableType.cs" />
     <Compile Include="Launcher\MapInfo.cs" />
     <Compile Include="Launcher\MappingArgumentInfo.cs" />
