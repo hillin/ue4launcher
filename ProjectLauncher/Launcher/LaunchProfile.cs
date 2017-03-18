@@ -26,6 +26,7 @@ namespace UE4Launcher.Launcher
         public List<Argument> Arguments { get; set; }
 
         public string AdditionalParameters { get; set; }
+        public string AdditionalOptions { get; set; }
 
         public LaunchProfile()
         {
@@ -68,6 +69,9 @@ namespace UE4Launcher.Launcher
             {
                 argument.ToCommandLine(builder, this);
             }
+
+            if (!string.IsNullOrWhiteSpace(this.AdditionalOptions))
+                builder.Append(this.AdditionalOptions);
 
             if (this.OpenMode == OpenMode.Connect)
             {

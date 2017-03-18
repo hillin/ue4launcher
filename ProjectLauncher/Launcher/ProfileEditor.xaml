@@ -914,6 +914,22 @@
                                 <ColumnDefinition Width="{StaticResource ToggleWidth}" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
+                            <TextBlock Text="Additional Options"
+                                       Style="{StaticResource Caption}" />
+                            <xctk:WatermarkTextBox Style="{StaticResource Content}"
+                                                   Text="{Binding AdditionalOptions, Mode=TwoWay}"
+                                                   Grid.Column="1"
+                                                   Grid.ColumnSpan="2"
+                                                   HorizontalAlignment="Stretch"
+                                                   Watermark="Options" />
+                        </Grid>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
                             <TextBlock Text="Additional Params."
                                        Style="{StaticResource Caption}" />
                             <xctk:WatermarkTextBox Style="{StaticResource Content}"

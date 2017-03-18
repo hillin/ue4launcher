@@ -754,6 +754,18 @@ namespace UE4Launcher.Launcher
             }
         }
 
+        public string AdditionalOptions
+        {
+            get { return this.Profile.AdditionalOptions; }
+            set
+            {
+                this.Profile.AdditionalOptions = value;
+                this.RaiseProfilePropertyChanged(nameof(this.AdditionalOptions));
+            }
+        }
+
+        
+
         private ExecutableFileInfo[] _executableFiles;
         public ExecutableFileInfo[] ExecutableFiles
         {
