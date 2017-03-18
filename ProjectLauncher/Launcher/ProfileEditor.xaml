@@ -917,7 +917,7 @@
                             <TextBlock Text="Additional Options"
                                        Style="{StaticResource Caption}" />
                             <xctk:WatermarkTextBox Style="{StaticResource Content}"
-                                                   Text="{Binding AdditionalOptions, Mode=TwoWay}"
+                                                   Text="{Binding AdditionalOptions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    Grid.Column="1"
                                                    Grid.ColumnSpan="2"
                                                    HorizontalAlignment="Stretch"
@@ -933,7 +933,7 @@
                             <TextBlock Text="Additional Params."
                                        Style="{StaticResource Caption}" />
                             <xctk:WatermarkTextBox Style="{StaticResource Content}"
-                                                   Text="{Binding AdditionalParams, Mode=TwoWay}"
+                                                   Text="{Binding AdditionalParams, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    Grid.Column="1"
                                                    Grid.ColumnSpan="2"
                                                    HorizontalAlignment="Stretch"
