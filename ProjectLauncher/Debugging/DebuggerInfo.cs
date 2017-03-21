@@ -12,6 +12,7 @@ namespace UE4Launcher.Debugging
             Debuggers = new[]
             {
                 DebuggerInfo.Automatic = new DebuggerInfo(VisualStudioVersions.Automatic, "Automatically Detect", true),
+                new DebuggerInfo(VisualStudioVersions.VS2017, "Visual Studio 2017"),
                 new DebuggerInfo(VisualStudioVersions.VS2015, "Visual Studio 2015"),
                 new DebuggerInfo(VisualStudioVersions.VS2013, "Visual Studio 2013"),
                 new DebuggerInfo(VisualStudioVersions.VS2012, "Visual Studio 2012"),

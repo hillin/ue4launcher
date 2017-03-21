@@ -13,6 +13,7 @@ namespace UE4Launcher.Debugging
         private static readonly Dictionary<VisualStudioVersions, string> DteProgIds
             = new Dictionary<VisualStudioVersions, string>
             {
+                {VisualStudioVersions.VS2017, "VisualStudio.DTE.15.0"},
                 {VisualStudioVersions.VS2015, "VisualStudio.DTE.14.0"},
                 {VisualStudioVersions.VS2013, "VisualStudio.DTE.12.0"},
                 {VisualStudioVersions.VS2012, "VisualStudio.DTE.11.0"},
