@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -126,15 +127,22 @@ namespace UE4Launcher.Launcher
                 if (this.SelectedProfile == null)
                     return "<unknown>";
 
-                var versionFile = Path.ChangeExtension(this.SelectedProfile.SelectedExecutableFile.Path, ".version");
-                if (File.Exists(versionFile))
-                    return File.ReadAllText(versionFile);
+	            var executableFilePath = this.SelectedProfile.SelectedExecutableFile.Path;
+	            Debug.Assert(executableFilePath != null, "executableFilePath != null");
 
-                if (!File.Exists(this.SelectedProfile.SelectedExecutableFile.Path))
+				var versionFile = Path.ChangeExtension(executableFilePath, ".version");
+                if (File.Exists(versionFile))
+                {
+	                Debug.Assert(versionFile != null, "versionFile != null");
+	                return File.ReadAllText(versionFile);
+                }
+
+	            if (!File.Exists(executableFilePath))
                 {
                     return "<file not existed>";
                 }
-                var fileInfo = new FileInfo(this.SelectedProfile.SelectedExecutableFile.Path);
+	            
+	            var fileInfo = new FileInfo(executableFilePath);
                 return fileInfo.LastWriteTimeUtc.ToString(CultureInfo.InvariantCulture);
             }
         }
