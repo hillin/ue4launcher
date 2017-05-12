@@ -3,6 +3,7 @@ using LaunchModeEnum = UE4Launcher.Launcher.LaunchMode;
 using WindowStateEnum = UE4Launcher.Launcher.WindowState;
 using RHIFeatureLevelEnum = UE4Launcher.Launcher.RHIFeatureLevel;
 using RHITypeEnum = UE4Launcher.Launcher.RHIType;
+using RHIDebugModeEnum = UE4Launcher.Launcher.RHIDebugMode;
 namespace UE4Launcher.Launcher
 {
 	static class Arguments
@@ -76,6 +77,13 @@ namespace UE4Launcher.Launcher
 				{RHIFeatureLevelEnum.ShaderModel4, "SM4"},
 				{RHIFeatureLevelEnum.ShaderModel5, "SM5"}
 			}, "Set the graphics API feature level used to render game");
+
+		public static readonly ArgumentInfo RHIDebugMode =
+			new MappingArgumentInfo<RHIDebugModeEnum>("RHIDebugMode", new Dictionary<RHIDebugModeEnum, string>
+			{
+				{RHIDebugModeEnum.D3DDebug, "D3DDEBUG"},
+				{RHIDebugModeEnum.OpenGLDebug, "OPENGLDEBUG"}
+			}, "Set graphics API debug mode");
 
 		public static readonly ArgumentInfo VrMode = new ArgumentInfo("VrMode", "VR", "Force VR mode");
 

@@ -590,6 +590,29 @@
                                 <ColumnDefinition Width="{StaticResource ToggleWidth}" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="RHIDebugCheck"
+                                      IsChecked="{Binding SpecifyRHIDebugMode, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="API Debug"
+                                       Style="{StaticResource Caption}" />
+
+                            <ComboBox x:Name="RHIDebugModeList"
+                                      SelectedItem="{Binding RHIDebugMode, Mode=TwoWay}"
+                                      IsEnabled="{Binding IsChecked, ElementName=RHIDebugCheck}"
+                                      Style="{StaticResource Content}">
+                                <ComboBox.Items>
+                                    <launcher:RHIDebugMode>D3DDebug</launcher:RHIDebugMode>
+                                    <launcher:RHIDebugMode>OpenGLDebug</launcher:RHIDebugMode>
+                                </ComboBox.Items>
+                            </ComboBox>
+                        </Grid>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
                             <CheckBox x:Name="WindowStateCheck"
                                       IsChecked="{Binding SpecifyWindowState, Mode=TwoWay}"
                                       Style="{StaticResource SwitchToggle}" />

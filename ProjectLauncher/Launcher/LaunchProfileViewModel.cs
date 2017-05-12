@@ -341,6 +341,30 @@ namespace UE4Launcher.Launcher
 			}
 		}
 
+
+		private RHIDebugMode _rhiDebugMode = RHIDebugMode.D3DDebug;
+
+		public RHIDebugMode RHIDebugMode
+		{
+			get => this.GetParameterEnumValue(Arguments.RHIDebugMode, ref _rhiDebugMode);
+			set
+			{
+				_rhiDebugMode = value;
+				this.Profile.SetArgumentParameter(Arguments.RHIDebugMode, _rhiDebugMode);
+				this.RaiseProfilePropertyChanged(nameof(this.RHIDebugMode));
+			}
+		}
+
+		public bool SpecifyRHIDebugMode
+		{
+			get => this.Profile.GetHasArgument(Arguments.RHIDebugMode);
+			set
+			{
+				if (this.Profile.SetEnableArgument(Arguments.RHIDebugMode, value, this.RHIDebugMode))
+					this.RaiseProfilePropertyChanged(nameof(this.SpecifyRHIDebugMode));
+			}
+		}
+
 		public bool VrMode
         {
             get { return this.Profile.GetHasArgument(Arguments.VrMode); }
