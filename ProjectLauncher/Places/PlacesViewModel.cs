@@ -22,8 +22,8 @@ namespace UE4Launcher.Places
 
         public LocationViewModelBase SelectedLocation
         {
-            get { return _selectedLocation; }
-            set
+            get => _selectedLocation;
+	        set
             {
                 if (_selectedLocation == value)
                     return;

@@ -76,8 +76,8 @@ namespace UE4Launcher.Places
 
         public override string DisplayName
         {
-            get { return IOPath.GetFileName(this.Path); }
-            set { base.DisplayName = value; }
+            get => IOPath.GetFileName(this.Path);
+	        set => base.DisplayName = value;
         }
 
         protected override string StringComparablePart => this.Path;

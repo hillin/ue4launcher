@@ -25,8 +25,8 @@ namespace UE4Launcher.Launcher
 
         public LaunchProfileViewModel SelectedProfile
         {
-            get { return _selectedProfile; }
-            set
+            get => _selectedProfile;
+	        set
             {
                 if (_selectedProfile == value)
                     return;
@@ -40,8 +40,8 @@ namespace UE4Launcher.Launcher
 
         public bool AttachDebugger
         {
-            get { return Preferences.Default.AttachDebugger; }
-            set
+            get => Preferences.Default.AttachDebugger;
+	        set
             {
                 Preferences.Default.AttachDebugger = value;
                 Preferences.Default.Save();
@@ -150,8 +150,8 @@ namespace UE4Launcher.Launcher
 
         public string ServerPing
         {
-            get { return _serverPing; }
-            private set
+            get => _serverPing;
+	        private set
             {
                 _serverPing = value;
                 this.RaisePropertyChanged(nameof(this.ServerPing));

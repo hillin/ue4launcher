@@ -19,8 +19,8 @@ namespace UE4Launcher.Processes
         private ProcessViewModel _selectedProcess;
         public ProcessViewModel SelectedProcess
         {
-            get { return _selectedProcess; }
-            set
+            get => _selectedProcess;
+	        set
             {
                 _selectedProcess = value;
                 this.RaisePropertyChanged(nameof(this.SelectedProcess));

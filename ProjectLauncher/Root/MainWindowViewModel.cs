@@ -35,8 +35,8 @@ namespace UE4Launcher.Root
         private string _statusText;
         public string StatusText
         {
-            get { return _statusText; }
-            set
+            get => _statusText;
+	        set
             {
                 _statusText = value;
                 this.RaisePropertyChanged(nameof(this.StatusText));
@@ -45,8 +45,8 @@ namespace UE4Launcher.Root
 
         public bool StartWithWindows
         {
-            get { return Preferences.Default.StartWithWindows; }
-            set
+            get => Preferences.Default.StartWithWindows;
+	        set
             {
                 Preferences.Default.StartWithWindows = value;
                 Preferences.Default.Save();
@@ -59,8 +59,8 @@ namespace UE4Launcher.Root
 
         public bool CloseToSystemTray
         {
-            get { return Preferences.Default.CloseToSystemTray; }
-            set
+            get => Preferences.Default.CloseToSystemTray;
+	        set
             {
                 Preferences.Default.CloseToSystemTray = value;
                 Preferences.Default.Save();

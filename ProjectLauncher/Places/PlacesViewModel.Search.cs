@@ -18,8 +18,8 @@ namespace UE4Launcher.Places
 
         public string SearchText
         {
-            get { return _searchText; }
-            set
+            get => _searchText;
+	        set
             {
                 var wasSearching = this.IsSearching;
                 _searchText = value;
@@ -54,8 +54,8 @@ namespace UE4Launcher.Places
 
         public bool IsFileIndicesReady
         {
-            get { return _isFileIndicesReady; }
-            private set
+            get => _isFileIndicesReady;
+	        private set
             {
                 _isFileIndicesReady = value;
                 this.RaisePropertyChanged(nameof(this.IsFileIndicesReady));
@@ -70,8 +70,8 @@ namespace UE4Launcher.Places
 
         public int SearchResultCount
         {
-            get { return _searchResultCount; }
-            private set
+            get => _searchResultCount;
+	        private set
             {
                 _searchResultCount = value;
                 this.RaisePropertyChanged(nameof(this.SearchResultCount));
@@ -84,8 +84,8 @@ namespace UE4Launcher.Places
 
         public double SearchProgress
         {
-            get { return _searchProgress; }
-            private set
+            get => _searchProgress;
+	        private set
             {
                 _searchProgress = value;
                 this.RaisePropertyChanged(nameof(this.SearchProgress));
@@ -99,8 +99,8 @@ namespace UE4Launcher.Places
 
         public bool IsAllSearchResultShown
         {
-            get { return _isAllSearchResultShown; }
-            private set
+            get => _isAllSearchResultShown;
+	        private set
             {
                 _isAllSearchResultShown = value;
                 this.RaisePropertyChanged(nameof(this.IsAllSearchResultShown));

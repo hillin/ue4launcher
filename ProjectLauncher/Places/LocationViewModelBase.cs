@@ -12,8 +12,8 @@ namespace UE4Launcher.Places
 
         public virtual string DisplayName
         {
-            get { return _displayName; }
-            set
+            get => _displayName;
+	        set
             {
                 _displayName = value;
                 this.RaisePropertyChanged(nameof(this.DisplayName));
@@ -26,8 +26,8 @@ namespace UE4Launcher.Places
         private bool _isSelected;
         public bool IsSelected
         {
-            get { return _isSelected; }
-            set
+            get => _isSelected;
+	        set
             {
                 _isSelected = value;
                 this.RaisePropertyChanged(nameof(this.IsSelected));

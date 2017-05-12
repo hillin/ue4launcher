@@ -9,8 +9,8 @@ namespace UE4Launcher.Places
 
         public bool IsPublic
         {
-            get { return _isPublic; }
-            set
+            get => _isPublic;
+	        set
             {
                 _isPublic = value;
                 this.RaisePropertyChanged(nameof(this.IsPublic));
@@ -19,15 +19,15 @@ namespace UE4Launcher.Places
 
         public string RelativePath
         {
-            get { return this.Location.RelativePath; }
-            set { this.Location.RelativePath = value; }
+            get => this.Location.RelativePath;
+	        set => this.Location.RelativePath = value;
         }
 
         public override string DisplayName
         {
-            get { return this.Location.DisplayName; }
+            get => this.Location.DisplayName;
 
-            set
+	        set
             {
                 this.Location.DisplayName = value;
                 base.DisplayName = value;

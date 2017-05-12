@@ -26,8 +26,8 @@ namespace UE4Launcher.Processes
 
         public string CPUUsageDisplay
         {
-            get { return _cpuUsageDisplay; }
-            private set
+            get => _cpuUsageDisplay;
+	        private set
             {
                 _cpuUsageDisplay = value;
                 this.RaisePropertyChanged(nameof(this.CPUUsageDisplay));
@@ -38,8 +38,8 @@ namespace UE4Launcher.Processes
         private string _memoryDisplay;
         public string MemoryDisplay
         {
-            get { return _memoryDisplay; }
-            private set
+            get => _memoryDisplay;
+	        private set
             {
                 _memoryDisplay = value;
                 this.RaisePropertyChanged(nameof(this.MemoryDisplay));

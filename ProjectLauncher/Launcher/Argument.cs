@@ -16,8 +16,8 @@ namespace UE4Launcher.Launcher
         private object _parameter;
         public object Parameter
         {
-            get { return _parameter; }
-            set
+            get => _parameter;
+	        set
             {
                 this.RaisePropertyChanged(nameof(this.Parameter));
                 _parameter = value;

@@ -11,8 +11,8 @@ namespace UE4Launcher.Root
 
         public object Data
         {
-            get { return this.GetValue(DataProperty); }
-            set { this.SetValue(DataProperty, value); }
+            get => this.GetValue(DataProperty);
+	        set => this.SetValue(DataProperty, value);
         }
 
         public static readonly DependencyProperty DataProperty =

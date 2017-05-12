@@ -27,8 +27,8 @@ namespace UE4Launcher.Launcher
         private bool _isModified;
         public bool IsModified
         {
-            get { return _isModified; }
-            set
+            get => _isModified;
+	        set
             {
                 _isModified = value;
                 this.RaisePropertyChanged(nameof(this.IsModified));
@@ -37,8 +37,8 @@ namespace UE4Launcher.Launcher
 
         public string ProfileName
         {
-            get { return this.Profile.ProfileName; }
-            set
+            get => this.Profile.ProfileName;
+	        set
             {
                 this.Profile.ProfileName = value;
                 this.RaiseProfilePropertyChanged(nameof(this.ProfileName));
@@ -47,8 +47,8 @@ namespace UE4Launcher.Launcher
 
         public string ProfileDescription
         {
-            get { return this.Profile.ProfileDescription; }
-            set
+            get => this.Profile.ProfileDescription;
+	        set
             {
                 this.Profile.ProfileDescription = value;
                 this.RaiseProfilePropertyChanged(nameof(this.ProfileDescription));
@@ -57,8 +57,8 @@ namespace UE4Launcher.Launcher
 
         public ProfileStorage ProfileStorage
         {
-            get { return this.Profile.ProfileStorage; }
-            set
+            get => this.Profile.ProfileStorage;
+	        set
             {
                 this.Profile.ProfileStorage = value;
                 this.RaiseProfilePropertyChanged(nameof(this.ProfileStorage));
@@ -73,8 +73,8 @@ namespace UE4Launcher.Launcher
 
         public bool IsListenServer
         {
-            get { return this.Profile.GetHasArgument(Arguments.ListenServer); }
-            set
+            get => this.Profile.GetHasArgument(Arguments.ListenServer);
+	        set
             {
                 this.Profile.SetEnableArgument(Arguments.ListenServer, value);
                 this.RaiseProfilePropertyChanged(nameof(this.IsListenServer));
@@ -86,8 +86,8 @@ namespace UE4Launcher.Launcher
 
         public bool UseLocalMap
         {
-            get { return this.Profile.OpenMode == OpenMode.LocalMap; }
-            set
+            get => this.Profile.OpenMode == OpenMode.LocalMap;
+	        set
             {
                 this.Profile.OpenMode = value ? OpenMode.LocalMap : OpenMode.Connect;
                 this.RaiseProfilePropertyChanged(nameof(this.UseLocalMap));
@@ -101,8 +101,8 @@ namespace UE4Launcher.Launcher
 
         public bool SpecifyMapName
         {
-            get { return _specifyMapName; }
-            set
+            get => _specifyMapName;
+	        set
             {
                 _specifyMapName = value;
                 this.UpdateProfileMap();
@@ -128,8 +128,8 @@ namespace UE4Launcher.Launcher
         private LaunchMode _launchMode;
         public LaunchMode LaunchMode
         {
-            get { return this.GetParameterEnumValue(Arguments.LaunchMode, ref _launchMode); }
-            set
+            get => this.GetParameterEnumValue(Arguments.LaunchMode, ref _launchMode);
+	        set
             {
                 _launchMode = value;
                 this.Profile.SetArgumentParameter(Arguments.LaunchMode, value);
@@ -143,8 +143,8 @@ namespace UE4Launcher.Launcher
 
         public bool ConnectToServer
         {
-            get { return this.Profile.OpenMode == OpenMode.Connect; }
-            set
+            get => this.Profile.OpenMode == OpenMode.Connect;
+	        set
             {
                 this.Profile.OpenMode = value ? OpenMode.Connect : OpenMode.LocalMap;
                 this.RaiseProfilePropertyChanged(nameof(this.UseLocalMap));
@@ -157,8 +157,8 @@ namespace UE4Launcher.Launcher
 
         public string IPSection0
         {
-            get { return this.GetIPSection(0); }
-            set
+            get => this.GetIPSection(0);
+	        set
             {
                 this.SetIPSection(0, value);
                 this.RaiseProfilePropertyChanged(nameof(this.IPSection0));
@@ -167,8 +167,8 @@ namespace UE4Launcher.Launcher
 
         public string IPSection1
         {
-            get { return this.GetIPSection(1); }
-            set
+            get => this.GetIPSection(1);
+	        set
             {
                 this.SetIPSection(1, value);
                 this.RaiseProfilePropertyChanged(nameof(this.IPSection1));
@@ -177,8 +177,8 @@ namespace UE4Launcher.Launcher
 
         public string IPSection2
         {
-            get { return this.GetIPSection(2); }
-            set
+            get => this.GetIPSection(2);
+	        set
             {
                 this.SetIPSection(2, value);
                 this.RaiseProfilePropertyChanged(nameof(this.IPSection2));
@@ -187,8 +187,8 @@ namespace UE4Launcher.Launcher
 
         public string IPSection3
         {
-            get { return this.GetIPSection(3); }
-            set
+            get => this.GetIPSection(3);
+	        set
             {
                 this.SetIPSection(3, value);
                 this.RaiseProfilePropertyChanged(nameof(this.IPSection3));
@@ -231,11 +231,8 @@ namespace UE4Launcher.Launcher
         private int _port = 7777;
         public int Port
         {
-            get
-            {
-                return this.GetParameterValue(Arguments.Port, ref _port);
-            }
-            set
+            get => this.GetParameterValue(Arguments.Port, ref _port);
+	        set
             {
                 _port = value;
                 this.Profile.SetArgumentParameter(Arguments.Port, value);
@@ -287,11 +284,8 @@ namespace UE4Launcher.Launcher
 
         public string Nickname
         {
-            get
-            {
-                return this.GetParameterReference(Arguments.PlayerName, ref _nickname);
-            }
-            set
+            get => this.GetParameterReference(Arguments.PlayerName, ref _nickname);
+	        set
             {
                 _nickname = value;
                 this.Profile.SetArgumentParameter(Arguments.PlayerName, _nickname);
@@ -322,11 +316,8 @@ namespace UE4Launcher.Launcher
 
         public WindowState WindowState
         {
-            get
-            {
-                return this.GetParameterEnumValue(Arguments.WindowState, ref _windowState);
-            }
-            set
+            get => this.GetParameterEnumValue(Arguments.WindowState, ref _windowState);
+	        set
             {
                 _windowState = value;
                 this.Profile.SetArgumentParameter(Arguments.WindowState, _windowState);
@@ -350,11 +341,8 @@ namespace UE4Launcher.Launcher
 
         public int ResolutionX
         {
-            get
-            {
-                return this.GetParameterValue(Arguments.ResolutionX, ref _resolutionX);
-            }
-            set
+            get => this.GetParameterValue(Arguments.ResolutionX, ref _resolutionX);
+	        set
             {
                 _resolutionX = value;
                 this.Profile.SetArgumentParameter(Arguments.ResolutionX, _resolutionX);
@@ -366,11 +354,8 @@ namespace UE4Launcher.Launcher
 
         public int ResolutionY
         {
-            get
-            {
-                return this.GetParameterValue(Arguments.ResolutionY, ref _resolutionY);
-            }
-            set
+            get => this.GetParameterValue(Arguments.ResolutionY, ref _resolutionY);
+	        set
             {
                 _resolutionY = value;
                 this.Profile.SetArgumentParameter(Arguments.ResolutionY, _resolutionY);
@@ -393,11 +378,8 @@ namespace UE4Launcher.Launcher
 
         public int WindowPositionX
         {
-            get
-            {
-                return this.GetParameterValue(Arguments.WindowPositionX, ref _windowPositionX);
-            }
-            set
+            get => this.GetParameterValue(Arguments.WindowPositionX, ref _windowPositionX);
+	        set
             {
                 _windowPositionX = value;
                 this.Profile.SetArgumentParameter(Arguments.WindowPositionX, _windowPositionX);
@@ -409,11 +391,8 @@ namespace UE4Launcher.Launcher
 
         public int WindowPositionY
         {
-            get
-            {
-                return this.GetParameterValue(Arguments.WindowPositionY, ref _windowPositionY);
-            }
-            set
+            get => this.GetParameterValue(Arguments.WindowPositionY, ref _windowPositionY);
+	        set
             {
                 _windowPositionY = value;
                 this.Profile.SetArgumentParameter(Arguments.WindowPositionY, _windowPositionY);
@@ -469,11 +448,8 @@ namespace UE4Launcher.Launcher
 
         public int ConsolePositionX
         {
-            get
-            {
-                return this.GetParameterValue(Arguments.ConsolePositionX, ref _consolePositionX);
-            }
-            set
+            get => this.GetParameterValue(Arguments.ConsolePositionX, ref _consolePositionX);
+	        set
             {
                 _consolePositionX = value;
                 this.Profile.SetArgumentParameter(Arguments.ConsolePositionX, _consolePositionX);
@@ -485,11 +461,8 @@ namespace UE4Launcher.Launcher
 
         public int ConsolePositionY
         {
-            get
-            {
-                return this.GetParameterValue(Arguments.ConsolePositionY, ref _consolePositionY);
-            }
-            set
+            get => this.GetParameterValue(Arguments.ConsolePositionY, ref _consolePositionY);
+	        set
             {
                 _consolePositionY = value;
                 this.Profile.SetArgumentParameter(Arguments.ConsolePositionY, _consolePositionY);
@@ -521,11 +494,8 @@ namespace UE4Launcher.Launcher
 
         public string LogFilename
         {
-            get
-            {
-                return this.GetParameterReference(Arguments.LogFilename, ref _logFilename);
-            }
-            set
+            get => this.GetParameterReference(Arguments.LogFilename, ref _logFilename);
+	        set
             {
                 _logFilename = value;
                 this.Profile.SetArgumentParameter(Arguments.LogFilename, _logFilename);
@@ -591,11 +561,8 @@ namespace UE4Launcher.Launcher
 
         public string DefaultEngineFilename
         {
-            get
-            {
-                return this.GetParameterReference(Arguments.OverrideDefaultEngine, ref _defaultEngineFilename);
-            }
-            set
+            get => this.GetParameterReference(Arguments.OverrideDefaultEngine, ref _defaultEngineFilename);
+	        set
             {
                 if (_defaultEngineFilename == value) return;
                 _defaultEngineFilename = value;
@@ -619,11 +586,8 @@ namespace UE4Launcher.Launcher
 
         public string DefaultGameFilename
         {
-            get
-            {
-                return this.GetParameterReference(Arguments.OverrideDefaultGame, ref _defaultGameFilename);
-            }
-            set
+            get => this.GetParameterReference(Arguments.OverrideDefaultGame, ref _defaultGameFilename);
+	        set
             {
                 if (_defaultGameFilename == value) return;
                 _defaultGameFilename = value;
@@ -647,11 +611,8 @@ namespace UE4Launcher.Launcher
 
         public string DefaultEditorFilename
         {
-            get
-            {
-                return this.GetParameterReference(Arguments.OverrideDefaultEditor, ref _defaultEditorFilename);
-            }
-            set
+            get => this.GetParameterReference(Arguments.OverrideDefaultEditor, ref _defaultEditorFilename);
+	        set
             {
                 if (_defaultEditorFilename == value) return;
                 _defaultEditorFilename = value;
@@ -675,11 +636,8 @@ namespace UE4Launcher.Launcher
 
         public string DefaultInputFilename
         {
-            get
-            {
-                return this.GetParameterReference(Arguments.OverrideDefaultInput, ref _defaultInputFilename);
-            }
-            set
+            get => this.GetParameterReference(Arguments.OverrideDefaultInput, ref _defaultInputFilename);
+	        set
             {
                 if (_defaultInputFilename == value) return;
                 _defaultInputFilename = value;
@@ -704,8 +662,8 @@ namespace UE4Launcher.Launcher
         private CultureViewModel _culture;
         public CultureViewModel Culture
         {
-            get { return _culture; }
-            set
+            get => _culture;
+	        set
             {
                 _culture = value;
                 this.Profile.SetArgumentParameter(Arguments.Culture, _culture?.Name ?? Arguments.Culture.DefaultParameter);
@@ -717,8 +675,8 @@ namespace UE4Launcher.Launcher
 
         public CultureViewModel[] AvailableCultures
         {
-            get { return _availableCultures; }
-            set
+            get => _availableCultures;
+	        set
             {
                 _availableCultures = value;
                 this.RaiseProfilePropertyChanged(nameof(this.AvailableCultures));
@@ -746,8 +704,8 @@ namespace UE4Launcher.Launcher
 
         public string AdditionalParams
         {
-            get { return this.Profile.AdditionalParameters; }
-            set
+            get => this.Profile.AdditionalParameters;
+	        set
             {
                 this.Profile.AdditionalParameters = value;
                 this.RaiseProfilePropertyChanged(nameof(this.AdditionalParams));
@@ -756,8 +714,8 @@ namespace UE4Launcher.Launcher
 
         public string AdditionalOptions
         {
-            get { return this.Profile.AdditionalOptions; }
-            set
+            get => this.Profile.AdditionalOptions;
+	        set
             {
                 this.Profile.AdditionalOptions = value;
                 this.RaiseProfilePropertyChanged(nameof(this.AdditionalOptions));
@@ -769,8 +727,8 @@ namespace UE4Launcher.Launcher
         private ExecutableFileInfo[] _executableFiles;
         public ExecutableFileInfo[] ExecutableFiles
         {
-            get { return _executableFiles; }
-            set
+            get => _executableFiles;
+	        set
             {
                 _executableFiles = value;
                 this.RaiseProfilePropertyChanged(nameof(this.ExecutableFiles));
@@ -782,8 +740,8 @@ namespace UE4Launcher.Launcher
         private ExecutableFileInfo _selectedExecutableFile;
         public ExecutableFileInfo SelectedExecutableFile
         {
-            get { return _selectedExecutableFile; }
-            set
+            get => _selectedExecutableFile;
+	        set
             {
                 _selectedExecutableFile = value;
                 this.Profile.ExecutableFile = value.ProjectRelativePath;
@@ -800,8 +758,8 @@ namespace UE4Launcher.Launcher
 
         public ProjectInfo[] Projects
         {
-            get { return _projects; }
-            set
+            get => _projects;
+	        set
             {
                 _projects = value;
                 this.RaiseProfilePropertyChanged(nameof(this.Projects));
@@ -811,8 +769,8 @@ namespace UE4Launcher.Launcher
         private ProjectInfo _selectedProject;
         public ProjectInfo SelectedProject
         {
-            get { return _selectedProject; }
-            set
+            get => _selectedProject;
+	        set
             {
                 _selectedProject = value;
                 this.Profile.ProjectName = _selectedProject.Name;
@@ -826,8 +784,8 @@ namespace UE4Launcher.Launcher
 
         public MapInfo[] Maps
         {
-            get { return _maps; }
-            set
+            get => _maps;
+	        set
             {
                 if (_maps == value) return;
                 _maps = value;
@@ -838,8 +796,8 @@ namespace UE4Launcher.Launcher
         private MapInfo _selectedMap;
         public MapInfo SelectedMap
         {
-            get { return _selectedMap; }
-            set
+            get => _selectedMap;
+	        set
             {
                 _selectedMap = value;
                 this.UpdateProfileMap();
@@ -853,8 +811,8 @@ namespace UE4Launcher.Launcher
 
         public string[] IniFiles
         {
-            get { return _iniFiles; }
-            set
+            get => _iniFiles;
+	        set
             {
                 if (_iniFiles == value) return;
                 _iniFiles = value;
