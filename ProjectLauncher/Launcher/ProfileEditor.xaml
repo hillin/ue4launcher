@@ -1,4 +1,6 @@
-﻿<UserControl x:Class="UE4Launcher.Launcher.ProfileEditor"
+﻿<!-- ReSharper disable Xaml.MissingGridIndex -->
+    
+    <UserControl x:Class="UE4Launcher.Launcher.ProfileEditor"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -528,6 +530,58 @@
                                       Style="{StaticResource SwitchToggle}" />
                             <TextBlock Text="VR"
                                        Style="{StaticResource Caption}" />
+                        </Grid>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="RHICheck"
+                                      IsChecked="{Binding SpecifyRHIType, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="Graphics API"
+                                       Style="{StaticResource Caption}" />
+
+                            <ComboBox x:Name="RHIList"
+                                      SelectedItem="{Binding RHIType, Mode=TwoWay}"
+                                      IsEnabled="{Binding IsChecked, ElementName=RHICheck}"
+                                      Style="{StaticResource Content}">
+                                <ComboBox.Items>
+                                    <launcher:RHIType>DirectX10</launcher:RHIType>
+                                    <launcher:RHIType>DirectX11</launcher:RHIType>
+                                    <launcher:RHIType>DirectX12</launcher:RHIType>
+                                    <launcher:RHIType>OpenGL3</launcher:RHIType>
+                                    <launcher:RHIType>OpenGL4</launcher:RHIType>
+                                    <launcher:RHIType>Vulkan</launcher:RHIType>
+                                </ComboBox.Items>
+                            </ComboBox>
+                        </Grid>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="RHIFeatureLevelCheck"
+                                      IsChecked="{Binding SpecifyRHIFeatureLevel, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="Feature Level"
+                                       Style="{StaticResource Caption}" />
+
+                            <ComboBox x:Name="RHIFeatureLevelList"
+                                      SelectedItem="{Binding RHIFeatureLevel, Mode=TwoWay}"
+                                      IsEnabled="{Binding IsChecked, ElementName=RHIFeatureLevelCheck}"
+                                      Style="{StaticResource Content}">
+                                <ComboBox.Items>
+                                    <launcher:RHIFeatureLevel>ShaderModel4</launcher:RHIFeatureLevel>
+                                    <launcher:RHIFeatureLevel>ShaderModel5</launcher:RHIFeatureLevel>
+                                    <launcher:RHIFeatureLevel>OpenGLES2</launcher:RHIFeatureLevel>
+                                    <launcher:RHIFeatureLevel>OpenGLES31</launcher:RHIFeatureLevel>
+                                </ComboBox.Items>
+                            </ComboBox>
                         </Grid>
 
                         <Grid Style="{StaticResource RowGrid}">

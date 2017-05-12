@@ -84,6 +84,8 @@
     <Compile Include="Launcher\MapInfo.cs" />
     <Compile Include="Launcher\MappingArgumentInfo.cs" />
     <Compile Include="Launcher\LaunchProfileViewModel.cs" />
+    <Compile Include="Launcher\RHIFeatureLevel.cs" />
+    <Compile Include="Launcher\RHIType.cs" />
     <Compile Include="Root\ITrayContextMenuItem.cs" />
     <Compile Include="Root\MainWindowViewModel.cs" />
     <Compile Include="NotificationObject.cs" />

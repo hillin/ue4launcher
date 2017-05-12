@@ -293,12 +293,61 @@ namespace UE4Launcher.Launcher
             }
         }
 
-        public bool VrMode
+
+	    private RHIFeatureLevel _rhiFeatureLevel = RHIFeatureLevel.ShaderModel5;
+
+		public RHIFeatureLevel RHIFeatureLevel
+		{
+			get => this.GetParameterEnumValue(Arguments.RHIFeatureLevel, ref _rhiFeatureLevel);
+			set
+			{
+				_rhiFeatureLevel = value;
+				this.Profile.SetArgumentParameter(Arguments.RHIFeatureLevel, _rhiFeatureLevel);
+				this.RaiseProfilePropertyChanged(nameof(this.RHIFeatureLevel));
+			}
+		}
+
+		public bool SpecifyRHIFeatureLevel
+	    {
+		    get => this.Profile.GetHasArgument(Arguments.RHIFeatureLevel);
+		    set
+		    {
+				if (this.Profile.SetEnableArgument(Arguments.RHIFeatureLevel, value, this.RHIFeatureLevel))
+					this.RaiseProfilePropertyChanged(nameof(this.SpecifyRHIFeatureLevel));
+			}
+	    }
+
+
+		private RHIType _rhiType = RHIType.DirectX11;
+
+		public RHIType RHIType
+		{
+			get => this.GetParameterEnumValue(Arguments.RHIType, ref _rhiType);
+			set
+			{
+				_rhiType = value;
+				this.Profile.SetArgumentParameter(Arguments.RHIType, _rhiType);
+				this.RaiseProfilePropertyChanged(nameof(this.RHIType));
+			}
+		}
+
+		public bool SpecifyRHIType
+		{
+			get => this.Profile.GetHasArgument(Arguments.RHIType);
+			set
+			{
+				if (this.Profile.SetEnableArgument(Arguments.RHIType, value, this.RHIType))
+					this.RaiseProfilePropertyChanged(nameof(this.SpecifyRHIType));
+			}
+		}
+
+		public bool VrMode
         {
             get { return this.Profile.GetHasArgument(Arguments.VrMode); }
             set
             {
-                if (this.Profile.SetEnableArgument(Arguments.VrMode, value)) this.RaiseProfilePropertyChanged(nameof(this.VrMode));
+                if (this.Profile.SetEnableArgument(Arguments.VrMode, value))
+					this.RaiseProfilePropertyChanged(nameof(this.VrMode));
             }
         }
 
@@ -1061,7 +1110,13 @@ namespace UE4Launcher.Launcher
 
         public void Launch(DebuggerInfo debugger)
         {
-            var process = Process.Start(this.Profile.GetExecutableFile(), this.Profile.GetCommandLineArguments());
+	        var args = this.Profile.GetCommandLineArguments();
+	        if (debugger != null)
+	        {
+		        args += " -WaitForDebugger";
+	        }
+
+	        var process = Process.Start(this.Profile.GetExecutableFile(), args);
             if (debugger != null)
                 debugger.AttachProcess(process);
             else
