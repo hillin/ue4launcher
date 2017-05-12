@@ -969,11 +969,14 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Additional Options"
+                                       VerticalAlignment="Top"
                                        Style="{StaticResource Caption}" />
                             <xctk:WatermarkTextBox Style="{StaticResource Content}"
                                                    Text="{Binding AdditionalOptions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    Grid.Column="1"
                                                    Grid.ColumnSpan="2"
+                                                   TextWrapping="Wrap"
+                                                   MinLines="2"
                                                    HorizontalAlignment="Stretch"
                                                    Watermark="Options" />
                         </Grid>
@@ -985,11 +988,14 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Additional Params."
+                                       VerticalAlignment="Top"
                                        Style="{StaticResource Caption}" />
                             <xctk:WatermarkTextBox Style="{StaticResource Content}"
                                                    Text="{Binding AdditionalParams, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    Grid.Column="1"
                                                    Grid.ColumnSpan="2"
+                                                   TextWrapping="Wrap"
+                                                   MinLines="2"
                                                    HorizontalAlignment="Stretch"
                                                    Watermark="Parameters" />
                         </Grid>
