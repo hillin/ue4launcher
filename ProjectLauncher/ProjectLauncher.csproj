@@ -43,6 +43,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Remoting" />
@@ -73,6 +74,7 @@
     <Compile Include="Debugging\DebuggerInfo.cs" />
     <Compile Include="Debugging\IDebuggerInfo.cs" />
     <Compile Include="Debugging\IDebuggerSupportedViewModel.cs" />
+    <Compile Include="Extensibility\IPlugin.cs" />
     <Compile Include="IniFile.cs" />
     <Compile Include="Launcher\Arguments.cs" />
     <Compile Include="Launcher\ArgumentType.cs" />
@@ -90,6 +92,7 @@
     <Compile Include="Launcher\RHIDebugMode.cs" />
     <Compile Include="Launcher\RHIFeatureLevel.cs" />
     <Compile Include="Launcher\RHIType.cs" />
+    <Compile Include="PluginManager.cs" />
     <Compile Include="Root\ITrayContextMenuItem.cs" />
     <Compile Include="Root\MainWindowViewModel.cs" />
     <Compile Include="NotificationObject.cs" />
@@ -244,9 +247,7 @@
   <ItemGroup>
     <Resource Include="Resources\Icons\app.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Behaviors\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Resources\Images\ic_lightbulb_outline_black_18dp.png" />
   </ItemGroup>

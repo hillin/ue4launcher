@@ -117,6 +117,8 @@ namespace UE4Launcher
 
 			// only start with windows if we are in developer mode
 			this.SetStartupWithWindows(Preferences.Default.StartWithWindows);
+
+			PluginManager.Instance.Initialize();
 		}
 
 		public static void ReportStatus(string status, double? timeOut = 10000)
