@@ -22,9 +22,9 @@ Once you have this project built, place *launcher.exe* at any place and depth un
 
 ## Third-Party Libraries
 **Extended WPF Toolkit** is employed in this project. It will be restored through nuget automatically.
+**Cortura.Fody** is used to pack all the assemblies together, to make this utility a single-file program.
 
 # Developer Mode and Edit Mode
-**ue4launcher** has 3 modes:
-- **Public Mode**: ue4launcher is used as a public launcher, with most of its features hidden. This could be used as a user launcher of your cooked project. To run ue4launcher in public mode, simply run *ProjectLauncher.exe* without any arguments.
-- **Developer Mode**: run *ProjectLauncher.exe* with *-dev* arg. In developer mode, all the features are available, except for you can't save your modifications to profiles. This could be the daily mode for project developers.
-- **Developer Edit Mode**: run *ProjectLauncher.exe* with *-dev -edit* arg. Profiles are allowed to be modified in this mode.
+**ue4launcher** has 2 modes:
+- **Standard Mode**: run *ProjectLauncher.exe* directly. In standard mode, all the features are available, except for you can't save your modifications to profiles. This could be the daily mode for project developers.
+- **Edit Mode**: run *ProjectLauncher.exe* with *-edit* arg. Profiles are allowed to be modified in this mode.
