@@ -23,7 +23,7 @@ Once you have this project built, place *launcher.exe* at any place and depth un
 
 ## Third-Party Libraries
 - **Extended WPF Toolkit** is employed in this project. It will be restored through nuget automatically.
-- **Cortura.Fody** is used to pack all the assemblies together, to make this utility a single-file program.
+- **Costura.Fody** is used to pack all the assemblies together, to make this utility a single-file program.
 
 # Developer Mode and Edit Mode
 **ue4launcher** has 2 modes:
