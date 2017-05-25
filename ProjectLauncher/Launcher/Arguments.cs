@@ -173,5 +173,7 @@ namespace UE4Launcher.Launcher
 																	   "Override culture",
 																	   ArgumentType.Switch, true,
 																	   "en", true);
+
+		public static readonly ArgumentInfo Messaging = new ArgumentInfo("Messaging", "MESSAGING", "Allow instance to communicate with other processes (like Unreal Frontend)");
 	}
 }

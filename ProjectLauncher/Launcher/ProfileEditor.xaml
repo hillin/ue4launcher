@@ -990,6 +990,19 @@
                                 <ColumnDefinition Width="{StaticResource ToggleWidth}" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="MessagingCheck"
+                                      IsChecked="{Binding Messaging, Mode=TwoWay}"
+                                      Style="{StaticResource SwitchToggle}" />
+                            <TextBlock Text="Messaging"
+                                       Style="{StaticResource Caption}" />
+                        </Grid>
+
+                        <Grid Style="{StaticResource RowGrid}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource CaptionWidth}" />
+                                <ColumnDefinition Width="{StaticResource ToggleWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
                             <TextBlock Text="Additional Options"
                                        VerticalAlignment="Top"
                                        Style="{StaticResource Caption}" />

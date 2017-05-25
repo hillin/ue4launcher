@@ -774,6 +774,16 @@ namespace UE4Launcher.Launcher
 			}
 		}
 
+		public bool Messaging
+		{
+			get { return this.Profile.GetHasArgument(Arguments.Messaging); }
+			set
+			{
+				if (this.Profile.SetEnableArgument(Arguments.Messaging, value))
+					this.RaiseProfilePropertyChanged(nameof(this.Messaging));
+			}
+		}
+
 		public string AdditionalParams
 		{
 			get => this.Profile.AdditionalParameters;
