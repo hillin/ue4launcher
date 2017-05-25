@@ -78,7 +78,7 @@ namespace UE4Launcher.Processes
         private void ExecuteTrayContextMenuCommand(object obj)
         {
             if (Utilities.IsCtrlDown)
-                this.AttachDebugger(null);
+                this.AttachDebugger(AutomaticDebuggerInfo.Instance);
             else if (Utilities.IsAltDown)
                 this.Kill();
             else

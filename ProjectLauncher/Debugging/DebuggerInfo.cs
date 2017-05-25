@@ -90,19 +90,19 @@ namespace UE4Launcher.Debugging
 		public string Description => Path.GetFileName(this.SolutionFileName);
 		public string Version => this.DteObject.Version;
 		public string Edition => this.DteObject.Edition;
-		public string SolutionFileName => this.DteObject.Solution?.FileName;
+		public string SolutionFileName { get; }
 
-		public string SolutionDisplayName => string.IsNullOrEmpty(this.DteObject.Solution?.FileName)
+		public string SolutionDisplayName => string.IsNullOrEmpty(this.SolutionFileName)
 			? "new solution"
-			: Path.GetFileName(this.DteObject.Solution?.FileName);
+			: Path.GetFileName(this.SolutionFileName);
 
-		public string DisplayName => $"VS {VisualStudioVersionToProductVersion(this.DteObject.Version)} - {this.SolutionDisplayName}";
-
+		public string DisplayName => $"VS {DebuggerInfo.VisualStudioVersionToProductVersion(this.Version)} - {this.SolutionDisplayName}";
 
 		public DebuggerInfo(string monikerName, dynamic dteObject)
 		{
 			this.MonikerName = monikerName;
 			this.DteObject = dteObject;
+			this.SolutionFileName = this.DteObject.Solution?.FileName;	// could be slow and prone to exception, cache it
 
 			var match = Regex.Match(this.MonikerName, @"\:(\d+)$");
 			this.ProcessId = match.Success ? int.Parse(match.Groups[1].Value) : -1;

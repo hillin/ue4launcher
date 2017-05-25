@@ -119,8 +119,7 @@
                                                       SelectedItem="{Binding SelectedDebugger, Mode=TwoWay}">
                                                 <ComboBox.ItemTemplate>
                                                     <DataTemplate DataType="debugging:IDebuggerInfo">
-                                                        <StackPanel Orientation="Horizontal"
-                                                                    ToolTip="{Binding Description}">
+                                                        <StackPanel Orientation="Horizontal">
                                                             <Viewbox Width="16" Height="16">
                                                                 <Rectangle Width="16" Height="16">
                                                                     <Rectangle.Fill>
@@ -152,8 +151,8 @@
                                                 </ComboBox.ItemTemplate>
                                                 <ComboBox.ItemContainerStyle>
                                                     <Style TargetType="{x:Type ComboBoxItem}">
-                                                        <Setter Property="IsEnabled"
-                                                                Value="{Binding IsAvailable}" />
+                                                        <Setter Property="ToolTip"
+                                                                Value="{Binding Description}" />
                                                     </Style>
                                                 </ComboBox.ItemContainerStyle>
                                             </ComboBox>

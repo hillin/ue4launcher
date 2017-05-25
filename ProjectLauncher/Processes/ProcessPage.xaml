@@ -94,10 +94,11 @@
                                         </StackPanel>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
+
                                 <ComboBox.ItemContainerStyle>
                                     <Style TargetType="{x:Type ComboBoxItem}">
-                                        <Setter Property="IsEnabled"
-                                                Value="{Binding IsAvailable}" />
+                                        <Setter Property="ToolTip"
+                                                Value="{Binding Description}" />
                                     </Style>
                                 </ComboBox.ItemContainerStyle>
                             </ComboBox>
