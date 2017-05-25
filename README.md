@@ -17,8 +17,9 @@
 - User-friendly GUI driven by WPF + a pinch of MVVM
 
 # Build and Run
-You will need Visual Studio 2015 and .NET Framework 4.0 to build this project.
-Once you have this project built, place *launcher.exe* at any place and depth under your UE4 project folder and run it with *-dev -edit* args (read the section below to learn more).
+You will need Visual Studio 2017 and .NET Framework 4.0 to build this project.
+
+Once you have this project built, place *launcher.exe* at any place and depth under your UE4 project folder and run it with *-edit* args (read the section below to learn more).
 
 ## Third-Party Libraries
 - **Extended WPF Toolkit** is employed in this project. It will be restored through nuget automatically.
