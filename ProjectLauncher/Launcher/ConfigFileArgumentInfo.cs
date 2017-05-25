@@ -2,7 +2,7 @@
 
 namespace UE4Launcher.Launcher
 {
-    class ConfigFileArgumentInfo : ArgumentInfo
+	internal class ConfigFileArgumentInfo : ArgumentInfo
     {
         public ConfigFileArgumentInfo(string name, string command, string description,
                                       ArgumentType argumentType = ArgumentType.Switch, bool hasParameter = false,

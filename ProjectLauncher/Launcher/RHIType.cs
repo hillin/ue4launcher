@@ -5,7 +5,7 @@ using System.Text;
 
 namespace UE4Launcher.Launcher
 {
-	enum RHIType
+	internal enum RHIType
 	{
 		DirectX10,
 		DirectX11,

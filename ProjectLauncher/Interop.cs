@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace UE4Launcher
 { 
     [SuppressMessage("ReSharper", "InconsistentNaming")]
-    static class Interop
+    internal static class Interop
     {
         public const int SW_RESTORE = 9;
 

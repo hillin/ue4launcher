@@ -5,12 +5,12 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ProjectLauncher")]
+[assembly: AssemblyTitle("UE4 Project Launcher")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ProjectLauncher")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCompany("Hillinworks")]
+[assembly: AssemblyProduct("UE4 Project Launcher")]
+[assembly: AssemblyCopyright("Copyright © 2016 - 2017, Hillinworks")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -49,5 +49,5 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.7.0.231")]
-[assembly: AssemblyFileVersion("1.7.0.231")]
+[assembly: AssemblyVersion("1.8.0.300")]
+[assembly: AssemblyFileVersion("1.8.0.300")]

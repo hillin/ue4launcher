@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=System"
              xmlns:processes="clr-namespace:UE4Launcher.Processes"
+             xmlns:debugging="clr-namespace:UE4Launcher.Debugging"
              mc:Ignorable="d"
              d:DesignHeight="474" d:DesignWidth="800">
     <Border BorderThickness="1"
@@ -63,7 +63,7 @@
                                       ItemsSource="{Binding Debuggers}"
                                       SelectedItem="{Binding SelectedDebugger, Mode=TwoWay}">
                                 <ComboBox.ItemTemplate>
-                                    <DataTemplate DataType="debugging:DebuggerInfo">
+                                    <DataTemplate DataType="debugging:IDebuggerInfo">
                                         <StackPanel Orientation="Horizontal">
                                             <Viewbox Width="16" Height="16">
                                                 <Rectangle Width="16" Height="16">
@@ -89,7 +89,7 @@
                                                 </Rectangle>
                                             </Viewbox>
 
-                                            <TextBlock Text="{Binding Name}"
+                                            <TextBlock Text="{Binding DisplayName}"
                                                        Margin="4,0,0,0" />
                                         </StackPanel>
                                     </DataTemplate>
@@ -101,7 +101,18 @@
                                     </Style>
                                 </ComboBox.ItemContainerStyle>
                             </ComboBox>
+
+                            <Button x:Name="RefreshDebuggersButton"
+                                    Click="RefreshDebuggersButton_Click"
+                                    Padding="0"
+                                    Margin="4,0,0,0"
+                                    MinWidth="24"
+                                    Height="auto">
+                                <Image Source="/Resources/Images/ic_refresh_18pt.png"
+                                       Stretch="None"/>
+                            </Button>
                         </StackPanel>
+                        
                         <Button x:Name="AttachButton"
                                 IsEnabled="{Binding HasProcessSelected}"
                                 Click="AttachButton_Click">

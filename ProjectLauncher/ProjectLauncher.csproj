@@ -67,17 +67,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Debugging\AutomaticDebuggerInfo.cs" />
+    <Compile Include="Debugging\DebuggerInfo.cs" />
+    <Compile Include="Debugging\IDebuggerInfo.cs" />
+    <Compile Include="Debugging\IDebuggerSupportedViewModel.cs" />
     <Compile Include="IniFile.cs" />
     <Compile Include="Launcher\Arguments.cs" />
     <Compile Include="Launcher\ArgumentType.cs" />
     <Compile Include="BoolToVisibilityConverter.cs" />
     <Compile Include="Launcher\ConfigFileArgumentInfo.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="Debugging\DebuggerInfo.cs" />
-    <Compile Include="Debugging\DebuggerLauncher.cs" />
     <Compile Include="Debugging\IOleMessageFilter.cs" />
     <Compile Include="Debugging\MessageFilter.cs" />
-    <Compile Include="Debugging\VisualStudioVersions.cs" />
     <Compile Include="ExecutableFileInfo.cs" />
     <Compile Include="Launcher\CultureViewModel.cs" />
     <Compile Include="Launcher\ExecutableType.cs" />

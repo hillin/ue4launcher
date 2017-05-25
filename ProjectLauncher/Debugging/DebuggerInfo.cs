@@ -1,43 +1,140 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Windows;
 
 namespace UE4Launcher.Debugging
 {
-    class DebuggerInfo
-    {
-        public static readonly DebuggerInfo[] Debuggers;
-        public static readonly DebuggerInfo Automatic;
+	internal class DebuggerInfo : IDebuggerInfo
+	{
+		[DllImport("ole32.dll")]
+		private static extern void CreateBindCtx(int reserved, out IBindCtx ppbc);
 
-        static DebuggerInfo()
-        {
-            Debuggers = new[]
-            {
-                DebuggerInfo.Automatic = new DebuggerInfo(VisualStudioVersions.Automatic, "Automatically Detect", true),
-                new DebuggerInfo(VisualStudioVersions.VS2017, "Visual Studio 2017"),
-                new DebuggerInfo(VisualStudioVersions.VS2015, "Visual Studio 2015"),
-                new DebuggerInfo(VisualStudioVersions.VS2013, "Visual Studio 2013"),
-                new DebuggerInfo(VisualStudioVersions.VS2012, "Visual Studio 2012"),
-                new DebuggerInfo(VisualStudioVersions.VS2010, "Visual Studio 2010")
-            };
-        }
+		[DllImport("ole32.dll")]
+		private static extern int GetRunningObjectTable(int reserved, out IRunningObjectTable prot);
 
-        public VisualStudioVersions VSVersion { get; }
-        public string Name { get; }
-        public bool IsAvailable { get; }
+		public static DebuggerInfo[] Instances { get; private set; }
 
-        public DebuggerInfo(VisualStudioVersions vsVersion, string name, bool alwaysAvailable = false)
-        {
-            this.VSVersion = vsVersion;
-            this.Name = name;
-            this.IsAvailable = alwaysAvailable || DebuggerLauncher.GetDebuggerAvailability(vsVersion);
-        }
+		public static void RefreshInstances()
+		{
+			var instances = new List<DebuggerInfo>();
+			var retVal = DebuggerInfo.GetRunningObjectTable(0, out IRunningObjectTable rot);
 
-        public void AttachProcess(Process process)
-        {
-            if (DebuggerLauncher.Attach(process, this.VSVersion))
-                App.ReportStatus("Debugger attached successfully.");
-            else
-                App.ReportStatus("Failed to attach a debugger.");
-        }
+			if (retVal == 0)
+			{
+				rot.EnumRunning(out IEnumMoniker enumMoniker);
 
-    }
+				var fetched = IntPtr.Zero;
+				var monikers = new IMoniker[1];
+				while (enumMoniker.Next(1, monikers, fetched) == 0)
+				{
+					var moniker = monikers[0];
+					DebuggerInfo.CreateBindCtx(0, out IBindCtx bindCtx);
+					moniker.GetDisplayName(bindCtx, null, out string displayName);
+					moniker.GetClassID(out var classId);
+					if (displayName.StartsWith("!VisualStudio.DTE"))
+					{
+						rot.GetObject(monikers[0], out object obj);
+						instances.Add(new DebuggerInfo(displayName, obj));
+					}
+				}
+			}
+
+			DebuggerInfo.Instances = instances.ToArray();
+		}
+
+		private static string VisualStudioVersionToProductVersion(string version)
+		{
+			switch (version)
+			{
+				case "15.0":
+					return "2017";
+				case "14.0":
+					return "2015";
+				case "13.0":
+					return "2013";
+				case "12.0":
+					return "2012";
+				case "11.0":
+					return "2010";
+				default:
+					return version;
+			}
+		}
+
+		public static DebuggerInfo PickDebugger(string solutionFile)
+		{
+			if (DebuggerInfo.Instances == null || DebuggerInfo.Instances.Length == 0)
+			{
+				return null;
+			}
+
+			solutionFile = Path.GetFullPath(solutionFile);
+			var debugger = DebuggerInfo.Instances.FirstOrDefault(
+				d => d.SolutionFileName?.Equals(solutionFile, StringComparison.OrdinalIgnoreCase) ?? false);
+			return debugger ?? DebuggerInfo.Instances.First();
+		}
+
+		public string MonikerName { get; }
+		public dynamic DteObject { get; }
+		public int ProcessId { get; }
+
+		public string Name => this.DteObject.Name;
+		public string Description => Path.GetFileName(this.SolutionFileName);
+		public string Version => this.DteObject.Version;
+		public string Edition => this.DteObject.Edition;
+		public string SolutionFileName => this.DteObject.Solution?.FileName;
+
+		public string SolutionDisplayName => string.IsNullOrEmpty(this.DteObject.Solution?.FileName)
+			? "new solution"
+			: Path.GetFileName(this.DteObject.Solution?.FileName);
+
+		public string DisplayName => $"VS {VisualStudioVersionToProductVersion(this.DteObject.Version)} - {this.SolutionDisplayName}";
+
+
+		public DebuggerInfo(string monikerName, dynamic dteObject)
+		{
+			this.MonikerName = monikerName;
+			this.DteObject = dteObject;
+
+			var match = Regex.Match(this.MonikerName, @"\:(\d+)$");
+			this.ProcessId = match.Success ? int.Parse(match.Groups[1].Value) : -1;
+		}
+
+		public bool AttachProcess(Process process)
+		{
+			MessageFilter.Register();
+
+			try
+			{
+				var processes = ((IEnumerable)this.DteObject.Debugger.LocalProcesses).OfType<dynamic>();
+				var dteProcess = processes.SingleOrDefault(x => x.ProcessID == process.Id);
+				if (dteProcess == null)
+					throw new Exception("Process not found");
+
+				dteProcess.Attach();
+
+				this.DteObject.MainWindow.Activate();
+				return true;
+			}
+			catch (Exception exception)
+			{
+				MessageBox.Show(
+					$"Unable to launch and attach to debugger, make sure you have Visual Studio installed correctly.\n\nError: {exception.Message}",
+					"Launch and Debug", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+				return false;
+			}
+			finally
+			{
+				MessageFilter.Revoke();
+			}
+		}
+	}
 }

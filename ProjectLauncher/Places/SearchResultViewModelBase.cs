@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UE4Launcher.Places
 {
-    abstract class SearchResultViewModelBase : LocationViewModelBase
+	internal abstract class SearchResultViewModelBase : LocationViewModelBase
     {
         private class ComparerImpl : IComparer<SearchResultViewModelBase>
         {

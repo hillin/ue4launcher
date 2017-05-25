@@ -2,7 +2,7 @@
 
 namespace UE4Launcher.Launcher
 {
-    class MappingArgumentInfo<T> : ArgumentInfo
+	internal class MappingArgumentInfo<T> : ArgumentInfo
     {
         private readonly Dictionary<T, string> _commandMap;
         

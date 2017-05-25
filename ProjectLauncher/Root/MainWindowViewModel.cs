@@ -7,10 +7,8 @@ using UE4Launcher.Processes;
 
 namespace UE4Launcher.Root
 {
-    class MainWindowViewModel : NotificationObject
+	internal class MainWindowViewModel : NotificationObject
     {
-
-        public bool DeveloperMode => ((App)Application.Current).DeveloperMode;
         public bool EditMode => ((App)Application.Current).EditMode;
 
 
@@ -21,12 +19,12 @@ namespace UE4Launcher.Root
                 var builder = new StringBuilder();
                 builder.Append("Launcher");
 
-                if (this.DeveloperMode)
-                {
-                    builder.Append(this.EditMode ? " (Developer Edit Mode)" : " (Developer Mode)");
-                }
+	            if (this.EditMode)
+	            {
+		            builder.Append(" (Edit Mode)");
+	            }
 
-                builder.Append(" ").Append(Assembly.GetExecutingAssembly().GetName().Version);
+	            builder.Append(" ").Append(Assembly.GetExecutingAssembly().GetName().Version);
 
                 return builder.ToString();
             }
@@ -82,7 +80,7 @@ namespace UE4Launcher.Root
 
         public bool ConfirmSaveBeforeExit()
         {
-            if (!this.DeveloperMode || !this.EditMode)
+            if (!this.EditMode)
                 return true;
 
             if (!this.ProjectLauncher.ConfirmSaveBeforeExit())

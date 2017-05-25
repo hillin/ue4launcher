@@ -4,7 +4,7 @@ using UE4Launcher.Launcher;
 
 namespace UE4Launcher
 {
-    class ProjectInfo
+	internal class ProjectInfo
     {
         public static readonly ProjectInfo[] Projects;
 

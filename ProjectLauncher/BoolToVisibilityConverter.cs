@@ -6,7 +6,7 @@ using System.Windows.Markup;
 
 namespace UE4Launcher
 {
-    class BoolToVisibilityConverter : MarkupExtension, IValueConverter
+	internal class BoolToVisibilityConverter : MarkupExtension, IValueConverter
     {
         public Visibility TrueValue { get; set; } = Visibility.Visible;
         public Visibility FalseValue { get; set; } = Visibility.Collapsed;

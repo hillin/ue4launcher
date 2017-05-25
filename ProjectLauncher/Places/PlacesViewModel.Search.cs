@@ -12,7 +12,7 @@ using Timer = System.Timers.Timer;
 
 namespace UE4Launcher.Places
 {
-    partial class PlacesViewModel
+	internal partial class PlacesViewModel
     {
         private string _searchText;
 

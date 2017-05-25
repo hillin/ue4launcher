@@ -2,7 +2,7 @@
 
 namespace UE4Launcher.Launcher
 {
-    class MapInfo
+	internal class MapInfo
     {
         public string Path { get; }
         public string Name { get; }

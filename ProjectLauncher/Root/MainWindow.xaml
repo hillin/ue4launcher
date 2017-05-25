@@ -4,15 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:launcher="clr-namespace:UE4Launcher.Launcher"
-        xmlns:ue4Launcher="clr-namespace:UE4Launcher"
         xmlns:processes="clr-namespace:UE4Launcher.Processes"
         xmlns:places="clr-namespace:UE4Launcher.Places"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:root="clr-namespace:UE4Launcher.Root"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="600" Width="880"
-        MinWidth="880"
-        MinHeight="320"
+        Title="{Binding Title}" Height="640" Width="1024"
+        MinWidth="1024"
+        MinHeight="480"
         Closing="Window_Closing"
         Icon="/Resources/Icons/app.ico">
 
@@ -110,7 +109,7 @@
                 <launcher:ProjectLauncherPage DataContext="{Binding ProjectLauncher}" />
             </TabItem>
             
-            <TabItem Visibility="{Binding DeveloperMode, Converter={ue4Launcher:BoolToVisibilityConverter}}">
+            <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal"
                                 Margin="4">
@@ -123,7 +122,7 @@
                 <processes:ProcessPage DataContext="{Binding Processes}" />
             </TabItem>
 
-            <TabItem Visibility="{Binding DeveloperMode, Converter={ue4Launcher:BoolToVisibilityConverter}}">
+            <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal"
                                 Margin="4">

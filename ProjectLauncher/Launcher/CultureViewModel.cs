@@ -6,7 +6,7 @@ using System.Windows;
 
 namespace UE4Launcher.Launcher
 {
-    class CultureViewModel
+	internal class CultureViewModel
     {
         public string Name { get; }
         public string DisplayName { get; }

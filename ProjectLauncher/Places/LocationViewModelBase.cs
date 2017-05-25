@@ -5,7 +5,7 @@ using UE4Launcher.Root;
 
 namespace UE4Launcher.Places
 {
-    abstract class LocationViewModelBase : NotificationObject, ITrayContextMenuItem
+	internal abstract class LocationViewModelBase : NotificationObject, ITrayContextMenuItem
     {
 
         private string _displayName;

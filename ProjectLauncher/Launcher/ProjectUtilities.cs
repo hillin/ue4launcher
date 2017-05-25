@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace UE4Launcher.Launcher
 {
-    static class ProjectUtilities
+	internal static class ProjectUtilities
     {
 
         public static bool IsValidRootPath(string location)

@@ -3,7 +3,7 @@ using IOPath = System.IO.Path;
 
 namespace UE4Launcher.Places
 {
-    class FavoriteLocationViewModel : LocationViewModelBase, ITrayContextMenuItem
+	internal class FavoriteLocationViewModel : LocationViewModelBase, ITrayContextMenuItem
     {
         private bool _isPublic;
 

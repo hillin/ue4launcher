@@ -6,7 +6,7 @@ using IOPath = System.IO.Path;
 
 namespace UE4Launcher
 {
-    class ExecutableFileInfo
+	internal class ExecutableFileInfo
     {
         public static readonly ExecutableFileInfo[] ExecutableFiles;
 

@@ -3,7 +3,7 @@ using System.Windows.Media;
 
 namespace UE4Launcher.Root
 {
-    interface ITrayContextMenuItem
+	internal interface ITrayContextMenuItem
     {
         string Name { get; }
         string Description { get; }

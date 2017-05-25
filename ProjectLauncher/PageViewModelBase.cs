@@ -2,11 +2,10 @@
 
 namespace UE4Launcher
 {
-    abstract class PageViewModelBase : NotificationObject
+	internal abstract class PageViewModelBase : NotificationObject
     {
         public MainWindowViewModel Owner { get; }
-
-        public bool DeveloperMode => this.Owner.DeveloperMode;
+		
         public bool EditMode => this.Owner.EditMode;
 
 

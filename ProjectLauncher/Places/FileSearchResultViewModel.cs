@@ -3,7 +3,7 @@ using IOPath = System.IO.Path;
 
 namespace UE4Launcher.Places
 {
-    class FileSearchResultViewModel : SearchResultViewModelBase
+	internal class FileSearchResultViewModel : SearchResultViewModelBase
     {
         private static double CalculateFilenameRelevancyRating(string filename, string keyword)
         {

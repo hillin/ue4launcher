@@ -2,7 +2,7 @@
 
 namespace UE4Launcher.Root
 {
-    class BindingProxy : Freezable
+	internal class BindingProxy : Freezable
     {
         protected override Freezable CreateInstanceCore()
         {

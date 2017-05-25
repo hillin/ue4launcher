@@ -52,5 +52,10 @@ namespace UE4Launcher.Processes
         {
             this.ViewModel.BringSelectedProcessToFront();
         }
-    }
+
+		private void RefreshDebuggersButton_Click(object sender, System.Windows.RoutedEventArgs e)
+		{
+			this.ViewModel.RefreshProcesses();
+		}
+	}
 }

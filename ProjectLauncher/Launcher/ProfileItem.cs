@@ -3,7 +3,7 @@
 namespace UE4Launcher.Launcher
 {
     [Serializable]
-    class ProfileItem<T>
+    internal class ProfileItem<T>
     {
         public T DefaultValue { get; }
 

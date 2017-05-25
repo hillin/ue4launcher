@@ -9,8 +9,8 @@ using UE4Launcher.Root;
 
 namespace UE4Launcher.Processes
 {
-    class ProcessPageViewModel : PageViewModelBase
-    {
+	internal class ProcessPageViewModel : PageViewModelBase, IDebuggerSupportedViewModel
+	{
 
         private readonly Dictionary<int, ProcessViewModel> _processIdToViewModelMap;
 
@@ -32,31 +32,28 @@ namespace UE4Launcher.Processes
         public bool HasProcessSelected => this.SelectedProcess != null;
 
 
-        public DebuggerInfo[] Debuggers => DebuggerInfo.Debuggers;
+		public ObservableCollection<IDebuggerInfo> Debuggers { get; } = new ObservableCollection<IDebuggerInfo>();
+		ICollection<IDebuggerInfo> IDebuggerSupportedViewModel.Debuggers => this.Debuggers;
 
-        public DebuggerInfo SelectedDebugger
-        {
-            get
-            {
-                var index = Preferences.Default.DebuggerIndex;
-                if (index < 0 || index >= this.Debuggers.Length || !this.Debuggers[index].IsAvailable)
-                    index = 0;
+		private IDebuggerInfo _selectedDebugger;
 
-                return this.Debuggers[index];
-            }
-            set
-            {
-                Preferences.Default.DebuggerIndex = Array.IndexOf(this.Debuggers, value);
-                Preferences.Default.Save();
-                this.RaisePropertyChanged(nameof(this.SelectedDebugger));
-            }
-        }
+		public IDebuggerInfo SelectedDebugger
+		{
+			get => _selectedDebugger;
+			set
+			{
+				_selectedDebugger = value;
+				this.RaisePropertyChanged(nameof(this.SelectedDebugger));
+			}
+		}
 
-        public ProcessPageViewModel(MainWindowViewModel owner)
+		public ProcessPageViewModel(MainWindowViewModel owner)
             : base(owner)
         {
             _processIdToViewModelMap = new Dictionary<int, ProcessViewModel>();
             this.Processes = new ObservableCollection<ProcessViewModel>();
+
+	        this.RefreshDebuggers();
 
             this.RefreshProcesses();
 

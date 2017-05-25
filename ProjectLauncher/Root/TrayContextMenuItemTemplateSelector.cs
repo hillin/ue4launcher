@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace UE4Launcher.Root
 {
-    class TrayContextMenuItemTemplateSelector : DataTemplateSelector
+	internal class TrayContextMenuItemTemplateSelector : DataTemplateSelector
     {
         public DataTemplate TitleTemplate { get; set; }
         public DataTemplate DynamicItemTemplate { get; set; }

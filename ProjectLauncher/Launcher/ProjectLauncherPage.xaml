@@ -5,13 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ue4Launcher="clr-namespace:UE4Launcher"
              xmlns:launcher="clr-namespace:UE4Launcher.Launcher"
+             xmlns:debugging="clr-namespace:UE4Launcher.Debugging"
              mc:Ignorable="d"
              d:DesignHeight="715.333" d:DesignWidth="828">
     <Border BorderThickness="1"
             BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
             Margin="8">
         <DockPanel>
-            <Border Width="500"
+            <Border Width="640"
                     DockPanel.Dock="Right"
                     BorderThickness="1,0,0,0"
                     BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
@@ -23,8 +24,7 @@
                         <Border BorderThickness="0,1,0,0"
                                 BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
                             <StackPanel>
-                                <Border Margin="8,12,8,0"
-                                        Visibility="{Binding DeveloperMode, Converter={ue4Launcher:BoolToVisibilityConverter}}">
+                                <Border Margin="8,12,8,0">
                                     <TextBox Text="{Binding SelectedProfile.ConsoleCommandLine, Mode=OneWay}"
                                              Background="Black"
                                              Foreground="LightGray"
@@ -104,8 +104,7 @@
                                         </Button>
                                     </StackPanel>
                                     <Grid>
-                                        <StackPanel Orientation="Horizontal"
-                                                    Visibility="{Binding DeveloperMode, Converter={ue4Launcher:BoolToVisibilityConverter}}">
+                                        <StackPanel Orientation="Horizontal">
 
                                             <CheckBox x:Name="AttachDebuggerCheck" VerticalAlignment="Center"
                                                       IsChecked="{Binding AttachDebugger, Mode=TwoWay}">
@@ -119,8 +118,9 @@
                                                       ItemsSource="{Binding Debuggers}"
                                                       SelectedItem="{Binding SelectedDebugger, Mode=TwoWay}">
                                                 <ComboBox.ItemTemplate>
-                                                    <DataTemplate DataType="debugging:DebuggerInfo">
-                                                        <StackPanel Orientation="Horizontal">
+                                                    <DataTemplate DataType="debugging:IDebuggerInfo">
+                                                        <StackPanel Orientation="Horizontal"
+                                                                    ToolTip="{Binding Description}">
                                                             <Viewbox Width="16" Height="16">
                                                                 <Rectangle Width="16" Height="16">
                                                                     <Rectangle.Fill>
@@ -145,7 +145,7 @@
                                                                 </Rectangle>
                                                             </Viewbox>
 
-                                                            <TextBlock Text="{Binding Name}"
+                                                            <TextBlock Text="{Binding DisplayName}"
                                                                        Margin="4,0,0,0" />
                                                         </StackPanel>
                                                     </DataTemplate>
@@ -157,6 +157,14 @@
                                                     </Style>
                                                 </ComboBox.ItemContainerStyle>
                                             </ComboBox>
+
+                                            <Button x:Name="RefreshDebuggersButton"
+                                                    Click="RefreshDebuggersButton_Click"
+                                                    Padding="0"
+                                                    Margin="4,0,0,0">
+                                                    <Image Source="/Resources/Images/ic_refresh_18pt.png"
+                                                        Stretch="None"/>
+                                            </Button>
                                         </StackPanel>
                                     </Grid>
                                 </DockPanel>

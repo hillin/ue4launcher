@@ -67,8 +67,7 @@
     <Grid>
         <StackPanel>
 
-            <StackPanel
-                Visibility="{Binding DeveloperMode, Converter={ue4Launcher:BoolToVisibilityConverter TrueValue=Collapsed, FalseValue=Visible}}">
+            <StackPanel>
                 <GroupBox Header="Preferences">
                     <StackPanel>
                         <StackPanel.Resources>
@@ -174,7 +173,7 @@
                 </GroupBox>
             </StackPanel>
 
-            <StackPanel Visibility="{Binding DeveloperMode, Converter={ue4Launcher:BoolToVisibilityConverter}}">
+            <StackPanel>
                 <GroupBox Header="Profile">
                     <StackPanel>
                         <StackPanel.Resources>

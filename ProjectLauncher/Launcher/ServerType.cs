@@ -1,6 +1,6 @@
 ﻿namespace UE4Launcher.Launcher
 {
-    enum ServerType
+	internal enum ServerType
     {
         Dedicated,
         Listen

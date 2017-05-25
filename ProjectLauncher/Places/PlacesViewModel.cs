@@ -9,7 +9,7 @@ using Timer = System.Timers.Timer;
 
 namespace UE4Launcher.Places
 {
-    partial class PlacesViewModel : PageViewModelBase
+	internal partial class PlacesViewModel : PageViewModelBase
     {
         public ObservableCollection<LocationViewModelBase> Locations { get; }
         public ObservableCollection<FavoriteLocationViewModel> Favorites { get; }

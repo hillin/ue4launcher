@@ -5,7 +5,7 @@ using System.Text;
 
 namespace UE4Launcher.Launcher
 {
-	enum RHIDebugMode
+	internal enum RHIDebugMode
 	{
 		D3DDebug,
 		OpenGLDebug

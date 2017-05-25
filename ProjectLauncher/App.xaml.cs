@@ -13,131 +13,124 @@ using UE4Launcher.Root;
 
 namespace UE4Launcher
 {
-    public partial class App : Application, ISingleInstanceApp
-    {
-        public static string CurrentRootPath => ((App)Application.Current).RootPath;
-        public static MainWindow CurrentMainWindow { get; set; }
+	public partial class App : ISingleInstanceApp
+	{
+		public static string CurrentRootPath => ((App)Application.Current).RootPath;
+		public static MainWindow CurrentMainWindow { get; set; }
 
-        private const string FallbackSingleInstanceIdentifier = "ue4launcher";
+		private const string FallbackSingleInstanceIdentifier = "ue4launcher";
 
-        [STAThread]
-        public static void Main()
-        {
-            var identifier = Assembly.GetEntryAssembly().Location?.Replace('\\', '_') ?? FallbackSingleInstanceIdentifier;
+		[STAThread]
+		public static void Main()
+		{
+			var identifier = Assembly.GetEntryAssembly().Location?.Replace('\\', '_') ?? FallbackSingleInstanceIdentifier;
 
-            if (SingleInstance<App>.InitializeAsFirstInstance(identifier))
-            {
-                var application = new App();
+			if (SingleInstance<App>.InitializeAsFirstInstance(identifier))
+			{
+				var application = new App();
 
-                application.InitializeComponent();
-                application.Run();
+				application.InitializeComponent();
+				application.Run();
 
-                // Allow single instance code to perform cleanup operations
-                SingleInstance<App>.Cleanup();
-            }
-        }
-
-
-        public string RootPath { get; set; }
-        public bool DeveloperMode { get; set; }
-        public bool EditMode { get; set; }
-        public bool StartMinimized { get; private set; }
+				// Allow single instance code to perform cleanup operations
+				SingleInstance<App>.Cleanup();
+			}
+		}
 
 
-        private string GetRestoredStartArgs()
-        {
-            var builder = new StringBuilder();
-            if (this.DeveloperMode)
-            {
-                builder.Append(" -dev");
-                if (this.EditMode)
-                    builder.Append(" -edit");
-            }
+		public string RootPath { get; set; }
+		public bool EditMode { get; set; }
+		public bool StartMinimized { get; private set; }
 
-            return builder.ToString();
-        }
 
-        public bool SetStartupWithWindows(bool startUp)
-        {
-            var key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-            var entryAssembly = Assembly.GetEntryAssembly();
-            if (key != null && !string.IsNullOrEmpty(entryAssembly.Location))
-            {
-                if (startUp)
-                    key.SetValue(entryAssembly.GetName().Name, $"\"{entryAssembly.Location}\"{this.GetRestoredStartArgs()} -minimized");
-                else
-                    key.DeleteValue(entryAssembly.GetName().Name, false);
+		private string GetRestoredStartArgs()
+		{
+			var builder = new StringBuilder();
 
-                return true;
-            }
+			if (this.EditMode)
+				builder.Append(" -edit");
 
-            return false;
-        }
+			return builder.ToString();
+		}
 
-        private string FindProjectRoot(string location, HashSet<string> searchedLocations)
-        {
-            var projectFound = false;
-            while (!string.IsNullOrEmpty(location) && Directory.Exists(location))
-            {
-                searchedLocations.Add(location);
-                if (ProjectUtilities.IsValidRootPath(location))
-                {
-                    projectFound = true;
-                    break;
-                }
-                location = Directory.GetParent(location)?.FullName;
-            }
+		public bool SetStartupWithWindows(bool startUp)
+		{
+			var key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+			var entryAssembly = Assembly.GetEntryAssembly();
+			if (key != null && !string.IsNullOrEmpty(entryAssembly.Location))
+			{
+				if (startUp)
+					key.SetValue(entryAssembly.GetName().Name, $"\"{entryAssembly.Location}\"{this.GetRestoredStartArgs()} -minimized");
+				else
+					key.DeleteValue(entryAssembly.GetName().Name, false);
 
-            return projectFound ? location : null;
-        }
+				return true;
+			}
 
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
+			return false;
+		}
 
-            if (e.Args.Contains("-dev"))
-                this.DeveloperMode = true;
+		private string FindProjectRoot(string location, HashSet<string> searchedLocations)
+		{
+			var projectFound = false;
+			while (!string.IsNullOrEmpty(location) && Directory.Exists(location))
+			{
+				searchedLocations.Add(location);
+				if (ProjectUtilities.IsValidRootPath(location))
+				{
+					projectFound = true;
+					break;
+				}
+				location = Directory.GetParent(location)?.FullName;
+			}
 
-            if (this.DeveloperMode && e.Args.Contains("-edit"))
-                this.EditMode = true;
+			return projectFound ? location : null;
+		}
 
-            if (e.Args.Contains("-minimized"))
-                this.StartMinimized = true;
+		protected override void OnStartup(StartupEventArgs e)
+		{
+			base.OnStartup(e);
 
-            var searchedLocation = new HashSet<string>();
-            var projectRoot = this.FindProjectRoot(Environment.CurrentDirectory, searchedLocation);
-            if (string.IsNullOrEmpty(projectRoot))
-                projectRoot = this.FindProjectRoot(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), searchedLocation);
+			if (e.Args.Contains("-edit"))
+				this.EditMode = true;
 
-            if (string.IsNullOrEmpty(projectRoot))
-            {
-                MessageBox.Show(
-                    $"No valid project found under these folders:\n\n{string.Join("\n", searchedLocation)}\n\nMake sure this launcher is placed under (any level of) your unreal project folder",
-                    "Project not Found",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Exclamation);
+			if (e.Args.Contains("-minimized"))
+				this.StartMinimized = true;
 
-                Environment.Exit(-1);
-            }
+			var searchedLocation = new HashSet<string>();
+			var projectRoot = this.FindProjectRoot(Environment.CurrentDirectory, searchedLocation);
+			if (string.IsNullOrEmpty(projectRoot))
+				projectRoot = this.FindProjectRoot(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), searchedLocation);
 
-            this.RootPath = projectRoot;
+			if (string.IsNullOrEmpty(projectRoot))
+			{
+				MessageBox.Show(
+					$"No valid project found under these folders:\n\n{string.Join("\n", searchedLocation)}\n\nMake sure this launcher is placed under (any level of) your unreal project folder",
+					"Project not Found",
+					MessageBoxButton.OK,
+					MessageBoxImage.Exclamation);
 
-            // only start with windows if we are in developer mode
-            this.SetStartupWithWindows(this.DeveloperMode && Preferences.Default.StartWithWindows);
-        }
+				Environment.Exit(-1);
+			}
 
-        public static void ReportStatus(string status, double? timeOut = 10000)
-        {
-            App.CurrentMainWindow.Dispatcher.BeginInvoke(
-                   new Action(() => CurrentMainWindow.ReportStatus(status, timeOut)),
-                   DispatcherPriority.Background);
-        }
+			this.RootPath = projectRoot;
 
-        public bool SignalExternalCommandLineArgs(IList<string> args)
-        {
-            App.CurrentMainWindow.Show();
-            App.CurrentMainWindow.Activate();
-            return true;
-        }
-    }
+			// only start with windows if we are in developer mode
+			this.SetStartupWithWindows(Preferences.Default.StartWithWindows);
+		}
+
+		public static void ReportStatus(string status, double? timeOut = 10000)
+		{
+			App.CurrentMainWindow.Dispatcher.BeginInvoke(
+				   new Action(() => App.CurrentMainWindow.ReportStatus(status, timeOut)),
+				   DispatcherPriority.Background);
+		}
+
+		public bool SignalExternalCommandLineArgs(IList<string> args)
+		{
+			App.CurrentMainWindow.Show();
+			App.CurrentMainWindow.Activate();
+			return true;
+		}
+	}
 }

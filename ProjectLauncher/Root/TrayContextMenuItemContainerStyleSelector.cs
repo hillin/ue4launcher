@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace UE4Launcher.Root
 {
-    class TrayContextMenuItemContainerStyleSelector : StyleSelector
+	internal class TrayContextMenuItemContainerStyleSelector : StyleSelector
     {
         public Style TitleStyle { get; set; }
         public Style DynamicItemStyle { get; set; }

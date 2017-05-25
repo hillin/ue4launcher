@@ -12,7 +12,7 @@ namespace UE4Launcher {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.0.1.0")]
     internal sealed partial class Preferences : global::System.Configuration.ApplicationSettingsBase {
         
         private static Preferences defaultInstance = ((Preferences)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Preferences())));
@@ -32,18 +32,6 @@ namespace UE4Launcher {
             }
             set {
                 this["AttachDebugger"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int DebuggerIndex {
-            get {
-                return ((int)(this["DebuggerIndex"]));
-            }
-            set {
-                this["DebuggerIndex"] = value;
             }
         }
         

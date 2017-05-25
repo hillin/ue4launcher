@@ -1,6 +1,6 @@
 ﻿namespace UE4Launcher.Launcher
 {
-    enum WindowState
+	internal enum WindowState
     {
         FullScreen,
         Windowed

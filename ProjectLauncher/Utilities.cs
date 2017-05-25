@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 
 namespace UE4Launcher
 {
-    static class Utilities
+	internal static class Utilities
     {
         public static void NavigateFile(string file)
         {

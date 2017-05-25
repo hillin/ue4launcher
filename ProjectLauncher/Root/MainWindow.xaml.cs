@@ -10,188 +10,183 @@ using WinForms = System.Windows.Forms;
 
 namespace UE4Launcher.Root
 {
-    public partial class MainWindow
-    {
+	public partial class MainWindow
+	{
 
-        private readonly MainWindowViewModel _viewModel;
+		private readonly MainWindowViewModel _viewModel;
 
-        private readonly Timer _statusTimeoutTimer;
-        private readonly WinForms.NotifyIcon _trayNotifier = new WinForms.NotifyIcon();
+		private readonly Timer _statusTimeoutTimer;
+		private readonly WinForms.NotifyIcon _trayNotifier = new WinForms.NotifyIcon();
 
-        private readonly ContextMenu _trayNotifierContextMenu;
+		private readonly ContextMenu _trayNotifierContextMenu;
 
-        public MainWindow()
-        {
+		public MainWindow()
+		{
 
-            App.CurrentMainWindow = this;
+			App.CurrentMainWindow = this;
 
-            this.InitializeComponent();
-            this.DataContext = _viewModel = new MainWindowViewModel();
+			this.InitializeComponent();
+			this.DataContext = _viewModel = new MainWindowViewModel();
 
-            // status timeout timer
-            _statusTimeoutTimer = new Timer { AutoReset = false };
-            _statusTimeoutTimer.Elapsed += this.StatusTimeoutTimer_Elapsed;
+			// status timeout timer
+			_statusTimeoutTimer = new Timer { AutoReset = false };
+			_statusTimeoutTimer.Elapsed += this.StatusTimeoutTimer_Elapsed;
 
-            this.ResetStatusText();
-
-            if (_viewModel.DeveloperMode)
-            {
-                // tray notifier
-                _trayNotifierContextMenu = (ContextMenu)this.FindResource("TrayNotifierContextMenu");
-
-                _trayNotifier.MouseDown += this.TrayNotifier_MouseDown;
-                _trayNotifier.DoubleClick += this.TrayNotifier_DoubleClick;
-                var iconInfo = Application.GetResourceStream(new Uri("/Resources/Icons/app.ico", UriKind.Relative));
-                if (iconInfo != null)
-                    using (var iconStream = iconInfo.Stream)
-                        this._trayNotifier.Icon = new System.Drawing.Icon(iconStream);
-
-                _trayNotifier.Visible = true;
-            }
-
-            MouseHook.MouseAction += this.MouseHook_MouseAction;
-
-            // minimize if start minimized
-            if (((App)Application.Current).StartMinimized)
-            {
-                this.WindowState = System.Windows.WindowState.Minimized;
-                this.Hide();
-            }
-        }
+			this.ResetStatusText();
 
 
+			// tray notifier
+			_trayNotifierContextMenu = (ContextMenu)this.FindResource("TrayNotifierContextMenu");
 
-        private void MouseHook_MouseAction(object sender, EventArgs e)
-        {
-            if (!_viewModel.DeveloperMode)
-                return;
+			_trayNotifier.MouseDown += this.TrayNotifier_MouseDown;
+			_trayNotifier.DoubleClick += this.TrayNotifier_DoubleClick;
+			var iconInfo = Application.GetResourceStream(new Uri("/Resources/Icons/app.ico", UriKind.Relative));
+			if (iconInfo != null)
+				using (var iconStream = iconInfo.Stream)
+					this._trayNotifier.Icon = new System.Drawing.Icon(iconStream);
 
-            if (!_trayNotifierContextMenu.IsOpen)
-            {
-                MouseHook.Stop();
-                return;
-            }
+			_trayNotifier.Visible = true;
 
-            var mousePosition = Mouse.GetPosition(_trayNotifierContextMenu);
 
-            if (mousePosition.X <= 0
-                || mousePosition.Y <= 0
-                || mousePosition.X >= _trayNotifierContextMenu.RenderSize.Width
-                || mousePosition.Y >= _trayNotifierContextMenu.RenderSize.Height)
-            {
-                this.CloseTrayNotifierContextMenu();
-            }
-        }
+			MouseHook.MouseAction += this.MouseHook_MouseAction;
 
-        private void CloseTrayNotifierContextMenu()
-        {
-            _trayNotifierContextMenu.IsOpen = false;
-            MouseHook.Stop();
-        }
+			// minimize if start minimized
+			if (((App)Application.Current).StartMinimized)
+			{
+				this.WindowState = System.Windows.WindowState.Minimized;
+				this.Hide();
+			}
+		}
 
-        private void TrayNotifier_DoubleClick(object sender, EventArgs e)
-        {
-            this.ToggleMainWindow();
-        }
 
-        private void ToggleMainWindow()
-        {
-            if (this.WindowState == WindowState.Minimized)
-            {
-                this.Show();
-                this.WindowState = WindowState.Normal;
-                this.Focus();
-            }
-            else
-            {
-                this.WindowState = WindowState.Minimized;
-            }
-        }
 
-        void TrayNotifier_MouseDown(object sender, WinForms.MouseEventArgs e)
-        {
-            if (_trayNotifierContextMenu.IsOpen)
-            {
-                this.CloseTrayNotifierContextMenu();
-                return;
-            }
+		private void MouseHook_MouseAction(object sender, EventArgs e)
+		{
 
-            if (e.Button == WinForms.MouseButtons.Right)
-            {
-                this.OpenTrayNotifierContextMenu();
+			if (!_trayNotifierContextMenu.IsOpen)
+			{
+				MouseHook.Stop();
+				return;
+			}
 
-            }
-        }
+			var mousePosition = Mouse.GetPosition(_trayNotifierContextMenu);
 
-        private void OpenTrayNotifierContextMenu()
-        {
-            _trayNotifierContextMenu.IsOpen = true;
-            MouseHook.Start();
-        }
+			if (mousePosition.X <= 0
+				|| mousePosition.Y <= 0
+				|| mousePosition.X >= _trayNotifierContextMenu.RenderSize.Width
+				|| mousePosition.Y >= _trayNotifierContextMenu.RenderSize.Height)
+			{
+				this.CloseTrayNotifierContextMenu();
+			}
+		}
 
-        private void StatusTimeoutTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            this.ResetStatusText();
-        }
+		private void CloseTrayNotifierContextMenu()
+		{
+			_trayNotifierContextMenu.IsOpen = false;
+			MouseHook.Stop();
+		}
 
-        private void ResetStatusText()
-        {
-            _viewModel.StatusText = "Ready";
-        }
+		private void TrayNotifier_DoubleClick(object sender, EventArgs e)
+		{
+			this.ToggleMainWindow();
+		}
 
-        private void Window_Closing(object sender, CancelEventArgs e)
-        {
-            if (_viewModel.DeveloperMode && Preferences.Default.CloseToSystemTray)
-            {
-                this.WindowState = WindowState.Minimized;
-                e.Cancel = true;
-            }
-        }
+		private void ToggleMainWindow()
+		{
+			if (this.WindowState == WindowState.Minimized)
+			{
+				this.Show();
+				this.WindowState = WindowState.Normal;
+				this.Focus();
+			}
+			else
+			{
+				this.WindowState = WindowState.Minimized;
+			}
+		}
 
-        protected override void OnStateChanged(EventArgs e)
-        {
-            if (_viewModel.DeveloperMode)
-            {
-                if (this.WindowState == WindowState.Minimized)
-                    this.Hide();
-                else
-                    this.Show();
-            }
+		private void TrayNotifier_MouseDown(object sender, WinForms.MouseEventArgs e)
+		{
+			if (_trayNotifierContextMenu.IsOpen)
+			{
+				this.CloseTrayNotifierContextMenu();
+				return;
+			}
 
-            base.OnStateChanged(e);
-        }
+			if (e.Button == WinForms.MouseButtons.Right)
+			{
+				this.OpenTrayNotifierContextMenu();
 
-        public void ReportStatus(string status, double? timeout)
-        {
-            if (_viewModel == null)
-                return;
+			}
+		}
 
-            _viewModel.StatusText = status;
-            _statusTimeoutTimer.Stop();
-            if (timeout != null)
-            {
-                _statusTimeoutTimer.Interval = timeout.Value;
-                _statusTimeoutTimer.Start();
-            }
-        }
+		private void OpenTrayNotifierContextMenu()
+		{
+			_trayNotifierContextMenu.IsOpen = true;
+			MouseHook.Start();
+		}
 
-        private void ExitMenuItem_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            if (!_viewModel.ConfirmSaveBeforeExit())
-                return;
+		private void StatusTimeoutTimer_Elapsed(object sender, ElapsedEventArgs e)
+		{
+			this.ResetStatusText();
+		}
 
-            _trayNotifier.Visible = false;
-            Environment.Exit(0);
-        }
+		private void ResetStatusText()
+		{
+			_viewModel.StatusText = "Ready";
+		}
 
-        private void KillAllProcessesMenuItem_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            _viewModel.Processes.KillAllProcesses();
-        }
+		private void Window_Closing(object sender, CancelEventArgs e)
+		{
+			if (Preferences.Default.CloseToSystemTray)
+			{
+				this.WindowState = WindowState.Minimized;
+				e.Cancel = true;
+			}
+		}
 
-        private void ToggleMainWindowMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            this.ToggleMainWindow();
-        }
-    }
+		protected override void OnStateChanged(EventArgs e)
+		{
+
+			if (this.WindowState == WindowState.Minimized)
+				this.Hide();
+			else
+				this.Show();
+
+			base.OnStateChanged(e);
+		}
+
+		public void ReportStatus(string status, double? timeout)
+		{
+			if (_viewModel == null)
+				return;
+
+			_viewModel.StatusText = status;
+			_statusTimeoutTimer.Stop();
+			if (timeout != null)
+			{
+				_statusTimeoutTimer.Interval = timeout.Value;
+				_statusTimeoutTimer.Start();
+			}
+		}
+
+		private void ExitMenuItem_Click(object sender, System.Windows.RoutedEventArgs e)
+		{
+			if (!_viewModel.ConfirmSaveBeforeExit())
+				return;
+
+			_trayNotifier.Visible = false;
+			Environment.Exit(0);
+		}
+
+		private void KillAllProcessesMenuItem_Click(object sender, System.Windows.RoutedEventArgs e)
+		{
+			_viewModel.Processes.KillAllProcesses();
+		}
+
+		private void ToggleMainWindowMenuItem_Click(object sender, RoutedEventArgs e)
+		{
+			this.ToggleMainWindow();
+		}
+	}
 }

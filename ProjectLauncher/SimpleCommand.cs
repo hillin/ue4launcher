@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace UE4Launcher
 {
-    class SimpleCommand : ICommand
+	internal class SimpleCommand : ICommand
     {
         private readonly Action<object> _execute;
         private readonly Predicate<object> _canExecute;

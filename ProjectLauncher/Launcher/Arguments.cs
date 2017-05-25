@@ -6,7 +6,7 @@ using RHITypeEnum = UE4Launcher.Launcher.RHIType;
 using RHIDebugModeEnum = UE4Launcher.Launcher.RHIDebugMode;
 namespace UE4Launcher.Launcher
 {
-	static class Arguments
+	internal static class Arguments
 	{
 		private static readonly Dictionary<string, ArgumentInfo> _arguments
 			= new Dictionary<string, ArgumentInfo>();

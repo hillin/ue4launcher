@@ -8,7 +8,7 @@ using UE4Launcher.Root;
 
 namespace UE4Launcher.Processes
 {
-    class ProcessViewModel : NotificationObject, ITrayContextMenuItem, IDisposable
+	internal class ProcessViewModel : NotificationObject, ITrayContextMenuItem, IDisposable
     {
 
         private readonly Process _process;
@@ -78,7 +78,7 @@ namespace UE4Launcher.Processes
         private void ExecuteTrayContextMenuCommand(object obj)
         {
             if (Utilities.IsCtrlDown)
-                this.AttachDebugger(DebuggerInfo.Automatic);
+                this.AttachDebugger(null);
             else if (Utilities.IsAltDown)
                 this.Kill();
             else
@@ -124,7 +124,7 @@ namespace UE4Launcher.Processes
             this.Dispose();
         }
 
-        public void AttachDebugger(DebuggerInfo debugger)
+        public void AttachDebugger(IDebuggerInfo debugger)
         {
             if (_process.HasExited)
                 return;

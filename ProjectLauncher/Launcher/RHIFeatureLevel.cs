@@ -5,7 +5,7 @@ using System.Text;
 
 namespace UE4Launcher.Launcher
 {
-	enum RHIFeatureLevel
+	internal enum RHIFeatureLevel
 	{
 		ShaderModel4,
 		ShaderModel5,
