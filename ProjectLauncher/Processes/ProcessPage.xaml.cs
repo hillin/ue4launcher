@@ -40,9 +40,9 @@ namespace UE4Launcher.Processes
 
         private void ProcessListItem_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (Utilities.IsAltDown)
+            if (Helpers.IsAltDown)
                 this.ViewModel.KillSelectedProcess();
-            else if (Utilities.IsCtrlDown)
+            else if (Helpers.IsCtrlDown)
                 this.ViewModel.AttachDebuggerToSelectedProcess();
             else
                 this.ViewModel.BringSelectedProcessToFront();

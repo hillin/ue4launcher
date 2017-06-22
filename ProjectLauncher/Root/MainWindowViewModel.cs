@@ -4,6 +4,7 @@ using System.Windows;
 using UE4Launcher.Launcher;
 using UE4Launcher.Places;
 using UE4Launcher.Processes;
+using UE4Launcher.Utilities;
 
 namespace UE4Launcher.Root
 {
@@ -70,12 +71,14 @@ namespace UE4Launcher.Root
         public ProjectLauncherViewModel ProjectLauncher { get; }
         public ProcessPageViewModel Processes { get; }
         public PlacesViewModel Places { get; }
+		public UtilitiesViewModel Utilities { get; }
 
-        public MainWindowViewModel()
+		public MainWindowViewModel()
         {
             this.ProjectLauncher = new ProjectLauncherViewModel(this);
             this.Processes = new ProcessPageViewModel(this);
             this.Places = new PlacesViewModel(this);
+	        this.Utilities = new UtilitiesViewModel();
         }
 
         public bool ConfirmSaveBeforeExit()

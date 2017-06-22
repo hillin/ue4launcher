@@ -66,6 +66,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Utilities\ConsoleCommandViewModel.cs" />
+    <Compile Include="Utilities\LaunchProcessMenuItemBase.cs" />
+    <Compile Include="Utilities\SwarmAgentViewModel.cs" />
+    <Compile Include="Utilities\UnrealFrontendViewModel.cs" />
+    <Compile Include="Utilities\UtilitiesViewModel.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -140,7 +145,7 @@
     <Compile Include="Root\TrayContextMenuItemContainerStyleSelector.cs" />
     <Compile Include="Root\TrayContextMenuItemTemplateSelector.cs" />
     <Compile Include="SimpleCommand.cs" />
-    <Compile Include="Utilities.cs" />
+    <Compile Include="Helpers.cs" />
     <Page Include="Root\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

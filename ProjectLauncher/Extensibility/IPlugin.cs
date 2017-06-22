@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace UE4Launcher.Extensibility
+﻿namespace UE4Launcher.Extensibility
 {
 	public interface IPlugin
 	{

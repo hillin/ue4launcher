@@ -50,7 +50,7 @@ namespace UE4Launcher.Processes
 
         bool ITrayContextMenuItem.IsEnabled => true;
 
-        ImageSource ITrayContextMenuItem.Icon => Utilities.GetFileSystemIcon(_process.MainModule.FileName, true);
+        ImageSource ITrayContextMenuItem.Icon => Helpers.GetFileSystemIcon(_process.MainModule.FileName, true);
 
         private readonly ICommand _trayContextMenuCommand;
         private readonly DispatcherTimer _updateTimer;
@@ -77,9 +77,9 @@ namespace UE4Launcher.Processes
 
         private void ExecuteTrayContextMenuCommand(object obj)
         {
-            if (Utilities.IsCtrlDown)
+            if (Helpers.IsCtrlDown)
                 this.AttachDebugger(AutomaticDebuggerInfo.Instance);
-            else if (Utilities.IsAltDown)
+            else if (Helpers.IsAltDown)
                 this.Kill();
             else
                 this.BringToFront();
@@ -137,7 +137,7 @@ namespace UE4Launcher.Processes
             if (_process.HasExited)
                 return;
 
-            Utilities.BringProcessToFront(_process);
+            Helpers.BringProcessToFront(_process);
         }
 
         public void Dispose()

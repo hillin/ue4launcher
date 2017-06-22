@@ -37,6 +37,9 @@
                     <CollectionContainer Collection="{Binding Data.Processes.Processes, Source={StaticResource TrayIconBindingProxy}}" />
                     <MenuItem Header="Kill All Processes" Click="KillAllProcessesMenuItem_Click" />
                     <Separator />
+                    <system:String>Utilities</system:String>
+                    <CollectionContainer Collection="{Binding Data.Utilities.MenuItems, Source={StaticResource TrayIconBindingProxy}}" />
+                    <Separator />
                     <MenuItem Header="Start with Windows" IsCheckable="True" IsChecked="{Binding Data.StartWithWindows, Mode=TwoWay, Source={StaticResource TrayIconBindingProxy}}" />
                     <MenuItem Header="Minimize to Tray while Closing" IsCheckable="True" IsChecked="{Binding Data.CloseToSystemTray, Mode=TwoWay, Source={StaticResource TrayIconBindingProxy}}" />
                     <MenuItem Header="Toggle Main Window" Click="ToggleMainWindowMenuItem_Click" />

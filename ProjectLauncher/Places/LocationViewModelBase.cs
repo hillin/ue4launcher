@@ -36,11 +36,11 @@ namespace UE4Launcher.Places
 
         string ITrayContextMenuItem.Name => this.DisplayName;
 
-        public ImageSource Icon => Utilities.GetFileSystemIcon(this.Path, false);
+        public ImageSource Icon => Helpers.GetFileSystemIcon(this.Path, false);
 
         bool ITrayContextMenuItem.IsEnabled => true;
 
-        ImageSource ITrayContextMenuItem.Icon => Utilities.GetFileSystemIcon(this.Path, true);
+        ImageSource ITrayContextMenuItem.Icon => Helpers.GetFileSystemIcon(this.Path, true);
 
         private readonly ICommand _trayContextMenuCommand;
         ICommand ITrayContextMenuItem.Command => _trayContextMenuCommand;
@@ -55,7 +55,7 @@ namespace UE4Launcher.Places
 
         private void ExecuteTrayContextMenuCommand(object obj)
         {
-            this.Navigate(Utilities.IsCtrlDown);
+            this.Navigate(Helpers.IsCtrlDown);
         }
 
         public void Navigate(bool openDirectly)
@@ -63,7 +63,7 @@ namespace UE4Launcher.Places
             if (openDirectly)
                 Process.Start(this.Path);
             else
-                Utilities.NavigateFile(this.Path);
+	            Helpers.NavigateFile(this.Path);
         }
 
 

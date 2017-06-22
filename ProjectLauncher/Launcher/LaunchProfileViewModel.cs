@@ -985,7 +985,7 @@ namespace UE4Launcher.Launcher
 
 		private void ExecuteTrayContextMenuCommand(object obj)
 		{
-			this.Launch(Utilities.IsCtrlDown ? AutomaticDebuggerInfo.Instance : null);
+			this.Launch(Helpers.IsCtrlDown ? AutomaticDebuggerInfo.Instance : null);
 		}
 
 		private void LoadExectuableFiles()

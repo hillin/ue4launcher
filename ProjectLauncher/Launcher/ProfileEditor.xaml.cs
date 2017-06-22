@@ -44,7 +44,7 @@ namespace UE4Launcher.Launcher
                                                      file));
             }
 
-            Utilities.NavigateFile(file);
+            Helpers.NavigateFile(file);
         }
 
         private void NavigateDefaultGameFileButton_Click(object sender, RoutedEventArgs e)
