@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -1149,8 +1150,21 @@ namespace UE4Launcher.Launcher
 			}
 
 			var process = Process.Start(this.Profile.GetExecutableFile(), args);
+
+			if (process == null)
+			{
+				MessageBox.Show("Failed to launch process.", "Launch", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+				return;
+			}
+
 			if (debugger != null)
-				debugger.AttachProcess(process);
+			{
+				if (!debugger.AttachProcess(process))
+				{
+					process.Kill();
+					App.ReportStatus("Failed to attach debugger, process terminated.");
+				}
+			}
 			else
 				App.ReportStatus("Profile launched successfully.");
 

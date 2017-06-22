@@ -47,6 +47,12 @@ namespace UE4Launcher.Launcher
 			{
 				Preferences.Default.AttachDebugger = value;
 				Preferences.Default.Save();
+
+				if (value)
+				{
+					this.RefreshDebuggers();
+				}
+
 				this.RaisePropertyChanged(nameof(this.AttachDebugger));
 			}
 		}

@@ -41,8 +41,15 @@ namespace UE4Launcher.Debugging
 					moniker.GetClassID(out var classId);
 					if (displayName.StartsWith("!VisualStudio.DTE"))
 					{
-						rot.GetObject(monikers[0], out object obj);
-						instances.Add(new DebuggerInfo(displayName, obj));
+						try
+						{
+							rot.GetObject(monikers[0], out object obj);
+							instances.Add(new DebuggerInfo(displayName, obj));
+						}
+						catch (COMException)
+						{
+							// the debugger might not be ready at this time
+						}
 					}
 				}
 			}
@@ -69,8 +76,13 @@ namespace UE4Launcher.Debugging
 			}
 		}
 
-		public static DebuggerInfo PickDebugger(string solutionFile)
+		public static DebuggerInfo PickDebugger(string solutionFile, bool forceRefresh)
 		{
+			if (forceRefresh || DebuggerInfo.Instances == null || DebuggerInfo.Instances.Length == 0)
+			{
+				DebuggerInfo.RefreshInstances();
+			}
+
 			if (DebuggerInfo.Instances == null || DebuggerInfo.Instances.Length == 0)
 			{
 				return null;
@@ -80,6 +92,11 @@ namespace UE4Launcher.Debugging
 			var debugger = DebuggerInfo.Instances.FirstOrDefault(
 				d => d.SolutionFileName?.Equals(solutionFile, StringComparison.OrdinalIgnoreCase) ?? false);
 			return debugger ?? DebuggerInfo.Instances.First();
+		}
+
+		private static void TryLaunchDebugger()
+		{
+
 		}
 
 		public string MonikerName { get; }
@@ -102,7 +119,7 @@ namespace UE4Launcher.Debugging
 		{
 			this.MonikerName = monikerName;
 			this.DteObject = dteObject;
-			this.SolutionFileName = this.DteObject.Solution?.FileName;	// could be slow and prone to exception, cache it
+			this.SolutionFileName = this.DteObject.Solution?.FileName;  // could be slow and prone to exception, cache it
 
 			var match = Regex.Match(this.MonikerName, @"\:(\d+)$");
 			this.ProcessId = match.Success ? int.Parse(match.Groups[1].Value) : -1;
