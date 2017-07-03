@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -21,8 +22,27 @@ namespace UE4Launcher
 		private const string FallbackSingleInstanceIdentifier = "ue4launcher";
 
 		[STAThread]
-		public static void Main()
+		public static void Main(string[] args)
 		{
+			if (!args.Contains("-no-shadow"))
+			{
+				var shadowPath = Path.Combine(Environment.CurrentDirectory, "launcher.shadow.exe");
+				if (File.Exists(shadowPath))
+				{
+					File.Delete(shadowPath);
+				}
+
+				File.Copy(new Uri(Assembly.GetEntryAssembly().CodeBase).LocalPath, shadowPath);
+
+				Process.Start(new ProcessStartInfo
+				{
+					FileName = shadowPath,
+					Arguments = string.Join(" ", args.Concat(new[] { "-no-shadow" }))
+				});
+
+				Environment.Exit(0);
+			}
+
 			var identifier = Assembly.GetEntryAssembly().Location?.Replace('\\', '_') ?? FallbackSingleInstanceIdentifier;
 
 			if (SingleInstance<App>.InitializeAsFirstInstance(identifier))
