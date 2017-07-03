@@ -32,6 +32,7 @@ namespace UE4Launcher.Utilities
 			return new ProcessStartInfo(this.Path)
 			{
 				WorkingDirectory = App.CurrentRootPath,
+				UseShellExecute = true
 			};
 		}
 	}
