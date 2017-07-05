@@ -24,6 +24,7 @@ namespace UE4Launcher
 		[STAThread]
 		public static void Main(string[] args)
 		{
+			var assemblyLocation = Assembly.GetEntryAssembly().Location;
 			if (!args.Contains("-no-shadow"))
 			{
 				var shadowPath = Path.Combine(Environment.CurrentDirectory, "launcher.shadow.exe");
@@ -32,7 +33,7 @@ namespace UE4Launcher
 					File.Delete(shadowPath);
 				}
 
-				File.Copy(new Uri(Assembly.GetEntryAssembly().CodeBase).LocalPath, shadowPath);
+				File.Copy(assemblyLocation, shadowPath);
 
 				Process.Start(new ProcessStartInfo
 				{
@@ -43,7 +44,7 @@ namespace UE4Launcher
 				Environment.Exit(0);
 			}
 
-			var identifier = Assembly.GetEntryAssembly().Location?.Replace('\\', '_') ?? FallbackSingleInstanceIdentifier;
+			var identifier = assemblyLocation?.Replace('\\', '_') ?? FallbackSingleInstanceIdentifier;
 
 			if (SingleInstance<App>.InitializeAsFirstInstance(identifier))
 			{
@@ -77,10 +78,11 @@ namespace UE4Launcher
 		{
 			var key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 			var entryAssembly = Assembly.GetEntryAssembly();
+			var nonShadowLocation = Path.Combine(Path.GetDirectoryName(entryAssembly.Location), "launcher.exe");
 			if (key != null && !string.IsNullOrEmpty(entryAssembly.Location))
 			{
 				if (startUp)
-					key.SetValue(entryAssembly.GetName().Name, $"\"{entryAssembly.Location}\"{this.GetRestoredStartArgs()} -minimized");
+					key.SetValue(entryAssembly.GetName().Name, $"\"{nonShadowLocation}\"{this.GetRestoredStartArgs()} -minimized -no-shadow");
 				else
 					key.DeleteValue(entryAssembly.GetName().Name, false);
 
